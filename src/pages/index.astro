@@ -6,6 +6,7 @@ import WaitlistForm from '../components/WaitlistForm';
 import FaqAccordion from '../components/FaqAccordion';
 import FooterLinks from '../components/FooterLinks';
 import HowItWorksScenes from '../components/HowItWorksScenes.astro';
+import FeatureArtwork from '../components/FeatureArtwork.astro';
 import { STUDIO_ASSETS } from '../data/assets';
 import { SITE_CONTENT } from '../data/content';
 ---
@@ -303,9 +304,11 @@ import { SITE_CONTENT } from '../data/content';
               <article
                 data-reveal
                 style={`--reveal-delay: ${index * 80}ms; --float-delay: ${index * 0.7}s;`}
-                class="tt-card-float tt-float-idle bg-[#111115] border border-zinc-800/90 rounded-3xl p-7 sm:p-9 flex flex-col justify-between"
+                class="tt-card-float tt-float-idle bg-[#111115] border border-zinc-800/90 rounded-3xl p-6 sm:p-8 flex flex-col justify-between"
               >
                 <div>
+                  <FeatureArtwork featureId={feature.id} />
+
                   <div class="flex items-baseline justify-between gap-4">
                     <h3 class="text-2xl font-semibold text-zinc-50 tracking-tight">
                       {feature.title}
