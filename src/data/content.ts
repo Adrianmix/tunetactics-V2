@@ -39,9 +39,16 @@ export interface ProfileShowcase {
 export const SITE_CONTENT = {
   lang: 'en',
   meta: {
-    title: 'TuneTactics — Show your sound. Find your people.',
+    title: 'TuneTactics — Show Your Sound. Find Collaborators.',
     description:
-      'A community for producers and singers to showcase their work and find collaborators.',
+      'Showcase your beats, vocals, and reels on TuneTactics. Connect with producers, singers, and songwriters to collaborate—join the waitlist for free Pro.',
+    siteName: 'TuneTactics',
+    defaultSiteUrl: 'https://tunetactics.ir',
+    keywords:
+      'music collaboration, producer portfolio, singer collaboration, beatmakers and vocalists, music reels, remote music stems, songwriter network, TuneTactics',
+    ogImagePath: '/og-cover.jpg',
+    ogImageAlt: 'TuneTactics — Glowing lime acoustic waveform on a dark recording studio desk',
+    locale: 'en_US',
   },
   nav: {
     brand: 'TuneTactics',

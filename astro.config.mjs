@@ -3,6 +3,7 @@ import react from '@astrojs/react';
 import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig({
+  site: process.env.SITE_URL || process.env.APP_URL || 'https://tunetactics.ir',
   output: 'static',
   integrations: [react()],
   server: {

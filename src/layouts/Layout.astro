@@ -11,6 +11,83 @@ const {
   title = SITE_CONTENT.meta.title,
   description = SITE_CONTENT.meta.description,
 } = Astro.props;
+
+const rawSiteOrigin =
+  process.env.SITE_URL ||
+  process.env.APP_URL ||
+  (Astro.site ? Astro.site.toString() : SITE_CONTENT.meta.defaultSiteUrl);
+
+const siteOrigin = rawSiteOrigin.replace(/\/+$/, '');
+const pathname = Astro.url?.pathname || '/';
+const canonicalUrl = `${siteOrigin}${pathname === '/' ? '/' : pathname}`;
+const ogImageUrl = `${siteOrigin}${SITE_CONTENT.meta.ogImagePath}`;
+
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Organization',
+      '@id': `${siteOrigin}/#organization`,
+      name: SITE_CONTENT.meta.siteName,
+      url: `${siteOrigin}/`,
+      email: SITE_CONTENT.footer.email,
+      logo: {
+        '@type': 'ImageObject',
+        url: `${siteOrigin}/favicon.svg`,
+      },
+      contactPoint: {
+        '@type': 'ContactPoint',
+        email: SITE_CONTENT.footer.email,
+        contactType: 'customer support',
+        availableLanguage: ['English'],
+      },
+    },
+    {
+      '@type': 'WebSite',
+      '@id': `${siteOrigin}/#website`,
+      url: `${siteOrigin}/`,
+      name: SITE_CONTENT.meta.siteName,
+      description,
+      inLanguage: SITE_CONTENT.lang,
+      publisher: {
+        '@id': `${siteOrigin}/#organization`,
+      },
+    },
+    {
+      '@type': 'WebApplication',
+      '@id': `${siteOrigin}/#webapp`,
+      name: SITE_CONTENT.meta.siteName,
+      url: `${siteOrigin}/`,
+      applicationCategory: 'MultimediaApplication',
+      operatingSystem: 'All',
+      browserRequirements: 'Requires JavaScript and WebGL-capable browser',
+      description,
+      image: ogImageUrl,
+      offers: {
+        '@type': 'Offer',
+        price: '0',
+        priceCurrency: 'USD',
+        availability: 'https://schema.org/PreOrder',
+        description: 'Core collaboration features free forever; founding members receive Pro free for life.',
+      },
+      publisher: {
+        '@id': `${siteOrigin}/#organization`,
+      },
+    },
+    {
+      '@type': 'FAQPage',
+      '@id': `${siteOrigin}/#faq`,
+      mainEntity: SITE_CONTENT.faq.items.map((item) => ({
+        '@type': 'Question',
+        name: item.question,
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: item.answer,
+        },
+      })),
+    },
+  ],
+};
 ---
 
 <!doctype html>
@@ -20,19 +97,51 @@ const {
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{title}</title>
     <meta name="description" content={description} />
+    <meta name="keywords" content={SITE_CONTENT.meta.keywords} />
+    <meta name="author" content={SITE_CONTENT.meta.siteName} />
+    <meta
+      name="robots"
+      content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
+    />
+    <meta name="theme-color" content="#09090B" />
+    <meta name="color-scheme" content="dark" />
+
+    <!-- Canonical & Icons -->
+    <link rel="canonical" href={canonicalUrl} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/og-cover.jpg" />
+
+    <!-- OpenGraph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content={SITE_CONTENT.meta.locale} />
+    <meta property="og:site_name" content={SITE_CONTENT.meta.siteName} />
+    <meta property="og:url" content={canonicalUrl} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:type" content="website" />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:image:secure_url" content={ogImageUrl} />
+    <meta property="og:image:type" content="image/jpeg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="675" />
+    <meta property="og:image:alt" content={SITE_CONTENT.meta.ogImageAlt} />
+
+    <!-- Twitter / X Card -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
-    <meta name="theme-color" content="#09090B" />
+    <meta name="twitter:image" content={ogImageUrl} />
+    <meta name="twitter:image:alt" content={SITE_CONTENT.meta.ogImageAlt} />
+
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap"
       rel="stylesheet"
     />
+
+    <!-- Schema.org Structured Data (JSON-LD) -->
+    <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
   </head>
   <body class="bg-[#09090B] text-zinc-100 antialiased selection:bg-[#C8FF00] selection:text-zinc-950">
     <slot />

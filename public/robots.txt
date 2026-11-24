@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /waitlist_data/
+
+Sitemap: https://tunetactics.ir/sitemap.xml
