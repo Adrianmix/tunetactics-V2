@@ -602,11 +602,12 @@ function sendViaSmtpAttempt(
         'Subject: ' . $encodedSubject,
         'MIME-Version: 1.0',
         'Content-Type: text/html; charset=UTF-8',
-        'Content-Transfer-Encoding: base64',
+        'Content-Transfer-Encoding: 7bit',
     ];
 
-    $body = chunk_split(base64_encode($htmlBody));
-    $message = implode("\r\n", $headers) . "\r\n\r\n" . $body . "\r\n.";
+    $body = prepareSafeHtmlBody($htmlBody, "\r\n");
+    $dotStuffedBody = preg_replace('/^\./m', '..', $body);
+    $message = implode("\r\n", $headers) . "\r\n\r\n" . (is_string($dotStuffedBody) ? $dotStuffedBody : $body) . "\r\n.";
     @fwrite($socket, $message . "\r\n");
     [$dataCode, $dataResp] = smtpReadResponse($socket);
     smtpCommand($socket, 'QUIT', [221, 250], $lastResp);
@@ -618,6 +619,26 @@ function sendViaSmtpAttempt(
     }
 
     return true;
+}
+
+function prepareSafeHtmlBody(string $html, string $lineEnding = "\r\n"): string {
+    $asciiHtml = preg_replace_callback('/[\xC2-\xF4][\x80-\xBF]+/', static function (array $m): string {
+        $bytes = $m[0];
+        $len = strlen($bytes);
+        $cp = 0;
+        if ($len === 2) {
+            $cp = ((ord($bytes[0]) & 0x1F) << 6) | (ord($bytes[1]) & 0x3F);
+        } elseif ($len === 3) {
+            $cp = ((ord($bytes[0]) & 0x0F) << 12) | ((ord($bytes[1]) & 0x3F) << 6) | (ord($bytes[2]) & 0x3F);
+        } elseif ($len === 4) {
+            $cp = ((ord($bytes[0]) & 0x07) << 18) | ((ord($bytes[1]) & 0x3F) << 12) | ((ord($bytes[2]) & 0x3F) << 6) | (ord($bytes[3]) & 0x3F);
+        }
+        return $cp > 0 ? '&#' . $cp . ';' : '';
+    }, $html);
+
+    $cleaned = preg_replace('/[\x80-\xFF]/', '', is_string($asciiHtml) ? $asciiHtml : $html);
+    $normalized = str_replace(["\r\n", "\r", "\n"], $lineEnding, is_string($cleaned) ? $cleaned : $html);
+    return $normalized;
 }
 
 function sendViaSmtp(string $to, string $subject, string $htmlBody, string $replyTo): bool {
@@ -669,17 +690,17 @@ function sendEmail(string $to, string $subject, string $htmlBody, string $replyT
     $headers = implode("\n", [
         'MIME-Version: 1.0',
         'Content-Type: text/html; charset=UTF-8',
-        'Content-Transfer-Encoding: base64',
+        'Content-Transfer-Encoding: 7bit',
         'Message-ID: <' . $randomId . '@' . $messageIdDomain . '>',
         'From: ' . MAIL_FROM_NAME . ' <' . MAIL_FROM_ADDRESS . '>',
         'Reply-To: ' . $replyTo,
         'X-Mailer: TuneTactics/1.0',
     ]);
-    $encodedBody = chunk_split(base64_encode($htmlBody), 76, "\n");
+    $safeBody = prepareSafeHtmlBody($htmlBody, "\n");
 
-    $sent = @mail($to, $encodedSubject, $encodedBody, $headers, '-f' . MAIL_FROM_ADDRESS);
+    $sent = @mail($to, $encodedSubject, $safeBody, $headers, '-f' . MAIL_FROM_ADDRESS);
     if (!$sent) {
-        $sent = @mail($to, $encodedSubject, $encodedBody, $headers);
+        $sent = @mail($to, $encodedSubject, $safeBody, $headers);
     }
     if (!$sent) {
         logMailDebug("PHP mail() fallback failed for {$to}.");
