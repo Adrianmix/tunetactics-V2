@@ -30,25 +30,48 @@ const SMTP_PASSWORD     = 'CHANGE_ME_CPANEL_EMAIL_PASSWORD';
 // Rate limiting & storage
 const RATE_LIMIT_WINDOW_SECONDS = 300; // 5 minutes
 const RATE_LIMIT_MAX_ATTEMPTS   = 8;
-const DATA_DIR                  = __DIR__ . '/../../waitlist_data';
-const SUBSCRIBERS_JSON          = DATA_DIR . '/subscribers.json';
-const SUBSCRIBERS_CSV           = DATA_DIR . '/subscribers.csv';
-const RATE_LIMIT_JSON           = DATA_DIR . '/rate_limits.json';
+
+function resolveDataDir(): string {
+    $parentAboveWebRoot = dirname(__DIR__, 2);
+    $aboveWebRoot = $parentAboveWebRoot . '/waitlist_data';
+    if ((@is_dir($aboveWebRoot) && @is_writable($aboveWebRoot)) || @is_writable($parentAboveWebRoot)) {
+        return $aboveWebRoot;
+    }
+    return dirname(__DIR__) . '/waitlist_data';
+}
+
+define('DATA_DIR', resolveDataDir());
+define('SUBSCRIBERS_JSON', DATA_DIR . '/subscribers.json');
+define('SUBSCRIBERS_CSV', DATA_DIR . '/subscribers.csv');
+define('RATE_LIMIT_JSON', DATA_DIR . '/rate_limits.json');
+define('MAIL_DEBUG_LOG', DATA_DIR . '/mail_debug.log');
 
 // ============================================================================
 // 2. HELPERS
 // ============================================================================
-function jsonResponse(int $httpCode, string $status, string $message): never {
+function jsonResponse(int $httpCode, string $status, string $message, array $extra = []): void {
     http_response_code($httpCode);
-    echo json_encode([
+    echo json_encode(array_merge([
         'status'  => $status,
         'message' => $message,
-    ], JSON_UNESCAPED_UNICODE);
+    ], $extra), JSON_UNESCAPED_UNICODE);
     exit;
 }
 
 function escapeHtml(string $value): string {
     return htmlspecialchars($value, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+}
+
+function truncateText(string $value, int $maxLength): string {
+    if (function_exists('mb_substr')) {
+        return mb_substr($value, 0, $maxLength, 'UTF-8');
+    }
+    return substr($value, 0, $maxLength);
+}
+
+function logMailDebug(string $message): void {
+    $line = '[' . gmdate('Y-m-d H:i:s') . ' UTC] ' . $message . "\n";
+    @file_put_contents(MAIL_DEBUG_LOG, $line, FILE_APPEND | LOCK_EX);
 }
 
 function ensureDataDirectory(): void {
@@ -166,10 +189,10 @@ if (!in_array($lookingFor, $allowedGoals, true)) {
     jsonResponse(400, 'error', 'Something went wrong. Try again?');
 }
 
-$referrer = mb_substr(trim((string)($payload['referrer'] ?? '')), 0, 500);
-$utmSource = mb_substr(trim((string)($payload['utm_source'] ?? '')), 0, 120);
-$utmMedium = mb_substr(trim((string)($payload['utm_medium'] ?? '')), 0, 120);
-$utmCampaign = mb_substr(trim((string)($payload['utm_campaign'] ?? '')), 0, 120);
+$referrer = truncateText(trim((string)($payload['referrer'] ?? '')), 500);
+$utmSource = truncateText(trim((string)($payload['utm_source'] ?? '')), 120);
+$utmMedium = truncateText(trim((string)($payload['utm_medium'] ?? '')), 120);
+$utmCampaign = truncateText(trim((string)($payload['utm_campaign'] ?? '')), 120);
 $timestampUtc = gmdate('Y-m-d H:i:s') . ' UTC';
 
 // ============================================================================
@@ -405,92 +428,150 @@ HTML;
 // ============================================================================
 function smtpReadResponse($socket): array {
     $response = '';
-    while (($line = fgets($socket, 515)) !== false) {
+    while (($line = @fgets($socket, 515)) !== false) {
         $response .= $line;
         if (isset($line[3]) && $line[3] === ' ') {
             break;
         }
     }
     $code = (int)substr($response, 0, 3);
-    return [$code, $response];
+    return [$code, trim($response)];
 }
 
-function smtpCommand($socket, string $cmd, array $expectedCodes): bool {
-    fwrite($socket, $cmd . "\r\n");
-    [$code] = smtpReadResponse($socket);
+function smtpCommand($socket, string $cmd, array $expectedCodes, ?string &$lastResponse = null): bool {
+    @fwrite($socket, $cmd . "\r\n");
+    [$code, $resp] = smtpReadResponse($socket);
+    $lastResponse = $resp !== '' ? $resp : ('Empty response (code ' . $code . ')');
     return in_array($code, $expectedCodes, true);
 }
 
-function sendViaSmtp(string $to, string $subject, string $htmlBody, string $replyTo): bool {
-    $transportHost = SMTP_ENCRYPTION === 'ssl' ? 'ssl://' . SMTP_HOST : SMTP_HOST;
+function sanitizeServerHostname(): string {
+    $rawHost = (string)($_SERVER['SERVER_NAME'] ?? $_SERVER['HTTP_HOST'] ?? 'tunetactics.ir');
+    $hostOnly = explode(':', $rawHost)[0];
+    $clean = preg_replace('/[^a-zA-Z0-9.\-]/', '', $hostOnly);
+    return ($clean !== null && $clean !== '') ? $clean : 'tunetactics.ir';
+}
+
+function sendViaSmtpAttempt(
+    string $host,
+    int $port,
+    string $encryption,
+    string $to,
+    string $subject,
+    string $htmlBody,
+    string $replyTo,
+    ?string &$errorOut = null
+): bool {
+    $transportHost = $encryption === 'ssl' ? 'ssl://' . $host : $host;
+    $context = stream_context_create([
+        'ssl' => [
+            'verify_peer'       => false,
+            'verify_peer_name'  => false,
+            'allow_self_signed' => true,
+        ],
+    ]);
+
+    $errno = 0;
+    $errstr = '';
     $socket = @stream_socket_client(
-        $transportHost . ':' . SMTP_PORT,
+        $transportHost . ':' . $port,
         $errno,
         $errstr,
         10,
-        STREAM_CLIENT_CONNECT
+        STREAM_CLIENT_CONNECT,
+        $context
     );
     if (!$socket) {
+        $errorOut = "Connect {$transportHost}:{$port} failed ({$errno}): {$errstr}";
         return false;
     }
 
     stream_set_timeout($socket, 10);
-    [$code] = smtpReadResponse($socket);
+    [$code, $resp] = smtpReadResponse($socket);
     if ($code !== 220) {
+        $errorOut = "Greeting on {$host}:{$port} returned {$code}: {$resp}";
         fclose($socket);
         return false;
     }
 
-    $serverName = $_SERVER['SERVER_NAME'] ?? 'tunetactics.ir';
-    if (!smtpCommand($socket, 'EHLO ' . $serverName, [250])) {
+    $serverName = sanitizeServerHostname();
+    $lastResp = '';
+    if (!smtpCommand($socket, 'EHLO ' . $serverName, [250], $lastResp)) {
+        $errorOut = "EHLO failed on {$host}:{$port}: {$lastResp}";
         fclose($socket);
         return false;
     }
 
-    if (SMTP_ENCRYPTION === 'tls') {
-        if (!smtpCommand($socket, 'STARTTLS', [220])) {
+    if ($encryption === 'tls') {
+        if (!smtpCommand($socket, 'STARTTLS', [220], $lastResp)) {
+            $errorOut = "STARTTLS failed on {$host}:{$port}: {$lastResp}";
             fclose($socket);
             return false;
         }
-        if (!@stream_socket_enable_crypto($socket, true, STREAM_CRYPTO_METHOD_TLSv1_2_CLIENT)) {
+        $cryptoMethod = defined('STREAM_CRYPTO_METHOD_TLSv1_3_CLIENT')
+            ? (STREAM_CRYPTO_METHOD_TLSv1_2_CLIENT | STREAM_CRYPTO_METHOD_TLSv1_3_CLIENT)
+            : STREAM_CRYPTO_METHOD_TLSv1_2_CLIENT;
+        if (!@stream_socket_enable_crypto($socket, true, $cryptoMethod)) {
+            $errorOut = "TLS negotiation failed on {$host}:{$port}";
             fclose($socket);
             return false;
         }
-        if (!smtpCommand($socket, 'EHLO ' . $serverName, [250])) {
+        if (!smtpCommand($socket, 'EHLO ' . $serverName, [250], $lastResp)) {
+            $errorOut = "Post-TLS EHLO failed on {$host}:{$port}: {$lastResp}";
             fclose($socket);
             return false;
         }
     }
 
-    if (!smtpCommand($socket, 'AUTH LOGIN', [334])) {
-        fclose($socket);
-        return false;
-    }
-    if (!smtpCommand($socket, base64_encode(SMTP_USERNAME), [334])) {
-        fclose($socket);
-        return false;
-    }
-    if (!smtpCommand($socket, base64_encode(SMTP_PASSWORD), [235])) {
-        fclose($socket);
-        return false;
+    // Try AUTH LOGIN first, then fall back to AUTH PLAIN if server prefers it
+    if (smtpCommand($socket, 'AUTH LOGIN', [334], $lastResp)) {
+        if (!smtpCommand($socket, base64_encode(SMTP_USERNAME), [334], $lastResp)) {
+            $errorOut = "AUTH LOGIN username rejected on {$host}:{$port}: {$lastResp}";
+            fclose($socket);
+            return false;
+        }
+        if (!smtpCommand($socket, base64_encode(SMTP_PASSWORD), [235], $lastResp)) {
+            $errorOut = "AUTH LOGIN password rejected on {$host}:{$port}: {$lastResp}";
+            fclose($socket);
+            return false;
+        }
+    } else {
+        $plainToken = base64_encode("\0" . SMTP_USERNAME . "\0" . SMTP_PASSWORD);
+        if (!smtpCommand($socket, 'AUTH PLAIN ' . $plainToken, [235], $lastResp)) {
+            $errorOut = "SMTP AUTH failed on {$host}:{$port}: {$lastResp}";
+            fclose($socket);
+            return false;
+        }
     }
 
-    if (!smtpCommand($socket, 'MAIL FROM:<' . MAIL_FROM_ADDRESS . '>', [250])) {
+    if (!smtpCommand($socket, 'MAIL FROM:<' . MAIL_FROM_ADDRESS . '>', [250], $lastResp)) {
+        $errorOut = "MAIL FROM rejected on {$host}:{$port}: {$lastResp}";
         fclose($socket);
         return false;
     }
-    if (!smtpCommand($socket, 'RCPT TO:<' . $to . '>', [250, 251])) {
+    if (!smtpCommand($socket, 'RCPT TO:<' . $to . '>', [250, 251], $lastResp)) {
+        $errorOut = "RCPT TO ({$to}) rejected on {$host}:{$port}: {$lastResp}";
         fclose($socket);
         return false;
     }
-    if (!smtpCommand($socket, 'DATA', [354])) {
+    if (!smtpCommand($socket, 'DATA', [354], $lastResp)) {
+        $errorOut = "DATA rejected on {$host}:{$port}: {$lastResp}";
         fclose($socket);
         return false;
     }
 
     $encodedSubject = '=?UTF-8?B?' . base64_encode($subject) . '?=';
+    $domainPart = strstr(MAIL_FROM_ADDRESS, '@');
+    $messageIdDomain = $domainPart !== false ? substr($domainPart, 1) : 'tunetactics.ir';
+    try {
+        $randomId = bin2hex(random_bytes(8));
+    } catch (\Throwable $e) {
+        $randomId = uniqid('', true);
+    }
+
     $headers = [
         'Date: ' . date('r'),
+        'Message-ID: <' . $randomId . '@' . $messageIdDomain . '>',
         'From: ' . MAIL_FROM_NAME . ' <' . MAIL_FROM_ADDRESS . '>',
         'To: <' . $to . '>',
         'Reply-To: ' . $replyTo,
@@ -502,12 +583,44 @@ function sendViaSmtp(string $to, string $subject, string $htmlBody, string $repl
 
     $body = chunk_split(base64_encode($htmlBody));
     $message = implode("\r\n", $headers) . "\r\n\r\n" . $body . "\r\n.";
-    fwrite($socket, $message . "\r\n");
-    [$dataCode] = smtpReadResponse($socket);
-    smtpCommand($socket, 'QUIT', [221, 250]);
+    @fwrite($socket, $message . "\r\n");
+    [$dataCode, $dataResp] = smtpReadResponse($socket);
+    smtpCommand($socket, 'QUIT', [221, 250], $lastResp);
     fclose($socket);
 
-    return $dataCode === 250;
+    if ($dataCode !== 250) {
+        $errorOut = "DATA body rejected on {$host}:{$port} ({$dataCode}): {$dataResp}";
+        return false;
+    }
+
+    return true;
+}
+
+function sendViaSmtp(string $to, string $subject, string $htmlBody, string $replyTo): bool {
+    $candidates = [
+        [SMTP_HOST, SMTP_PORT, SMTP_ENCRYPTION],
+    ];
+
+    // cPanel shared hosts with SMTP_BLOCK often block external hostnames and require localhost
+    if (SMTP_HOST !== 'localhost' && SMTP_HOST !== '127.0.0.1') {
+        $candidates[] = ['localhost', 465, 'ssl'];
+        $candidates[] = ['localhost', 587, 'tls'];
+        $candidates[] = ['127.0.0.1', 587, 'tls'];
+    } elseif (SMTP_PORT === 465) {
+        $candidates[] = [SMTP_HOST, 587, 'tls'];
+    } elseif (SMTP_PORT === 587) {
+        $candidates[] = [SMTP_HOST, 465, 'ssl'];
+    }
+
+    foreach ($candidates as [$host, $port, $encryption]) {
+        $err = null;
+        if (sendViaSmtpAttempt($host, (int)$port, (string)$encryption, $to, $subject, $htmlBody, $replyTo, $err)) {
+            return true;
+        }
+        logMailDebug("SMTP attempt failed for {$to} via {$host}:{$port} ({$encryption}) — " . ($err ?? 'unknown error'));
+    }
+
+    return false;
 }
 
 function sendEmail(string $to, string $subject, string $htmlBody, string $replyTo = MAIL_FROM_ADDRESS): bool {
@@ -515,27 +628,50 @@ function sendEmail(string $to, string $subject, string $htmlBody, string $replyT
         if (sendViaSmtp($to, $subject, $htmlBody, $replyTo)) {
             return true;
         }
+    } else {
+        logMailDebug("SMTP skipped for {$to}: SMTP_PASSWORD is still placeholder; trying PHP mail().");
     }
 
-    // Fallback to cPanel local sendmail / PHP mail()
+    // Fallback to cPanel local sendmail / PHP mail() with proper envelope sender (-f)
     $encodedSubject = '=?UTF-8?B?' . base64_encode($subject) . '?=';
-    $headers = implode("\r\n", [
+    $domainPart = strstr(MAIL_FROM_ADDRESS, '@');
+    $messageIdDomain = $domainPart !== false ? substr($domainPart, 1) : 'tunetactics.ir';
+    try {
+        $randomId = bin2hex(random_bytes(8));
+    } catch (\Throwable $e) {
+        $randomId = uniqid('', true);
+    }
+
+    $headers = implode("\n", [
         'MIME-Version: 1.0',
         'Content-Type: text/html; charset=UTF-8',
+        'Content-Transfer-Encoding: base64',
+        'Message-ID: <' . $randomId . '@' . $messageIdDomain . '>',
         'From: ' . MAIL_FROM_NAME . ' <' . MAIL_FROM_ADDRESS . '>',
         'Reply-To: ' . $replyTo,
         'X-Mailer: TuneTactics/1.0',
     ]);
+    $encodedBody = chunk_split(base64_encode($htmlBody), 76, "\n");
 
-    return @mail($to, $encodedSubject, $htmlBody, $headers);
+    $sent = @mail($to, $encodedSubject, $encodedBody, $headers, '-f' . MAIL_FROM_ADDRESS);
+    if (!$sent) {
+        $sent = @mail($to, $encodedSubject, $encodedBody, $headers);
+    }
+    if (!$sent) {
+        logMailDebug("PHP mail() fallback failed for {$to}.");
+    }
+
+    return $sent;
 }
 
 $userSubject = "You're on the TuneTactics waitlist 🎛️";
 $userHtml = buildUserConfirmationEmailHtml($email, $role, $lookingFor);
-sendEmail($email, $userSubject, $userHtml, MAIL_FROM_ADDRESS);
+$userMailSent = sendEmail($email, $userSubject, $userHtml, MAIL_FROM_ADDRESS);
 
 $adminSubject = "New Waitlist Signup: {$role} — {$email}";
 $adminHtml = buildAdminNotificationEmailHtml($newRecord);
-sendEmail(ADMIN_EMAIL, $adminSubject, $adminHtml, $email);
+$adminMailSent = sendEmail(ADMIN_EMAIL, $adminSubject, $adminHtml, $email);
 
-jsonResponse(200, 'success', "You're in. We'll email you when we launch.");
+jsonResponse(200, 'success', "You're in. We'll email you when we launch.", [
+    'mail_dispatched' => $userMailSent && $adminMailSent,
+]);

@@ -7,6 +7,7 @@ import {
 } from '../data/content';
 import {
   buildWaitlistPayload,
+  isStaticPreviewHost,
   parseWaitlistServerOutput,
   recordLocalPreviewWaitlist,
   validateEmail,
@@ -61,12 +62,20 @@ export default function WaitlistForm() {
       );
 
       if (parsed.kind === 'non-php-static') {
-        const previewResult = recordLocalPreviewWaitlist(payload.email);
-        setStatus(previewResult.status);
-        setFeedbackMessage(previewResult.message);
-        if (previewResult.status === 'success') {
-          setEmail('');
+        const hostname =
+          typeof window !== 'undefined' ? window.location.hostname : '';
+        if (isStaticPreviewHost(hostname)) {
+          const previewResult = recordLocalPreviewWaitlist(payload.email);
+          setStatus(previewResult.status);
+          setFeedbackMessage(previewResult.message);
+          if (previewResult.status === 'success') {
+            setEmail('');
+          }
+          return;
         }
+
+        setStatus('error');
+        setFeedbackMessage(SITE_CONTENT.waitlist.feedback.error);
         return;
       }
 

@@ -122,6 +122,17 @@ export function parseWaitlistServerOutput(
 
 const LOCAL_PREVIEW_STORAGE_KEY = 'tunetactics_waitlist_preview_emails';
 
+export function isStaticPreviewHost(hostname: string): boolean {
+  const normalized = hostname.trim().toLowerCase();
+  return (
+    normalized === '' ||
+    normalized === 'localhost' ||
+    normalized === '127.0.0.1' ||
+    normalized === '::1' ||
+    normalized.endsWith('.run.app')
+  );
+}
+
 export function recordLocalPreviewWaitlist(email: string): WaitlistResponse {
   const normalized = normalizeEmail(email);
   try {

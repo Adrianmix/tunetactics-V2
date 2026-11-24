@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import {
   buildWaitlistPayload,
   extractUtmParams,
+  isStaticPreviewHost,
   normalizeEmail,
   parseWaitlistServerOutput,
   validateEmail,
@@ -82,4 +83,12 @@ test('parseWaitlistServerOutput handles PHP JSON responses and static preview PH
     kind: 'json',
     data: { status: 'error', message: 'Something went wrong. Try again?' },
   });
+});
+
+test('isStaticPreviewHost only enables local fallback on local or preview hosts', () => {
+  assert.equal(isStaticPreviewHost('localhost'), true);
+  assert.equal(isStaticPreviewHost('127.0.0.1'), true);
+  assert.equal(isStaticPreviewHost('ais-dev-example.europe-west3.run.app'), true);
+  assert.equal(isStaticPreviewHost('tunetactics.ir'), false);
+  assert.equal(isStaticPreviewHost('www.tunetactics.ir'), false);
 });
