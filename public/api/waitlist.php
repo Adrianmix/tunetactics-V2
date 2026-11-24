@@ -46,6 +46,28 @@ define('SUBSCRIBERS_CSV', DATA_DIR . '/subscribers.csv');
 define('RATE_LIMIT_JSON', DATA_DIR . '/rate_limits.json');
 define('MAIL_DEBUG_LOG', DATA_DIR . '/mail_debug.log');
 
+function getSmtpPassword(): string {
+    if (SMTP_PASSWORD !== '' && SMTP_PASSWORD !== 'CHANGE_ME_CPANEL_EMAIL_PASSWORD') {
+        return SMTP_PASSWORD;
+    }
+
+    $envPass = getenv('TUNETACTICS_SMTP_PASSWORD');
+    if (is_string($envPass) && $envPass !== '') {
+        return $envPass;
+    }
+
+    foreach ([DATA_DIR . '/smtp_config.php', __DIR__ . '/smtp_config.php'] as $configPath) {
+        if (is_file($configPath) && is_readable($configPath)) {
+            $loaded = @include $configPath;
+            if (is_array($loaded) && isset($loaded['smtp_password']) && is_string($loaded['smtp_password']) && $loaded['smtp_password'] !== '') {
+                return $loaded['smtp_password'];
+            }
+        }
+    }
+
+    return '';
+}
+
 // ============================================================================
 // 2. HELPERS
 // ============================================================================
@@ -523,6 +545,8 @@ function sendViaSmtpAttempt(
         }
     }
 
+    $smtpPass = getSmtpPassword();
+
     // Try AUTH LOGIN first, then fall back to AUTH PLAIN if server prefers it
     if (smtpCommand($socket, 'AUTH LOGIN', [334], $lastResp)) {
         if (!smtpCommand($socket, base64_encode(SMTP_USERNAME), [334], $lastResp)) {
@@ -530,13 +554,13 @@ function sendViaSmtpAttempt(
             fclose($socket);
             return false;
         }
-        if (!smtpCommand($socket, base64_encode(SMTP_PASSWORD), [235], $lastResp)) {
+        if (!smtpCommand($socket, base64_encode($smtpPass), [235], $lastResp)) {
             $errorOut = "AUTH LOGIN password rejected on {$host}:{$port}: {$lastResp}";
             fclose($socket);
             return false;
         }
     } else {
-        $plainToken = base64_encode("\0" . SMTP_USERNAME . "\0" . SMTP_PASSWORD);
+        $plainToken = base64_encode("\0" . SMTP_USERNAME . "\0" . $smtpPass);
         if (!smtpCommand($socket, 'AUTH PLAIN ' . $plainToken, [235], $lastResp)) {
             $errorOut = "SMTP AUTH failed on {$host}:{$port}: {$lastResp}";
             fclose($socket);
@@ -624,12 +648,12 @@ function sendViaSmtp(string $to, string $subject, string $htmlBody, string $repl
 }
 
 function sendEmail(string $to, string $subject, string $htmlBody, string $replyTo = MAIL_FROM_ADDRESS): bool {
-    if (SMTP_PASSWORD !== '' && SMTP_PASSWORD !== 'CHANGE_ME_CPANEL_EMAIL_PASSWORD') {
+    if (getSmtpPassword() !== '') {
         if (sendViaSmtp($to, $subject, $htmlBody, $replyTo)) {
             return true;
         }
     } else {
-        logMailDebug("SMTP skipped for {$to}: SMTP_PASSWORD is still placeholder; trying PHP mail().");
+        logMailDebug("SMTP skipped for {$to}: no SMTP password configured; trying PHP mail().");
     }
 
     // Fallback to cPanel local sendmail / PHP mail() with proper envelope sender (-f)
