@@ -17,12 +17,12 @@ import { SITE_CONTENT } from '../data/content';
 
   <div class="relative z-10 min-h-screen flex flex-col">
     <!-- Top Bar Contract: 3 zones (Wordmark — Nav links — 1 Primary CTA) -->
-    <header class="sticky top-0 z-40 bg-[#09090B]/95 border-b border-zinc-800/80">
+    <header class="sticky top-0 z-40 bg-[#001633]/92 backdrop-blur-md border-b border-[#193C70]/80">
       <!-- Scroll Progress Indicator -->
       <div
         data-scroll-progress
         aria-hidden="true"
-        class="absolute top-0 left-0 right-0 h-[2px] bg-[#C8FF00] origin-left"
+        class="absolute top-0 left-0 right-0 h-[2px] bg-[#FF204E] origin-left"
         style="transform: scaleX(0);"
       />
 
@@ -30,8 +30,7 @@ import { SITE_CONTENT } from '../data/content';
         <!-- Zone 1: Brand Wordmark -->
         <a
           href="#"
-          class="inline-flex items-center gap-2.5 text-xl font-bold tracking-tight text-zinc-50 whitespace-nowrap shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8FF00] rounded-full"
-          style="font-family: var(--font-display);"
+          class="font-accent inline-flex items-center gap-2.5 text-xl sm:text-2xl tracking-tight text-[#F4F7FC] whitespace-nowrap shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FF204E] rounded-full"
         >
           <svg
             width="22"
@@ -41,20 +40,20 @@ import { SITE_CONTENT } from '../data/content';
             aria-hidden="true"
             class="shrink-0"
           >
-            <rect x="2" y="7" width="3" height="6" rx="1.5" fill="#C8FF00" />
-            <rect x="7" y="3" width="3" height="14" rx="1.5" fill="#C8FF00" />
-            <rect x="12" y="5" width="3" height="10" rx="1.5" fill="#F4F4F5" />
-            <rect x="17" y="8" width="2" height="4" rx="1" fill="#71717A" />
+            <rect x="2" y="7" width="3" height="6" rx="1.5" fill="#FF204E" />
+            <rect x="7" y="3" width="3" height="14" rx="1.5" fill="#FF204E" />
+            <rect x="12" y="5" width="3" height="10" rx="1.5" fill="#A0153E" />
+            <rect x="17" y="8" width="2" height="4" rx="1" fill="#F4F7FC" />
           </svg>
           <span>{SITE_CONTENT.nav.brand}</span>
         </a>
 
         <!-- Zone 2: Concise Single-Line Nav Links -->
-        <nav aria-label="Primary" class="hidden md:flex items-center gap-8 text-base font-medium text-zinc-300">
+        <nav aria-label="Primary" class="hidden md:flex items-center gap-8 text-base text-[#D6E2F5]">
           {SITE_CONTENT.nav.links.map((link) => (
             <a
               href={link.href}
-              class="tt-nav-link hover:text-zinc-50 whitespace-nowrap shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8FF00] rounded-full"
+              class="tt-nav-link hover:text-white whitespace-nowrap shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FF204E] rounded-full"
             >
               {link.label}
             </a>
@@ -65,7 +64,7 @@ import { SITE_CONTENT } from '../data/content';
         <div class="shrink-0">
           <a
             href={SITE_CONTENT.nav.ctaHref}
-            class="tt-btn inline-flex items-center justify-center px-5 py-2.5 rounded-full bg-[#C8FF00] text-zinc-950 text-sm sm:text-base font-semibold hover:bg-[#D8FF42] whitespace-nowrap shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8FF00]"
+            class="tt-btn inline-flex items-center justify-center px-5 py-2.5 rounded-full bg-[#FF204E] text-white text-sm sm:text-base hover:bg-[#A0153E] whitespace-nowrap shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FF204E]"
           >
             {SITE_CONTENT.nav.ctaLabel}
           </a>
@@ -79,13 +78,13 @@ import { SITE_CONTENT } from '../data/content';
         <div class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
           <div class="lg:col-span-6">
             <h1
-              class="tt-hero-stagger text-5xl sm:text-6xl lg:text-[4rem] font-bold tracking-tight text-zinc-50 leading-[1.05]"
+              class="tt-hero-stagger text-4xl sm:text-5xl lg:text-[3.35rem] text-[#F4F7FC] leading-[1.08]"
               style="--stagger-delay: 0ms;"
             >
               {SITE_CONTENT.hero.headline}
             </h1>
             <p
-              class="tt-hero-stagger mt-6 text-xl sm:text-2xl text-zinc-300 leading-relaxed max-w-xl"
+              class="tt-hero-stagger mt-6 text-xl sm:text-2xl text-[#D6E2F5] leading-relaxed max-w-xl"
               style="--stagger-delay: 90ms;"
             >
               {SITE_CONTENT.hero.subheadline}
@@ -96,11 +95,11 @@ import { SITE_CONTENT } from '../data/content';
             >
               <a
                 href="#waitlist"
-                class="tt-btn inline-flex items-center justify-center h-14 px-8 rounded-full bg-[#C8FF00] text-zinc-950 text-base font-semibold hover:bg-[#D8FF42] whitespace-nowrap shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8FF00] focus-visible:ring-offset-2 focus-visible:ring-offset-[#09090B]"
+                class="tt-btn inline-flex items-center justify-center h-14 px-8 rounded-full bg-[#FF204E] text-white text-base hover:bg-[#A0153E] whitespace-nowrap shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FF204E] focus-visible:ring-offset-2 focus-visible:ring-offset-[#001633]"
               >
                 {SITE_CONTENT.hero.primaryCta}
               </a>
-              <p class="text-base text-zinc-300">
+              <p class="text-base text-[#D6E2F5]">
                 {SITE_CONTENT.hero.trustMicroCopy}
               </p>
             </div>
@@ -118,23 +117,23 @@ import { SITE_CONTENT } from '../data/content';
       </section>
 
       <!-- Problem Section (With Signal-Routing Graphic) -->
-      <section class="py-16 sm:py-24 px-4 sm:px-6 border-t border-zinc-800/80 bg-[#09090B]">
+      <section class="py-16 sm:py-24 px-4 sm:px-6 border-t border-[#193C70]/80 bg-[#001B3E]/70">
         <div class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center" data-reveal>
           <div class="lg:col-span-6">
-            <h2 class="text-3xl sm:text-4xl font-bold tracking-tight text-zinc-50 leading-snug">
+            <h2 class="text-3xl sm:text-4xl text-[#F4F7FC] leading-snug">
               {SITE_CONTENT.problem.heading}
             </h2>
-            <p class="mt-5 text-lg sm:text-xl text-zinc-300 leading-relaxed">
+            <p class="mt-5 text-lg sm:text-xl text-[#D6E2F5] leading-relaxed">
               {SITE_CONTENT.problem.body}
             </p>
 
-            <ul class="mt-8 divide-y divide-zinc-800/80 border-t border-b border-zinc-800/80">
+            <ul class="mt-8 divide-y divide-[#193C70]/85 border-t border-b border-[#193C70]/85">
               {SITE_CONTENT.problem.signals.map((signal) => (
                 <li class="py-4 flex items-center justify-between gap-4">
-                  <span class="text-base font-semibold text-zinc-100">
+                  <span class="font-accent text-lg text-[#F4F7FC]">
                     {signal.label}
                   </span>
-                  <span class="text-sm sm:text-base text-zinc-400 text-right">
+                  <span class="text-sm sm:text-base text-[#9FB4D1] text-right">
                     {signal.detail}
                   </span>
                 </li>
@@ -143,8 +142,8 @@ import { SITE_CONTENT } from '../data/content';
           </div>
 
           <div class="lg:col-span-6">
-            <div class="tt-card-float bg-[#111115] border border-zinc-800/90 rounded-3xl p-6 sm:p-8">
-              <div class="rounded-2xl bg-[#09090B] border border-zinc-800/80 p-5 sm:p-6">
+            <div class="tt-card-float bg-[#00224D] border border-[#1E447A]/90 rounded-3xl p-6 sm:p-8">
+              <div class="rounded-2xl bg-[#00142E] border border-[#193C70]/90 p-5 sm:p-6">
                 <svg
                   viewBox="0 0 480 280"
                   fill="none"
@@ -155,52 +154,52 @@ import { SITE_CONTENT } from '../data/content';
                 >
                   <defs>
                     <linearGradient id="tt-signal-grad" x1="40" y1="210" x2="440" y2="210" gradientUnits="userSpaceOnUse">
-                      <stop offset="0%" stop-color="#C8FF00" stop-opacity="0.25" />
-                      <stop offset="50%" stop-color="#C8FF00" stop-opacity="0.95" />
-                      <stop offset="100%" stop-color="#C8FF00" stop-opacity="0.4" />
+                      <stop offset="0%" stop-color="#5D0E41" stop-opacity="0.5" />
+                      <stop offset="50%" stop-color="#FF204E" stop-opacity="1" />
+                      <stop offset="100%" stop-color="#A0153E" stop-opacity="0.6" />
                     </linearGradient>
                   </defs>
 
                   <!-- Top Half: Scattered Social Inbox Noise -->
-                  <rect x="20" y="20" width="440" height="106" rx="16" fill="#111115" stroke="#27272A" />
-                  <text x="38" y="46" fill="#A1A1AA" font-size="12" font-family="Inter, sans-serif" font-weight="600">
+                  <rect x="20" y="20" width="440" height="106" rx="16" fill="#001B3E" stroke="#193C70" />
+                  <text x="38" y="46" fill="#9FB4D1" font-size="12" font-family="Text Me One, sans-serif">
                     SOCIAL INBOX &amp; SCATTERED LINKS
                   </text>
 
                   <!-- Disconnected Dashed Nodes -->
-                  <rect x="38" y="64" width="110" height="44" rx="10" fill="#18181D" stroke="#3F3F46" />
-                  <circle cx="56" cy="86" r="7" fill="#3F3F46" />
-                  <rect x="70" y="79" width="60" height="5" rx="2.5" fill="#52525B" />
-                  <rect x="70" y="89" width="42" height="4" rx="2" fill="#3F3F46" />
+                  <rect x="38" y="64" width="110" height="44" rx="10" fill="#00224D" stroke="#28508A" />
+                  <circle cx="56" cy="86" r="7" fill="#28508A" />
+                  <rect x="70" y="79" width="60" height="5" rx="2.5" fill="#5E7FA8" />
+                  <rect x="70" y="89" width="42" height="4" rx="2" fill="#28508A" />
 
-                  <path d="M154 86 C176 68, 184 106, 206 82" stroke="#52525B" stroke-width="1.5" stroke-dasharray="4 4" />
-                  <circle cx="180" cy="86" r="10" fill="#18181D" stroke="#52525B" />
-                  <path d="M176 82 L184 90 M184 82 L176 90" stroke="#EF4444" stroke-width="1.6" stroke-linecap="round" />
+                  <path d="M154 86 C176 68, 184 106, 206 82" stroke="#5E7FA8" stroke-width="1.5" stroke-dasharray="4 4" />
+                  <circle cx="180" cy="86" r="10" fill="#00224D" stroke="#A0153E" />
+                  <path d="M176 82 L184 90 M184 82 L176 90" stroke="#FF204E" stroke-width="1.6" stroke-linecap="round" />
 
-                  <rect x="210" y="64" width="110" height="44" rx="10" fill="#18181D" stroke="#3F3F46" />
-                  <rect x="224" y="79" width="76" height="5" rx="2.5" fill="#52525B" />
-                  <rect x="224" y="89" width="54" height="4" rx="2" fill="#3F3F46" />
+                  <rect x="210" y="64" width="110" height="44" rx="10" fill="#00224D" stroke="#28508A" />
+                  <rect x="224" y="79" width="76" height="5" rx="2.5" fill="#5E7FA8" />
+                  <rect x="224" y="89" width="54" height="4" rx="2" fill="#28508A" />
 
-                  <path d="M326 86 L348 86" stroke="#52525B" stroke-width="1.5" stroke-dasharray="4 4" />
-                  <rect x="352" y="64" width="90" height="44" rx="10" fill="#18181D" stroke="#3F3F46" opacity="0.65" />
-                  <rect x="366" y="79" width="52" height="5" rx="2.5" fill="#3F3F46" />
-                  <rect x="366" y="89" width="34" height="4" rx="2" fill="#27272A" />
+                  <path d="M326 86 L348 86" stroke="#5E7FA8" stroke-width="1.5" stroke-dasharray="4 4" />
+                  <rect x="352" y="64" width="90" height="44" rx="10" fill="#00224D" stroke="#28508A" opacity="0.65" />
+                  <rect x="366" y="79" width="52" height="5" rx="2.5" fill="#28508A" />
+                  <rect x="366" y="89" width="34" height="4" rx="2" fill="#193C70" />
 
                   <!-- Bottom Half: Direct Studio Match -->
-                  <rect x="20" y="148" width="440" height="112" rx="18" fill="#111115" stroke="#C8FF00" stroke-opacity="0.45" />
-                  <text x="38" y="174" fill="#C8FF00" font-size="12" font-family="Inter, sans-serif" font-weight="600">
+                  <rect x="20" y="148" width="440" height="112" rx="18" fill="#00224D" stroke="#FF204E" stroke-opacity="0.6" />
+                  <text x="38" y="174" fill="#FF5C7D" font-size="12" font-family="Text Me One, sans-serif">
                     DIRECT AUDIO &amp; INTENT MATCH
                   </text>
 
                   <!-- Producer Node -->
-                  <rect x="38" y="190" width="122" height="52" rx="14" fill="#17171D" stroke="#3F3F46" />
-                  <circle cx="62" cy="216" r="12" fill="#27272A" stroke="#C8FF00" stroke-width="1.5" />
-                  <rect x="82" y="207" width="60" height="6" rx="3" fill="#F4F4F5" />
-                  <rect x="82" y="219" width="44" height="5" rx="2.5" fill="#A1A1AA" />
+                  <rect x="38" y="190" width="122" height="52" rx="14" fill="#001633" stroke="#5D0E41" />
+                  <circle cx="62" cy="216" r="12" fill="#5D0E41" stroke="#FF204E" stroke-width="1.5" />
+                  <rect x="82" y="207" width="60" height="6" rx="3" fill="#F4F7FC" />
+                  <rect x="82" y="219" width="44" height="5" rx="2.5" fill="#9FB4D1" />
 
                   <!-- Acoustic Waveform Bridge -->
                   <path d="M168 216 L312 216" stroke="url(#tt-signal-grad)" stroke-width="2" />
-                  <g fill="#C8FF00">
+                  <g fill="#FF204E">
                     <rect x="188" y="207" width="4" height="18" rx="2" />
                     <rect x="198" y="200" width="4" height="32" rx="2" />
                     <rect x="208" y="194" width="4" height="44" rx="2" />
@@ -215,11 +214,11 @@ import { SITE_CONTENT } from '../data/content';
                   </g>
 
                   <!-- Vocalist Node -->
-                  <rect x="320" y="190" width="122" height="52" rx="14" fill="#17171D" stroke="#C8FF00" stroke-opacity="0.7" />
-                  <circle cx="344" cy="216" r="12" fill="#C8FF00" />
-                  <path d="M339 216 L343 220 L350 212" stroke="#09090B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                  <rect x="364" y="207" width="60" height="6" rx="3" fill="#F4F4F5" />
-                  <rect x="364" y="219" width="48" height="5" rx="2.5" fill="#C8FF00" fill-opacity="0.85" />
+                  <rect x="320" y="190" width="122" height="52" rx="14" fill="#5D0E41" fill-opacity="0.55" stroke="#FF204E" stroke-opacity="0.85" />
+                  <circle cx="344" cy="216" r="12" fill="#FF204E" />
+                  <path d="M339 216 L343 220 L350 212" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                  <rect x="364" y="207" width="60" height="6" rx="3" fill="#F4F7FC" />
+                  <rect x="364" y="219" width="48" height="5" rx="2.5" fill="#FF5C7D" />
                 </svg>
               </div>
             </div>
@@ -228,9 +227,9 @@ import { SITE_CONTENT } from '../data/content';
       </section>
 
       <!-- How It Works Section (Animated 2D Storyboard Cards) -->
-      <section id="how-it-works" class="scroll-mt-20 py-16 sm:py-24 px-4 sm:px-6 border-t border-zinc-800/80">
+      <section id="how-it-works" class="scroll-mt-20 py-16 sm:py-24 px-4 sm:px-6 border-t border-[#193C70]/80">
         <div class="max-w-6xl mx-auto">
-          <h2 class="text-3xl sm:text-4xl font-bold tracking-tight text-zinc-50" data-reveal>
+          <h2 class="text-3xl sm:text-4xl text-[#F4F7FC]" data-reveal>
             {SITE_CONTENT.howItWorks.heading}
           </h2>
 
@@ -239,34 +238,34 @@ import { SITE_CONTENT } from '../data/content';
               <li
                 data-reveal
                 style={`--reveal-delay: ${index * 90}ms; --float-delay: ${index * 0.85}s;`}
-                class="group tt-card-float tt-float-idle bg-[#111115] border border-zinc-800/90 rounded-3xl p-5 sm:p-6 flex flex-col justify-between gap-5"
+                class="group tt-card-float tt-float-idle bg-[#00224D] border border-[#1E447A]/90 rounded-3xl p-5 sm:p-6 flex flex-col justify-between gap-5"
               >
                 <HowItWorksScenes sceneId={step.id} />
 
                 <div class="flex items-start gap-3.5 px-1 pb-1">
-                  <div class="w-9 h-9 rounded-full bg-[#09090B] border border-zinc-800 flex items-center justify-center shrink-0 mt-0.5">
+                  <div class="w-9 h-9 rounded-full bg-[#5D0E41]/60 border border-[#A0153E] flex items-center justify-center shrink-0 mt-0.5">
                     {step.id === 'build' && (
                       <svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true">
-                        <rect x="2" y="8" width="2.5" height="6" rx="1.25" fill="#C8FF00" />
-                        <rect x="6.5" y="4" width="2.5" height="12" rx="1.25" fill="#C8FF00" />
-                        <rect x="11" y="6" width="2.5" height="8" rx="1.25" fill="#F4F4F5" />
-                        <rect x="15.5" y="9" width="2.5" height="4" rx="1.25" fill="#71717A" />
+                        <rect x="2" y="8" width="2.5" height="6" rx="1.25" fill="#FF204E" />
+                        <rect x="6.5" y="4" width="2.5" height="12" rx="1.25" fill="#FF204E" />
+                        <rect x="11" y="6" width="2.5" height="8" rx="1.25" fill="#F4F7FC" />
+                        <rect x="15.5" y="9" width="2.5" height="4" rx="1.25" fill="#9FB4D1" />
                       </svg>
                     )}
                     {step.id === 'discover' && (
                       <svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true">
-                        <circle cx="9" cy="9" r="5.5" stroke="#C8FF00" stroke-width="1.8" />
-                        <path d="M13.2 13.2L17 17" stroke="#F4F4F5" stroke-width="1.8" stroke-linecap="round" />
+                        <circle cx="9" cy="9" r="5.5" stroke="#FF204E" stroke-width="1.8" />
+                        <path d="M13.2 13.2L17 17" stroke="#F4F7FC" stroke-width="1.8" stroke-linecap="round" />
                       </svg>
                     )}
                     {step.id === 'collaborate' && (
                       <svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true">
-                        <circle cx="6.5" cy="10" r="3.5" stroke="#C8FF00" stroke-width="1.8" />
-                        <circle cx="13.5" cy="10" r="3.5" stroke="#F4F4F5" stroke-width="1.8" />
+                        <circle cx="6.5" cy="10" r="3.5" stroke="#FF204E" stroke-width="1.8" />
+                        <circle cx="13.5" cy="10" r="3.5" stroke="#F4F7FC" stroke-width="1.8" />
                       </svg>
                     )}
                   </div>
-                  <p class="text-lg text-zinc-200 leading-relaxed">
+                  <p class="text-lg text-[#E2ECFA] leading-relaxed">
                     {step.description}
                   </p>
                 </div>
@@ -277,13 +276,13 @@ import { SITE_CONTENT } from '../data/content';
       </section>
 
       <!-- Interactive Portfolio & Reels Mockup Preview -->
-      <section id="preview" class="scroll-mt-20 py-16 sm:py-24 px-4 sm:px-6 border-t border-zinc-800/80 bg-[#09090B]">
+      <section id="preview" class="scroll-mt-20 py-16 sm:py-24 px-4 sm:px-6 border-t border-[#193C70]/80 bg-[#001B3E]/70">
         <div class="max-w-6xl mx-auto" data-reveal>
           <div class="max-w-2xl mb-10">
-            <h2 class="text-3xl sm:text-4xl font-bold tracking-tight text-zinc-50">
+            <h2 class="text-3xl sm:text-4xl text-[#F4F7FC]">
               {SITE_CONTENT.preview.heading}
             </h2>
-            <p class="mt-3 text-lg text-zinc-300 leading-relaxed">
+            <p class="mt-3 text-lg text-[#D6E2F5] leading-relaxed">
               {SITE_CONTENT.preview.subheading}
             </p>
           </div>
@@ -293,9 +292,9 @@ import { SITE_CONTENT } from '../data/content';
       </section>
 
       <!-- Features Grid (4 Floating Cards) -->
-      <section id="features" class="scroll-mt-20 py-16 sm:py-24 px-4 sm:px-6 border-t border-zinc-800/80">
+      <section id="features" class="scroll-mt-20 py-16 sm:py-24 px-4 sm:px-6 border-t border-[#193C70]/80">
         <div class="max-w-6xl mx-auto">
-          <h2 class="text-3xl sm:text-4xl font-bold tracking-tight text-zinc-50 max-w-2xl" data-reveal>
+          <h2 class="text-3xl sm:text-4xl text-[#F4F7FC] max-w-2xl" data-reveal>
             {SITE_CONTENT.features.heading}
           </h2>
 
@@ -304,24 +303,24 @@ import { SITE_CONTENT } from '../data/content';
               <article
                 data-reveal
                 style={`--reveal-delay: ${index * 80}ms; --float-delay: ${index * 0.7}s;`}
-                class="tt-card-float tt-float-idle bg-[#111115] border border-zinc-800/90 rounded-3xl p-6 sm:p-8 flex flex-col justify-between"
+                class="tt-card-float tt-float-idle bg-[#00224D] border border-[#1E447A]/90 rounded-3xl p-6 sm:p-8 flex flex-col justify-between"
               >
                 <div>
                   <FeatureArtwork featureId={feature.id} />
 
                   <div class="flex items-baseline justify-between gap-4">
-                    <h3 class="text-2xl font-semibold text-zinc-50 tracking-tight">
+                    <h3 class="text-2xl sm:text-[1.7rem] text-[#F4F7FC]">
                       {feature.title}
                     </h3>
-                    <span class="text-sm font-mono text-zinc-500 tabular-nums shrink-0">
+                    <span class="font-accent text-xl text-[#FF5C7D] tabular-nums shrink-0">
                       0{index + 1}
                     </span>
                   </div>
-                  <p class="mt-3.5 text-base sm:text-lg text-zinc-300 leading-relaxed">
+                  <p class="mt-3.5 text-base sm:text-lg text-[#D6E2F5] leading-relaxed">
                     {feature.description}
                   </p>
                 </div>
-                <p class="mt-6 pt-4 border-t border-zinc-800/70 text-sm text-zinc-400">
+                <p class="mt-6 pt-4 border-t border-[#193C70]/80 text-sm text-[#9FB4D1]">
                   {feature.metaLabel}
                 </p>
               </article>
@@ -331,21 +330,21 @@ import { SITE_CONTENT } from '../data/content';
       </section>
 
       <!-- Waitlist Conversion Form + Founding Pass Graphic -->
-      <section id="waitlist" class="scroll-mt-20 py-16 sm:py-24 px-4 sm:px-6 border-t border-zinc-800/80 bg-[#09090B]">
+      <section id="waitlist" class="scroll-mt-20 py-16 sm:py-24 px-4 sm:px-6 border-t border-[#193C70]/80 bg-[#001B3E]/70">
         <div class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-7 items-stretch" data-reveal>
           <!-- Left Visual Founding Member Pass Card -->
           <div class="lg:col-span-5">
-            <div class="tt-card-float h-full bg-[#111115] border border-zinc-800/90 rounded-3xl p-6 sm:p-8 flex flex-col justify-between gap-6">
+            <div class="tt-card-float h-full bg-[#00224D] border border-[#1E447A]/90 rounded-3xl p-6 sm:p-8 flex flex-col justify-between gap-6">
               <div>
-                <div class="relative aspect-[4/3] w-full rounded-2xl overflow-hidden bg-[#09090B] border border-zinc-800/80">
+                <div class="relative aspect-[4/3] w-full rounded-2xl overflow-hidden bg-[#00142E] border border-[#5D0E41]/90">
                   <!-- SVG fallback canvas behind pass graphic -->
                   <div
-                    class="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-zinc-900 to-zinc-950"
+                    class="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-[#5D0E41] via-[#00224D] to-[#00142E]"
                     aria-hidden="true"
                   >
                     <svg width="64" height="64" viewBox="0 0 64 64" fill="none">
-                      <circle cx="32" cy="32" r="24" stroke="#C8FF00" stroke-opacity="0.4" stroke-width="2" />
-                      <circle cx="32" cy="32" r="14" stroke="#3F3F46" stroke-width="1.5" />
+                      <circle cx="32" cy="32" r="24" stroke="#FF204E" stroke-opacity="0.55" stroke-width="2" />
+                      <circle cx="32" cy="32" r="14" stroke="#A0153E" stroke-width="1.5" />
                     </svg>
                   </div>
 
@@ -354,20 +353,20 @@ import { SITE_CONTENT } from '../data/content';
                     alt="TuneTactics metallic studio access pass with acoustic waveform engraving"
                     loading="lazy"
                     referrerpolicy="no-referrer"
-                    class="relative z-10 w-full h-full object-cover"
+                    class="relative z-10 w-full h-full object-cover mix-blend-luminosity opacity-80"
                   />
 
                   <div
-                    class="absolute inset-0 z-20 bg-gradient-to-t from-[#09090B]/90 via-transparent to-transparent"
+                    class="absolute inset-0 z-20 bg-gradient-to-t from-[#00122A] via-[#001633]/85 via-50% to-transparent"
                     aria-hidden="true"
                   />
 
-                  <div class="absolute bottom-4 left-4 right-4 z-30 flex items-end justify-between gap-3">
+                  <div class="absolute bottom-4 left-4 right-4 z-30 flex items-end justify-between gap-3 drop-shadow-[0_2px_10px_rgba(0,10,28,0.95)]">
                     <div>
-                      <p class="text-lg font-bold text-zinc-50" style="font-family: var(--font-display);">
+                      <p class="font-accent text-[1.35rem] leading-tight text-white">
                         {SITE_CONTENT.waitlist.passTitle}
                       </p>
-                      <p class="text-sm text-zinc-300">
+                      <p class="mt-0.5 text-sm text-[#E2ECFA]">
                         {SITE_CONTENT.waitlist.passSubtitle}
                       </p>
                     </div>
@@ -379,16 +378,16 @@ import { SITE_CONTENT } from '../data/content';
                       aria-hidden="true"
                       class="shrink-0"
                     >
-                      <circle cx="17" cy="17" r="15.5" fill="#09090B" fill-opacity="0.85" stroke="#C8FF00" />
-                      <rect x="9" y="14" width="2.5" height="6" rx="1.25" fill="#C8FF00" />
-                      <rect x="13.5" y="10" width="2.5" height="14" rx="1.25" fill="#C8FF00" />
-                      <rect x="18" y="12" width="2.5" height="10" rx="1.25" fill="#F4F4F5" />
-                      <rect x="22.5" y="15" width="2.5" height="4" rx="1.25" fill="#A1A1AA" />
+                      <circle cx="17" cy="17" r="15.5" fill="#001633" fill-opacity="0.9" stroke="#FF204E" />
+                      <rect x="9" y="14" width="2.5" height="6" rx="1.25" fill="#FF204E" />
+                      <rect x="13.5" y="10" width="2.5" height="14" rx="1.25" fill="#FF204E" />
+                      <rect x="18" y="12" width="2.5" height="10" rx="1.25" fill="#F4F7FC" />
+                      <rect x="22.5" y="15" width="2.5" height="4" rx="1.25" fill="#A0153E" />
                     </svg>
                   </div>
                 </div>
 
-                <ul class="mt-6 divide-y divide-zinc-800/80">
+                <ul class="mt-6 divide-y divide-[#193C70]/85">
                   {SITE_CONTENT.waitlist.perks.map((perk) => (
                     <li class="py-4 first:pt-1 last:pb-0 flex items-start gap-3.5">
                       <svg
@@ -399,20 +398,20 @@ import { SITE_CONTENT } from '../data/content';
                         aria-hidden="true"
                         class="shrink-0 mt-0.5"
                       >
-                        <circle cx="10" cy="10" r="9" fill="#C8FF00" fill-opacity="0.14" stroke="#C8FF00" stroke-opacity="0.6" />
+                        <circle cx="10" cy="10" r="9" fill="#FF204E" fill-opacity="0.18" stroke="#FF204E" stroke-opacity="0.75" />
                         <path
                           d="M6.5 10.2L8.8 12.5L13.5 7.5"
-                          stroke="#C8FF00"
+                          stroke="#FF5C7D"
                           stroke-width="1.8"
                           stroke-linecap="round"
                           stroke-linejoin="round"
                         />
                       </svg>
                       <div>
-                        <p class="text-base font-semibold text-zinc-100">
+                        <p class="text-base text-[#F4F7FC]">
                           {perk.title}
                         </p>
-                        <p class="mt-0.5 text-sm text-zinc-400 leading-relaxed">
+                        <p class="mt-0.5 text-sm text-[#9FB4D1] leading-relaxed">
                           {perk.detail}
                         </p>
                       </div>
@@ -431,9 +430,9 @@ import { SITE_CONTENT } from '../data/content';
       </section>
 
       <!-- FAQ Accordion -->
-      <section id="faq" class="scroll-mt-20 py-16 sm:py-24 px-4 sm:px-6 border-t border-zinc-800/80">
+      <section id="faq" class="scroll-mt-20 py-16 sm:py-24 px-4 sm:px-6 border-t border-[#193C70]/80">
         <div class="max-w-3xl mx-auto" data-reveal>
-          <h2 class="text-3xl sm:text-4xl font-bold tracking-tight text-zinc-50 mb-8">
+          <h2 class="text-3xl sm:text-4xl text-[#F4F7FC] mb-8">
             {SITE_CONTENT.faq.heading}
           </h2>
           <FaqAccordion client:load />
@@ -441,23 +440,23 @@ import { SITE_CONTENT } from '../data/content';
       </section>
 
       <!-- Final CTA Banner -->
-      <section class="py-16 sm:py-24 px-4 sm:px-6 border-t border-zinc-800/80 bg-[#09090B]">
+      <section class="py-16 sm:py-24 px-4 sm:px-6 border-t border-[#193C70]/80 bg-[#001B3E]/70">
         <div
-          class="tt-card-float max-w-6xl mx-auto bg-[#111115] border border-zinc-800/90 rounded-3xl p-8 sm:p-12 flex flex-col md:flex-row md:items-center md:justify-between gap-8"
+          class="tt-card-float max-w-6xl mx-auto bg-gradient-to-br from-[#5D0E41]/80 via-[#00224D] to-[#00224D] border border-[#A0153E]/70 rounded-3xl p-8 sm:p-12 flex flex-col md:flex-row md:items-center md:justify-between gap-8"
           data-reveal
         >
           <div>
-            <h2 class="text-3xl sm:text-5xl font-bold tracking-tight text-zinc-50">
+            <h2 class="text-3xl sm:text-4xl lg:text-[2.75rem] text-[#F4F7FC] leading-tight">
               {SITE_CONTENT.finalCta.heading}
             </h2>
-            <p class="mt-3 text-lg text-zinc-300">
+            <p class="mt-3 text-lg text-[#D6E2F5]">
               {SITE_CONTENT.finalCta.subheading}
             </p>
           </div>
           <div class="shrink-0">
             <a
               href="#waitlist"
-              class="tt-btn inline-flex items-center justify-center h-14 px-8 rounded-full bg-[#C8FF00] text-zinc-950 text-base font-semibold hover:bg-[#D8FF42] whitespace-nowrap shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8FF00]"
+              class="tt-btn inline-flex items-center justify-center h-14 px-8 rounded-full bg-[#FF204E] text-white text-base hover:bg-[#A0153E] whitespace-nowrap shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FF204E]"
             >
               {SITE_CONTENT.finalCta.buttonLabel}
             </a>
@@ -467,13 +466,13 @@ import { SITE_CONTENT } from '../data/content';
     </main>
 
     <!-- Footer -->
-    <footer class="border-t border-zinc-800/80 bg-[#09090B] py-10 px-4 sm:px-6">
+    <footer class="border-t border-[#193C70]/80 bg-[#00142E] py-10 px-4 sm:px-6">
       <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
         <div>
-          <p class="text-lg font-bold text-zinc-100" style="font-family: var(--font-display);">
+          <p class="font-accent text-xl tracking-tight text-[#F4F7FC]">
             {SITE_CONTENT.nav.brand}
           </p>
-          <p class="mt-1 text-base text-zinc-400">
+          <p class="mt-1 text-base text-[#9FB4D1]">
             {SITE_CONTENT.footer.tagline}
           </p>
         </div>

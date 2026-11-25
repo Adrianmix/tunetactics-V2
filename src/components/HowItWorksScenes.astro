@@ -12,27 +12,27 @@ const eqHeights = [46, 82, 60, 96, 52, 88, 70, 94, 48, 78, 62, 40];
 ---
 
 <div
-  class="relative w-full min-h-[268px] rounded-2xl bg-[#09090B] border border-zinc-800/80 p-4 flex flex-col justify-between overflow-hidden select-none"
+  class="relative w-full min-h-[268px] rounded-2xl bg-[#00142E] border border-[#193C70]/90 p-4 flex flex-col justify-between overflow-hidden select-none"
   aria-hidden="true"
   data-testid={`how-scene-${sceneId}`}
 >
   {sceneId === 'build' && (
     <div class="flex flex-col gap-3 h-full justify-between">
       {/* Mini Profile Header: Avatar + Name + Bio */}
-      <div class="flex items-center gap-3 pb-2.5 border-b border-zinc-800/80">
-        <div class="w-10 h-10 rounded-full bg-[#17171D] border border-[#C8FF00]/60 flex items-center justify-center text-xs font-bold text-[#C8FF00] shrink-0">
+      <div class="flex items-center gap-3 pb-2.5 border-b border-[#193C70]/85">
+        <div class="w-10 h-10 rounded-full bg-[#5D0E41]/75 border border-[#FF204E]/75 flex items-center justify-center font-accent text-sm text-white shrink-0">
           {profile.initials}
         </div>
         <div class="min-w-0 flex-1">
           <div class="flex items-baseline justify-between gap-2">
-            <p class="text-sm font-semibold text-zinc-100 truncate">
+            <p class="text-sm text-[#F4F7FC] truncate">
               {profile.name}
             </p>
-            <span class="text-[11px] font-mono text-zinc-400 truncate">
+            <span class="text-[11px] text-[#9FB4D1] truncate">
               {profile.handle}
             </span>
           </div>
-          <p class="text-xs text-zinc-400 truncate mt-0.5">
+          <p class="text-xs text-[#9FB4D1] truncate mt-0.5">
             {profile.bio}
           </p>
         </div>
@@ -41,31 +41,31 @@ const eqHeights = [46, 82, 60, 96, 52, 88, 70, 94, 48, 78, 62, 40];
       {/* Skills & Tools Rows */}
       <div class="space-y-1.5 text-xs">
         <div class="flex items-baseline gap-2 min-w-0">
-          <span class="text-zinc-500 font-medium shrink-0">Skills</span>
-          <span class="text-zinc-200 truncate">{profile.skills}</span>
+          <span class="text-[#8DA7CB] shrink-0">Skills</span>
+          <span class="text-[#E2ECFA] truncate">{profile.skills}</span>
         </div>
         <div class="flex items-baseline gap-2 min-w-0">
-          <span class="text-zinc-500 font-medium shrink-0">Tools</span>
-          <span class="text-[#C8FF00]/90 truncate">{profile.tools}</span>
+          <span class="text-[#8DA7CB] shrink-0">Tools</span>
+          <span class="text-[#FF5C7D] truncate">{profile.tools}</span>
         </div>
       </div>
 
       {/* Posts & Projects with Animated Waveform */}
       <div class="space-y-2 pt-1">
-        <div class="tt-scene-float rounded-xl bg-[#131318] border border-zinc-800/90 px-3 py-2.5">
+        <div class="tt-scene-float rounded-xl bg-[#00224D] border border-[#5D0E41]/90 px-3 py-2.5">
           <div class="flex items-center justify-between gap-2">
             <div class="min-w-0">
-              <p class="text-xs font-semibold text-zinc-100 truncate">
+              <p class="text-xs text-[#F4F7FC] truncate">
                 {profile.projects[0].title}
               </p>
-              <p class="text-[11px] text-zinc-400 truncate">
+              <p class="text-[11px] text-[#9FB4D1] truncate">
                 {profile.projects[0].meta}
               </p>
             </div>
             <div class="flex items-end gap-[3px] h-5 shrink-0">
               {eqHeights.slice(0, 8).map((height, idx) => (
                 <span
-                  class="tt-eq-bar w-[2.5px] rounded-full bg-[#C8FF00]"
+                  class="tt-eq-bar w-[2.5px] rounded-full bg-[#FF204E]"
                   style={`height: ${Math.round((height / 100) * 18)}px; --eq-delay: ${idx * 110}ms;`}
                 />
               ))}
@@ -73,18 +73,18 @@ const eqHeights = [46, 82, 60, 96, 52, 88, 70, 94, 48, 78, 62, 40];
           </div>
         </div>
 
-        <div class="rounded-xl bg-[#111115] border border-zinc-800/70 px-3 py-2 flex items-center justify-between gap-2">
+        <div class="rounded-xl bg-[#001B3E] border border-[#193C70]/85 px-3 py-2 flex items-center justify-between gap-2">
           <div class="min-w-0">
-            <p class="text-xs font-medium text-zinc-200 truncate">
+            <p class="text-xs text-[#E2ECFA] truncate">
               {profile.projects[1].title}
             </p>
-            <p class="text-[11px] text-zinc-400 truncate">
+            <p class="text-[11px] text-[#9FB4D1] truncate">
               {profile.projects[1].meta}
             </p>
           </div>
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" class="shrink-0 text-zinc-400">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" class="shrink-0 text-[#9FB4D1]">
             <rect x="2" y="3" width="12" height="10" rx="2.5" stroke="currentColor" stroke-width="1.3" />
-            <path d="M6.8 6L10.2 8L6.8 10V6Z" fill="#C8FF00" />
+            <path d="M6.8 6L10.2 8L6.8 10V6Z" fill="#FF204E" />
           </svg>
         </div>
       </div>
@@ -94,12 +94,12 @@ const eqHeights = [46, 82, 60, 96, 52, 88, 70, 94, 48, 78, 62, 40];
   {sceneId === 'discover' && (
     <div class="flex flex-col gap-3 h-full justify-between">
       {/* Mini Community Hub Filter Sweep */}
-      <div class="relative grid grid-cols-3 rounded-full bg-[#131318] border border-zinc-800/90 p-1">
+      <div class="relative grid grid-cols-3 rounded-full bg-[#00224D] border border-[#5D0E41]/90 p-1">
         <div
-          class="tt-filter-indicator absolute top-1 bottom-1 left-1 w-[calc(33.333%-4px)] rounded-full bg-[#C8FF00]/15 border border-[#C8FF00]/50"
+          class="tt-filter-indicator absolute top-1 bottom-1 left-1 w-[calc(33.333%-4px)] rounded-full bg-[#FF204E]/25 border border-[#FF204E]/75"
         />
         {hub.filters.map((filter) => (
-          <span class="relative z-10 text-center text-[11px] font-medium text-zinc-200 py-1 truncate">
+          <span class="relative z-10 text-center text-[11px] text-[#F4F7FC] py-1 truncate">
             {filter}
           </span>
         ))}
@@ -111,34 +111,34 @@ const eqHeights = [46, 82, 60, 96, 52, 88, 70, 94, 48, 78, 62, 40];
           <div
             class={`rounded-xl px-3 py-2 border transition-colors ${
               index === 0
-                ? 'tt-hub-row-1 bg-[#141419] border-[#C8FF00]/45'
+                ? 'tt-hub-row-1 bg-[#00224D] border-[#FF204E]/65'
                 : index === 1
-                  ? 'tt-hub-row-2 bg-[#141419] border-zinc-700/90'
-                  : 'bg-[#101014] border-zinc-800/70 opacity-75'
+                  ? 'tt-hub-row-2 bg-[#00224D] border-[#A0153E]/65'
+                  : 'bg-[#001B3E] border-[#193C70]/80 opacity-80'
             }`}
           >
             <div class="flex items-center gap-2.5">
               <div
-                class={`w-7 h-7 rounded-full flex items-center justify-center text-[10px] font-bold shrink-0 ${
+                class={`w-7 h-7 rounded-full flex items-center justify-center font-accent text-[11px] shrink-0 ${
                   index === 0
-                    ? 'bg-[#C8FF00] text-zinc-950'
-                    : 'bg-[#1B1B22] text-zinc-200 border border-zinc-700'
+                    ? 'bg-[#FF204E] text-white'
+                    : 'bg-[#5D0E41] text-white border border-[#A0153E]'
                 }`}
               >
                 {member.initials}
               </div>
               <div class="min-w-0 flex-1">
                 <div class="flex items-baseline justify-between gap-2">
-                  <p class="text-xs font-semibold text-zinc-100 truncate">
+                  <p class="text-xs text-[#F4F7FC] truncate">
                     {member.name}
                   </p>
-                  <span class="text-[11px] text-zinc-400 truncate">
+                  <span class="text-[11px] text-[#9FB4D1] truncate">
                     {member.role}
                   </span>
                 </div>
                 <p
                   class={`text-[11px] truncate mt-0.5 ${
-                    index < 2 ? 'text-[#C8FF00]' : 'text-zinc-400'
+                    index < 2 ? 'text-[#FF5C7D]' : 'text-[#9FB4D1]'
                   }`}
                 >
                   {member.lookingFor}
@@ -157,18 +157,18 @@ const eqHeights = [46, 82, 60, 96, 52, 88, 70, 94, 48, 78, 62, 40];
       <div class="relative flex items-center justify-between gap-2 pt-1">
         {/* Party 1 */}
         <div class="flex flex-col items-center text-center w-16 shrink-0">
-          <div class="w-10 h-10 rounded-full bg-[#17171D] border border-[#C8FF00] flex items-center justify-center text-xs font-bold text-[#C8FF00]">
+          <div class="w-10 h-10 rounded-full bg-[#5D0E41] border border-[#FF204E] flex items-center justify-center font-accent text-sm text-white">
             {connect.leftInitials}
           </div>
-          <p class="mt-1 text-xs font-semibold text-zinc-100">{connect.leftName}</p>
-          <p class="text-[11px] text-zinc-400">{connect.leftRole}</p>
+          <p class="mt-1 text-xs text-[#F4F7FC]">{connect.leftName}</p>
+          <p class="text-[11px] text-[#9FB4D1]">{connect.leftRole}</p>
         </div>
 
         {/* Center Animated Connection Path */}
         <div class="relative flex-1 flex flex-col items-center justify-center pb-4">
-          <div class="w-full h-[2px] bg-zinc-800 relative overflow-visible">
-            <div class="absolute inset-0 bg-gradient-to-r from-[#C8FF00]/35 via-[#C8FF00] to-[#C8FF00]/35 opacity-80" />
-            <div class="tt-signal-packet absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-[#C8FF00] text-zinc-950 px-2 py-0.5 text-[10px] font-semibold whitespace-nowrap shadow-md">
+          <div class="w-full h-[2px] bg-[#193C70] relative overflow-visible">
+            <div class="absolute inset-0 bg-gradient-to-r from-[#5D0E41] via-[#FF204E] to-[#A0153E] opacity-90" />
+            <div class="tt-signal-packet absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-[#FF204E] text-white px-2.5 py-0.5 text-[10px] whitespace-nowrap shadow-md">
               {connect.inviteText}
             </div>
           </div>
@@ -176,46 +176,46 @@ const eqHeights = [46, 82, 60, 96, 52, 88, 70, 94, 48, 78, 62, 40];
 
         {/* Party 2 */}
         <div class="tt-avatar-right flex flex-col items-center text-center w-16 shrink-0">
-          <div class="w-10 h-10 rounded-full bg-[#17171D] border border-zinc-400 flex items-center justify-center text-xs font-bold text-zinc-100">
+          <div class="w-10 h-10 rounded-full bg-[#00224D] border border-[#A0153E] flex items-center justify-center font-accent text-sm text-[#F4F7FC]">
             {connect.rightInitials}
           </div>
-          <p class="mt-1 text-xs font-semibold text-zinc-100">{connect.rightName}</p>
-          <p class="text-[11px] text-zinc-400">{connect.rightRole}</p>
+          <p class="mt-1 text-xs text-[#F4F7FC]">{connect.rightName}</p>
+          <p class="text-[11px] text-[#9FB4D1]">{connect.rightRole}</p>
         </div>
       </div>
 
       {/* Middle Studio Reply Thread */}
-      <div class="rounded-xl bg-[#111115] border border-zinc-800/80 px-3 py-2 flex items-center justify-between gap-2">
+      <div class="rounded-xl bg-[#001B3E] border border-[#193C70]/90 px-3 py-2 flex items-center justify-between gap-2">
         <div class="min-w-0">
-          <p class="text-[11px] font-medium text-zinc-200 truncate">
+          <p class="text-[11px] text-[#F4F7FC] truncate">
             Tara accepted invite
           </p>
-          <p class="text-[11px] text-zinc-400 truncate">
+          <p class="text-[11px] text-[#9FB4D1] truncate">
             “Recording bilingual chorus take now”
           </p>
         </div>
-        <span class="text-[10px] font-mono text-[#C8FF00] shrink-0">Connected</span>
+        <span class="text-[10px] text-[#FF5C7D] shrink-0">Connected</span>
       </div>
 
       {/* Bottom Synced Session Card */}
-      <div class="tt-collab-match rounded-xl bg-[#141419] border border-[#C8FF00]/45 p-3">
+      <div class="tt-collab-match rounded-xl bg-[#5D0E41]/45 border border-[#FF204E]/65 p-3">
         <div class="flex items-center justify-between gap-2">
           <div class="flex items-center gap-2 min-w-0">
             <svg width="18" height="18" viewBox="0 0 20 20" fill="none" class="shrink-0">
-              <circle cx="10" cy="10" r="9" fill="#C8FF00" />
+              <circle cx="10" cy="10" r="9" fill="#FF204E" />
               <path
                 d="M6.4 10.2L8.8 12.6L13.6 7.6"
-                stroke="#09090B"
+                stroke="#FFFFFF"
                 stroke-width="2"
                 stroke-linecap="round"
                 stroke-linejoin="round"
               />
             </svg>
             <div class="min-w-0">
-              <p class="text-xs font-semibold text-zinc-100 truncate">
+              <p class="text-xs text-[#F4F7FC] truncate">
                 {connect.sessionTitle}
               </p>
-              <p class="text-[11px] text-zinc-400 truncate">
+              <p class="text-[11px] text-[#D6E2F5] truncate">
                 {connect.sessionMeta}
               </p>
             </div>
@@ -224,7 +224,7 @@ const eqHeights = [46, 82, 60, 96, 52, 88, 70, 94, 48, 78, 62, 40];
           <div class="flex items-end gap-[2.5px] h-5 shrink-0">
             {eqHeights.slice(2, 10).map((height, idx) => (
               <span
-                class="tt-eq-bar w-[2.5px] rounded-full bg-[#C8FF00]"
+                class="tt-eq-bar w-[2.5px] rounded-full bg-[#FF204E]"
                 style={`height: ${Math.round((height / 100) * 18)}px; --eq-delay: ${idx * 95}ms;`}
               />
             ))}

@@ -284,20 +284,20 @@ function buildUserConfirmationEmailHtml(string $email, string $role, string $loo
   <meta name="supported-color-schemes" content="dark" />
   <title>You're on the TuneTactics waitlist</title>
 </head>
-<body style="margin:0;padding:0;background-color:#0A0A0C;color:#F4F4F5;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
-  <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="background-color:#0A0A0C;padding:32px 16px;">
+<body style="margin:0;padding:0;background-color:#001633;color:#F4F7FC;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
+  <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="background-color:#001633;padding:32px 16px;">
     <tr>
       <td align="center">
-        <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="max-width:560px;background-color:#141418;border:1px solid #27272A;border-radius:16px;overflow:hidden;">
+        <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="max-width:560px;background-color:#00224D;border:1px solid #1E447A;border-radius:16px;overflow:hidden;">
           <!-- Header -->
           <tr>
-            <td style="padding:28px 32px 20px 32px;border-bottom:1px solid #27272A;">
+            <td style="padding:28px 32px 20px 32px;border-bottom:1px solid #193C70;">
               <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
                 <tr>
                   <td style="font-size:18px;font-weight:700;letter-spacing:-0.02em;color:#FFFFFF;">
-                    <span style="display:inline-block;width:10px;height:10px;border-radius:2px;background-color:#CCFF00;margin-right:8px;vertical-align:middle;"></span>TuneTactics
+                    <span style="display:inline-block;width:10px;height:10px;border-radius:2px;background-color:#FF204E;margin-right:8px;vertical-align:middle;"></span>TuneTactics
                   </td>
-                  <td align="right" style="font-size:12px;color:#CCFF00;font-weight:600;">
+                  <td align="right" style="font-size:12px;color:#FF5C7D;font-weight:600;">
                     Founding Member
                   </td>
                 </tr>
@@ -311,28 +311,28 @@ function buildUserConfirmationEmailHtml(string $email, string $role, string $loo
               <h1 style="margin:0 0 14px 0;font-size:26px;line-height:1.25;font-weight:700;color:#FFFFFF;letter-spacing:-0.02em;">
                 You're on the waitlist.
               </h1>
-              <p style="margin:0 0 22px 0;font-size:15px;line-height:1.6;color:#D4D4D8;">
-                Welcome as a TuneTactics Founding Member. When our private beta opens, you'll get first access — plus <strong style="color:#CCFF00;">Pro free for life</strong>.
+              <p style="margin:0 0 22px 0;font-size:15px;line-height:1.6;color:#D6E2F5;">
+                Welcome as a TuneTactics Founding Member. When our private beta opens, you'll get first access — plus <strong style="color:#FF5C7D;">Pro free for life</strong>.
               </p>
 
               <!-- Summary Box -->
-              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="background-color:#0A0A0C;border:1px solid #27272A;border-radius:12px;">
+              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="background-color:#001633;border:1px solid #5D0E41;border-radius:12px;">
                 <tr>
                   <td style="padding:18px 20px;">
-                    <p style="margin:0 0 12px 0;font-size:12px;font-weight:600;color:#A1A1AA;">
+                    <p style="margin:0 0 12px 0;font-size:12px;font-weight:600;color:#9FB4D1;">
                       Your studio profile preferences
                     </p>
                     <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
                       <tr>
-                        <td style="padding:6px 0;font-size:14px;color:#A1A1AA;width:130px;">Email</td>
+                        <td style="padding:6px 0;font-size:14px;color:#9FB4D1;width:130px;">Email</td>
                         <td style="padding:6px 0;font-size:14px;color:#FFFFFF;font-weight:500;">{$safeEmail}</td>
                       </tr>
                       <tr>
-                        <td style="padding:6px 0;font-size:14px;color:#A1A1AA;width:130px;">Role</td>
-                        <td style="padding:6px 0;font-size:14px;color:#CCFF00;font-weight:600;">{$safeRole}</td>
+                        <td style="padding:6px 0;font-size:14px;color:#9FB4D1;width:130px;">Role</td>
+                        <td style="padding:6px 0;font-size:14px;color:#FF5C7D;font-weight:600;">{$safeRole}</td>
                       </tr>
                       <tr>
-                        <td style="padding:6px 0;font-size:14px;color:#A1A1AA;width:130px;">Looking for</td>
+                        <td style="padding:6px 0;font-size:14px;color:#9FB4D1;width:130px;">Looking for</td>
                         <td style="padding:6px 0;font-size:14px;color:#FFFFFF;font-weight:500;">{$safeGoal}</td>
                       </tr>
                     </table>
@@ -340,7 +340,7 @@ function buildUserConfirmationEmailHtml(string $email, string $role, string $loo
                 </tr>
               </table>
 
-              <p style="margin:24px 0 0 0;font-size:14px;line-height:1.6;color:#A1A1AA;">
+              <p style="margin:24px 0 0 0;font-size:14px;line-height:1.6;color:#9FB4D1;">
                 We'll email you directly as soon as your invite is ready. No spam, ever.
               </p>
             </td>
@@ -348,10 +348,10 @@ function buildUserConfirmationEmailHtml(string $email, string $role, string $loo
 
           <!-- Footer -->
           <tr>
-            <td style="padding:20px 32px;background-color:#0F0F13;border-top:1px solid #27272A;">
-              <p style="margin:0;font-size:12px;line-height:1.5;color:#71717A;">
+            <td style="padding:20px 32px;background-color:#001B3E;border-top:1px solid #193C70;">
+              <p style="margin:0;font-size:12px;line-height:1.5;color:#829BC2;">
                 TuneTactics — Show your sound. Find your people.<br />
-                Questions? Reply or contact <a href="mailto:support@tunetactics.ir" style="color:#CCFF00;text-decoration:none;">support@tunetactics.ir</a>
+                Questions? Reply or contact <a href="mailto:support@tunetactics.ir" style="color:#FF5C7D;text-decoration:none;">support@tunetactics.ir</a>
               </p>
             </td>
           </tr>
@@ -385,14 +385,14 @@ function buildAdminNotificationEmailHtml(array $record): string {
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>New Waitlist Signup</title>
 </head>
-<body style="margin:0;padding:0;background-color:#0A0A0C;color:#F4F4F5;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
-  <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="background-color:#0A0A0C;padding:28px 16px;">
+<body style="margin:0;padding:0;background-color:#001633;color:#F4F7FC;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
+  <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="background-color:#001633;padding:28px 16px;">
     <tr>
       <td align="center">
-        <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="max-width:560px;background-color:#141418;border:1px solid #27272A;border-radius:16px;overflow:hidden;">
+        <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="max-width:560px;background-color:#00224D;border:1px solid #1E447A;border-radius:16px;overflow:hidden;">
           <tr>
-            <td style="padding:24px 28px;border-bottom:1px solid #27272A;">
-              <p style="margin:0;font-size:12px;font-weight:600;color:#CCFF00;">
+            <td style="padding:24px 28px;border-bottom:1px solid #193C70;">
+              <p style="margin:0;font-size:12px;font-weight:600;color:#FF5C7D;">
                 TuneTactics Waitlist Alert
               </p>
               <h1 style="margin:6px 0 0 0;font-size:20px;font-weight:700;color:#FFFFFF;">
@@ -402,33 +402,33 @@ function buildAdminNotificationEmailHtml(array $record): string {
           </tr>
           <tr>
             <td style="padding:24px 28px;">
-              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="background-color:#0A0A0C;border:1px solid #27272A;border-radius:12px;">
+              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="background-color:#001633;border:1px solid #5D0E41;border-radius:12px;">
                 <tr>
                   <td style="padding:18px 20px;">
                     <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
                       <tr>
-                        <td style="padding:7px 0;font-size:13px;color:#A1A1AA;width:120px;">Email</td>
+                        <td style="padding:7px 0;font-size:13px;color:#9FB4D1;width:120px;">Email</td>
                         <td style="padding:7px 0;font-size:14px;color:#FFFFFF;font-weight:600;">{$safeEmail}</td>
                       </tr>
                       <tr>
-                        <td style="padding:7px 0;font-size:13px;color:#A1A1AA;width:120px;">Role</td>
-                        <td style="padding:7px 0;font-size:14px;color:#CCFF00;font-weight:600;">{$safeRole}</td>
+                        <td style="padding:7px 0;font-size:13px;color:#9FB4D1;width:120px;">Role</td>
+                        <td style="padding:7px 0;font-size:14px;color:#FF5C7D;font-weight:600;">{$safeRole}</td>
                       </tr>
                       <tr>
-                        <td style="padding:7px 0;font-size:13px;color:#A1A1AA;width:120px;">Looking for</td>
+                        <td style="padding:7px 0;font-size:13px;color:#9FB4D1;width:120px;">Looking for</td>
                         <td style="padding:7px 0;font-size:14px;color:#FFFFFF;font-weight:500;">{$safeGoal}</td>
                       </tr>
                       <tr>
-                        <td style="padding:7px 0;font-size:13px;color:#A1A1AA;width:120px;">Timestamp</td>
-                        <td style="padding:7px 0;font-size:13px;color:#D4D4D8;">{$safeTime}</td>
+                        <td style="padding:7px 0;font-size:13px;color:#9FB4D1;width:120px;">Timestamp</td>
+                        <td style="padding:7px 0;font-size:13px;color:#D6E2F5;">{$safeTime}</td>
                       </tr>
                       <tr>
-                        <td style="padding:7px 0;font-size:13px;color:#A1A1AA;width:120px;">Referrer</td>
-                        <td style="padding:7px 0;font-size:13px;color:#D4D4D8;">{$safeRef}</td>
+                        <td style="padding:7px 0;font-size:13px;color:#9FB4D1;width:120px;">Referrer</td>
+                        <td style="padding:7px 0;font-size:13px;color:#D6E2F5;">{$safeRef}</td>
                       </tr>
                       <tr>
-                        <td style="padding:7px 0;font-size:13px;color:#A1A1AA;width:120px;">UTM</td>
-                        <td style="padding:7px 0;font-size:13px;color:#D4D4D8;">{$safeUtm}</td>
+                        <td style="padding:7px 0;font-size:13px;color:#9FB4D1;width:120px;">UTM</td>
+                        <td style="padding:7px 0;font-size:13px;color:#D6E2F5;">{$safeUtm}</td>
                       </tr>
                     </table>
                   </td>

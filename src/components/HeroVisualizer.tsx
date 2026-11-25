@@ -11,8 +11,8 @@ import {
 import { formatTrackTime } from '../utils/visualizerMath';
 
 const _dummy = new THREE.Object3D();
-const _baseBarColor = new THREE.Color('#32323d');
-const _limeBarColor = new THREE.Color('#c8ff00');
+const _baseBarColor = new THREE.Color('#163663');
+const _limeBarColor = new THREE.Color('#ff204e');
 const _workBarColor = new THREE.Color();
 
 function detectSoftwareWebGL(): boolean {
@@ -97,14 +97,14 @@ export default function HeroVisualizer() {
     scene.environment = envRT.texture;
     pmremGenerator.dispose();
 
-    const hemiLight = new THREE.HemisphereLight(0xa1a1aa, 0x09090b, 1.0);
+    const hemiLight = new THREE.HemisphereLight(0x9eb8df, 0x001633, 1.05);
     scene.add(hemiLight);
 
-    const keyLight = new THREE.DirectionalLight(0xfef9c3, 1.6);
+    const keyLight = new THREE.DirectionalLight(0xffe6ee, 1.65);
     keyLight.position.set(5, 7, 6);
     scene.add(keyLight);
 
-    const rimLight = new THREE.DirectionalLight(0xc8ff00, 1.5);
+    const rimLight = new THREE.DirectionalLight(0xff204e, 1.85);
     rimLight.position.set(-6, -2, -5);
     scene.add(rimLight);
 
@@ -112,33 +112,33 @@ export default function HeroVisualizer() {
     const rootGroup = new THREE.Group();
     scene.add(rootGroup);
 
-    // 1. Obsidian Acoustic Core
+    // 1. Midnight Navy Acoustic Core
     const coreGeometry = new THREE.IcosahedronGeometry(0.95, 1);
     const coreMaterial = new THREE.MeshStandardMaterial({
-      color: 0x18181d,
-      roughness: 0.2,
-      metalness: 0.9,
+      color: 0x00224d,
+      roughness: 0.22,
+      metalness: 0.88,
       flatShading: true,
     });
     const coreMesh = new THREE.Mesh(coreGeometry, coreMaterial);
     rootGroup.add(coreMesh);
 
-    // 2. Reactive Wireframe Cage
+    // 2. Reactive Crimson Wireframe Cage
     const cageGeometry = new THREE.IcosahedronGeometry(1.12, 1);
     const cageMaterial = new THREE.MeshBasicMaterial({
-      color: 0xc8ff00,
+      color: 0xff204e,
       wireframe: true,
       transparent: true,
-      opacity: 0.22,
+      opacity: 0.28,
     });
     const cageMesh = new THREE.Mesh(cageGeometry, cageMaterial);
     rootGroup.add(cageMesh);
 
     // 3. Concentric Metallic Frequency Rings
     const ringSpecs = [
-      { radius: 1.52, tube: 0.026, color: 0x52525b, roughness: 0.25, metalness: 0.88, tiltX: 0.72, tiltY: 0.25 },
-      { radius: 1.84, tube: 0.022, color: 0xc8ff00, roughness: 0.22, metalness: 0.65, tiltX: -0.58, tiltY: 0.5 },
-      { radius: 2.15, tube: 0.02, color: 0x3f3f46, roughness: 0.35, metalness: 0.85, tiltX: 0.32, tiltY: -0.62 },
+      { radius: 1.52, tube: 0.026, color: 0x5d0e41, roughness: 0.24, metalness: 0.82, tiltX: 0.72, tiltY: 0.25 },
+      { radius: 1.84, tube: 0.022, color: 0xff204e, roughness: 0.2, metalness: 0.65, tiltX: -0.58, tiltY: 0.5 },
+      { radius: 2.15, tube: 0.02, color: 0xa0153e, roughness: 0.28, metalness: 0.78, tiltX: 0.32, tiltY: -0.62 },
     ];
     const ringGeometries: THREE.TorusGeometry[] = [];
     const ringMaterials: THREE.MeshStandardMaterial[] = [];
@@ -219,9 +219,7 @@ export default function HeroVisualizer() {
       camera.updateProjectionMatrix();
       renderer.setSize(w, h);
       renderer.setPixelRatio(isSoftwareGl ? 1 : Math.min(window.devicePixelRatio, 2));
-      if (prefersReducedMotion) {
-        renderer.render(scene, camera);
-      }
+      renderer.render(scene, camera);
     };
     window.addEventListener('resize', handleResize);
 
@@ -419,25 +417,25 @@ export default function HeroVisualizer() {
   const cardCopy = SITE_CONTENT.hero.visualizerCard;
 
   return (
-    <div className="tt-card-float rounded-3xl bg-[#111115] border border-zinc-800/90 p-4 sm:p-5 shadow-[0_24px_70px_rgba(0,0,0,0.65)]">
+    <div className="tt-card-float rounded-3xl bg-[#00224D] border border-[#5D0E41]/90 p-4 sm:p-5 shadow-[0_24px_70px_rgba(0,10,28,0.72)]">
       {/* Pure 3D Audio Visualizer Object (Zero extra labels or buttons over canvas) */}
-      <div className="relative w-full h-[250px] sm:h-[290px] rounded-2xl bg-[#09090B] border border-zinc-800/70 overflow-hidden">
+      <div className="relative w-full h-[250px] sm:h-[290px] rounded-2xl bg-[#00142E] border border-[#193C70]/90 overflow-hidden">
         {!isReady && (
           <div
-            className="absolute inset-0 flex items-center justify-center bg-[#09090B]"
+            className="absolute inset-0 flex items-center justify-center bg-[#00142E]"
             aria-hidden="true"
           >
-            <div className="w-28 h-28 rounded-full border-2 border-zinc-800 border-t-[#C8FF00] animate-spin" />
+            <div className="w-28 h-28 rounded-full border-2 border-[#5D0E41] border-t-[#FF204E] animate-spin" />
           </div>
         )}
 
         {webglUnavailable ? (
           <div
-            className="w-full h-full flex items-center justify-center bg-[radial-gradient(circle_at_center,rgba(200,255,0,0.12),transparent_62%)]"
+            className="w-full h-full flex items-center justify-center bg-[radial-gradient(circle_at_center,rgba(255,32,78,0.2),transparent_62%)]"
             data-testid="hero-visualizer-fallback"
           >
-            <div className="w-36 h-36 rounded-full border border-[#C8FF00]/40 flex items-center justify-center">
-              <div className="w-20 h-20 rounded-full border border-zinc-700 bg-zinc-900" />
+            <div className="w-36 h-36 rounded-full border border-[#FF204E]/50 flex items-center justify-center">
+              <div className="w-20 h-20 rounded-full border border-[#A0153E] bg-[#00224D]" />
             </div>
           </div>
         ) : (
@@ -453,12 +451,12 @@ export default function HeroVisualizer() {
       </div>
 
       {/* Mini Audio Player directly under the 3D object */}
-      <div className="mt-3.5 rounded-2xl bg-[#09090B] border border-zinc-800/90 px-4 py-3.5 flex items-center gap-4">
+      <div className="mt-3.5 rounded-2xl bg-[#001633] border border-[#193C70]/90 px-4 py-3.5 flex items-center gap-4">
         <button
           type="button"
           onClick={toggleSamplePlay}
           aria-label={isPlaying ? 'Pause sample track' : 'Play sample track'}
-          className="tt-btn w-12 h-12 rounded-full bg-[#C8FF00] text-zinc-950 hover:bg-[#D8FF42] active:scale-95 flex items-center justify-center shrink-0 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8FF00] focus-visible:ring-offset-2 focus-visible:ring-offset-[#09090B]"
+          className="tt-btn w-12 h-12 rounded-full bg-[#FF204E] text-white hover:bg-[#A0153E] active:scale-95 flex items-center justify-center shrink-0 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FF204E] focus-visible:ring-offset-2 focus-visible:ring-offset-[#001633]"
         >
           {isPlaying ? (
             <Pause className="w-5 h-5 fill-current" aria-hidden="true" />
@@ -469,21 +467,21 @@ export default function HeroVisualizer() {
 
         <div className="min-w-0 flex-1">
           <div className="flex items-baseline justify-between gap-3">
-            <p className="text-base font-semibold text-zinc-100 truncate">
+            <p className="text-base font-medium text-[#F4F7FC] truncate">
               {cardCopy.trackTitle}
             </p>
-            <span className="text-xs sm:text-sm font-mono text-zinc-400 tabular-nums shrink-0">
+            <span className="text-xs sm:text-sm text-[#9FB4D1] tabular-nums shrink-0">
               {formatTrackTime(elapsedSec)} / {formatTrackTime(HERO_SAMPLE_DURATION_SEC)}
             </span>
           </div>
 
-          <p className="mt-0.5 text-sm text-zinc-400 truncate">
+          <p className="mt-0.5 text-sm text-[#9FB4D1] truncate">
             {cardCopy.trackSubtitle}
           </p>
 
           {/* Progress Bar */}
           <div
-            className="mt-2.5 h-1.5 w-full rounded-full bg-zinc-800 overflow-hidden"
+            className="mt-2.5 h-1.5 w-full rounded-full bg-[#00224D] overflow-hidden"
             role="progressbar"
             aria-label="Sample track playback progress"
             aria-valuenow={Math.round(progressPct)}
@@ -491,7 +489,7 @@ export default function HeroVisualizer() {
             aria-valuemax={100}
           >
             <div
-              className="h-full rounded-full bg-[#C8FF00] transition-transform duration-150 origin-left"
+              className="h-full rounded-full bg-[#FF204E] transition-transform duration-150 origin-left"
               style={{ transform: `scaleX(${Math.max(0.02, progressPct / 100)})` }}
             />
           </div>
@@ -499,36 +497,36 @@ export default function HeroVisualizer() {
       </div>
 
       {/* App-Like Collaboration Strip Under Mini Audio Player */}
-      <div className="mt-3 rounded-2xl bg-[#09090B] border border-zinc-800/90 p-4 flex flex-col gap-3.5">
+      <div className="mt-3 rounded-2xl bg-[#001633] border border-[#5D0E41]/80 p-4 flex flex-col gap-3.5">
         <div className="flex items-start justify-between gap-4">
           <div className="min-w-0">
-            <p className="text-xs font-semibold uppercase tracking-wider text-[#C8FF00]">
+            <p className="font-sans text-xs uppercase tracking-[0.09em] text-[#FF6B8A]">
               {cardCopy.collabHeading}
             </p>
-            <p className="mt-1.5 text-base font-medium text-zinc-100 leading-snug">
+            <p className="mt-1.5 text-base text-[#F4F7FC] leading-snug">
               {cardCopy.collabCopy}
             </p>
-            <p className="mt-1.5 text-sm text-zinc-400">
+            <p className="mt-1.5 text-sm text-[#9FB4D1]">
               {cardCopy.collabMeta}
             </p>
           </div>
         </div>
 
-        <div className="pt-3 border-t border-zinc-800/80 flex items-center justify-between gap-3">
+        <div className="pt-3 border-t border-[#193C70]/80 flex items-center justify-between gap-3">
           <div className="flex items-center gap-2.5 min-w-0">
-            <div className="w-8 h-8 rounded-full bg-[#17171D] border border-zinc-700 flex items-center justify-center text-xs font-semibold text-[#C8FF00] shrink-0">
+            <div className="w-9 h-9 rounded-full bg-[#5D0E41]/80 border border-[#A0153E] flex items-center justify-center font-sans text-xs tracking-wider text-white shrink-0">
               KM
             </div>
             <div className="min-w-0">
-              <p className="text-sm font-medium text-zinc-200 truncate">Kian Mercer</p>
-              <p className="text-xs text-zinc-400 truncate">@kianmercer · Producer</p>
+              <p className="text-sm text-[#F4F7FC] truncate">Kian Mercer</p>
+              <p className="text-xs text-[#9FB4D1] truncate">@kianmercer · Producer</p>
             </div>
           </div>
 
           <button
             type="button"
             onClick={scrollToWaitlist}
-            className="tt-btn h-10 px-4 rounded-full bg-zinc-900 border border-[#C8FF00]/60 text-[#C8FF00] hover:bg-[#C8FF00] hover:text-zinc-950 text-sm font-semibold inline-flex items-center gap-1.5 whitespace-nowrap shrink-0 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8FF00]"
+            className="tt-btn h-10 px-4 rounded-full bg-[#5D0E41] border border-[#FF204E]/75 text-white hover:bg-[#FF204E] text-sm inline-flex items-center gap-1.5 whitespace-nowrap shrink-0 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FF204E]"
           >
             <span>{cardCopy.collabCta}</span>
             <ArrowUpRight className="w-4 h-4 shrink-0" aria-hidden="true" />

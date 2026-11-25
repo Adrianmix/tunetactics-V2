@@ -83,15 +83,15 @@ export default function ProductPreview() {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-7 items-stretch">
       {/* Left: Producer / Singer Portfolio Profile Card */}
-      <div className="tt-card-float group lg:col-span-7 bg-[#111115] border border-zinc-800/90 rounded-3xl p-6 sm:p-8 flex flex-col justify-between">
+      <div className="tt-card-float group lg:col-span-7 bg-[#00224D] border border-[#1E447A]/90 rounded-3xl p-6 sm:p-8 flex flex-col justify-between">
         <div>
           {/* Switcher Header */}
-          <div className="flex flex-wrap items-center justify-between gap-4 pb-6 border-b border-zinc-800/80">
-            <span className="text-sm font-medium text-zinc-400">
+          <div className="flex flex-wrap items-center justify-between gap-4 pb-6 border-b border-[#193C70]/85">
+            <span className="font-sans text-xs uppercase tracking-[0.09em] text-[#B8CCE6]">
               Portfolio preview
             </span>
             <div
-              className="inline-flex items-center p-1 bg-zinc-900 border border-zinc-800 rounded-full"
+              className="inline-flex items-center p-1 bg-[#001633] border border-[#5D0E41]/80 rounded-full"
               role="tablist"
               aria-label="Preview profile role"
             >
@@ -100,10 +100,10 @@ export default function ProductPreview() {
                 role="tab"
                 aria-selected={activeProfileId === 'producer'}
                 onClick={() => handleProfileSwitch('producer')}
-                className={`tt-btn px-4 py-2 text-sm font-medium rounded-full whitespace-nowrap shrink-0 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8FF00] ${
+                className={`tt-btn px-4 py-2 text-sm rounded-full whitespace-nowrap shrink-0 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FF204E] ${
                   activeProfileId === 'producer'
-                    ? 'bg-[#C8FF00] text-zinc-950'
-                    : 'text-zinc-300 hover:text-zinc-100'
+                    ? 'bg-[#FF204E] text-white'
+                    : 'text-[#C2D4EC] hover:text-white'
                 }`}
               >
                 Producer profile
@@ -113,10 +113,10 @@ export default function ProductPreview() {
                 role="tab"
                 aria-selected={activeProfileId === 'singer'}
                 onClick={() => handleProfileSwitch('singer')}
-                className={`tt-btn px-4 py-2 text-sm font-medium rounded-full whitespace-nowrap shrink-0 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8FF00] ${
+                className={`tt-btn px-4 py-2 text-sm rounded-full whitespace-nowrap shrink-0 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FF204E] ${
                   activeProfileId === 'singer'
-                    ? 'bg-[#C8FF00] text-zinc-950'
-                    : 'text-zinc-300 hover:text-zinc-100'
+                    ? 'bg-[#FF204E] text-white'
+                    : 'text-[#C2D4EC] hover:text-white'
                 }`}
               >
                 Singer profile
@@ -126,7 +126,7 @@ export default function ProductPreview() {
 
           {/* Profile Identity */}
           <div className="mt-6 flex items-start gap-4">
-            <div className="w-20 h-20 rounded-2xl overflow-hidden bg-zinc-900 border border-zinc-800 shrink-0 flex items-center justify-center">
+            <div className="w-20 h-20 rounded-2xl overflow-hidden bg-[#001633] border border-[#5D0E41]/80 shrink-0 flex items-center justify-center">
               {!brokenImages[activeProfile.id] ? (
                 <img
                   src={
@@ -142,21 +142,21 @@ export default function ProductPreview() {
                   className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                 />
               ) : (
-                <Mic2 className="w-7 h-7 text-zinc-500" aria-hidden="true" />
+                <Mic2 className="w-7 h-7 text-[#9FB4D1]" aria-hidden="true" />
               )}
             </div>
 
             <div className="min-w-0 flex-1">
               <div className="flex flex-wrap items-baseline justify-between gap-2">
-                <h3 className="text-2xl font-semibold text-zinc-50 tracking-tight">
+                <h3 className="text-2xl sm:text-[1.65rem] text-[#F4F7FC] tracking-wide">
                   {activeProfile.name}
                 </h3>
-                <span className="text-sm font-mono text-zinc-400 tabular-nums">
+                <span className="text-sm text-[#9FB4D1] tabular-nums">
                   {activeProfile.handle}
                 </span>
               </div>
-              <p className="mt-1 text-base text-zinc-200">{activeProfile.roleLine}</p>
-              <p className="mt-1 text-sm text-zinc-400">
+              <p className="mt-1 text-base text-[#E2ECFA]">{activeProfile.roleLine}</p>
+              <p className="mt-1 text-sm text-[#9FB4D1]">
                 {activeProfile.location}
                 <span aria-hidden="true"> · </span>
                 {activeProfile.gearOrCredits}
@@ -165,34 +165,34 @@ export default function ProductPreview() {
           </div>
 
           {/* Looking For Intent Line & Studio Details */}
-          <div className="mt-6 pt-5 border-t border-zinc-800/80 space-y-4">
+          <div className="mt-6 pt-5 border-t border-[#193C70]/85 space-y-4">
             <div className="flex flex-wrap items-center justify-between gap-3">
-              <p className="text-base font-medium text-[#C8FF00]">
+              <p className="text-base text-[#FF5C7D]">
                 {activeProfile.lookingFor}
               </p>
               <button
                 type="button"
                 onClick={scrollToWaitlist}
-                className="text-sm font-medium text-zinc-200 hover:text-[#C8FF00] underline underline-offset-4 transition-colors whitespace-nowrap shrink-0 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8FF00] rounded-full px-1"
+                className="text-sm text-[#F4F7FC] hover:text-[#FF5C7D] underline underline-offset-4 transition-colors whitespace-nowrap shrink-0 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FF204E] rounded-full px-1"
               >
                 Connect on launch
               </button>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4 border-t border-zinc-800/70">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4 border-t border-[#193C70]/70">
               <div>
-                <p className="text-xs font-medium text-zinc-400">
+                <p className="text-xs text-[#9FB4D1]">
                   Studio track record
                 </p>
-                <p className="mt-1 text-sm text-zinc-200">
+                <p className="mt-1 text-sm text-[#E2ECFA]">
                   {activeProfile.creditsLine}
                 </p>
               </div>
               <div>
-                <p className="text-xs font-medium text-zinc-400">
+                <p className="text-xs text-[#9FB4D1]">
                   Collaboration workflow
                 </p>
-                <p className="mt-1 text-sm text-zinc-200">
+                <p className="mt-1 text-sm text-[#E2ECFA]">
                   {activeProfile.availabilityLine}
                 </p>
               </div>
@@ -201,9 +201,9 @@ export default function ProductPreview() {
         </div>
 
         {/* Embedded Waveform Track Preview */}
-        <div className="mt-6 bg-[#09090B] border border-zinc-800/90 rounded-2xl p-4 sm:p-5">
+        <div className="mt-6 bg-[#001633] border border-[#5D0E41]/80 rounded-2xl p-4 sm:p-5">
           <div className="flex items-center gap-4">
-            <div className="w-14 h-14 rounded-xl overflow-hidden bg-zinc-900 border border-zinc-800 shrink-0 flex items-center justify-center">
+            <div className="w-14 h-14 rounded-xl overflow-hidden bg-[#00224D] border border-[#193C70] shrink-0 flex items-center justify-center">
               {!brokenImages.cover ? (
                 <img
                   src={STUDIO_ASSETS.trackCoverArt}
@@ -215,20 +215,20 @@ export default function ProductPreview() {
                   className="w-full h-full object-cover"
                 />
               ) : (
-                <Disc3 className="w-5 h-5 text-zinc-500" aria-hidden="true" />
+                <Disc3 className="w-5 h-5 text-[#9FB4D1]" aria-hidden="true" />
               )}
             </div>
 
             <div className="min-w-0 flex-1">
               <div className="flex items-center justify-between gap-2">
-                <p className="text-base font-semibold text-zinc-100 truncate">
+                <p className="text-base text-[#F4F7FC] truncate">
                   {activeProfile.trackTitle}
                 </p>
-                <span className="text-sm font-mono text-zinc-400 tabular-nums shrink-0">
+                <span className="text-sm text-[#9FB4D1] tabular-nums shrink-0">
                   {activeProfile.bpm} BPM
                 </span>
               </div>
-              <p className="mt-0.5 text-sm text-zinc-400 truncate">
+              <p className="mt-0.5 text-sm text-[#9FB4D1] truncate">
                 {activeProfile.trackMeta}
               </p>
             </div>
@@ -241,7 +241,7 @@ export default function ProductPreview() {
                   ? `Pause ${activeProfile.trackTitle}`
                   : `Play ${activeProfile.trackTitle}`
               }
-              className="tt-btn w-12 h-12 rounded-full bg-[#C8FF00] text-zinc-950 hover:bg-[#D8FF42] flex items-center justify-center shrink-0 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8FF00] focus-visible:ring-offset-2 focus-visible:ring-offset-[#09090B]"
+              className="tt-btn w-12 h-12 rounded-full bg-[#FF204E] text-white hover:bg-[#A0153E] flex items-center justify-center shrink-0 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FF204E] focus-visible:ring-offset-2 focus-visible:ring-offset-[#001633]"
             >
               {isPortfolioPlaying ? (
                 <Pause className="w-5 h-5 fill-current" aria-hidden="true" />
@@ -265,7 +265,7 @@ export default function ProductPreview() {
                 <div
                   key={index}
                   className={`flex-1 rounded-full transition-all duration-150 ${
-                    isPlayed ? 'bg-[#C8FF00]' : 'bg-zinc-700/70'
+                    isPlayed ? 'bg-[#FF204E]' : 'bg-[#193C70]'
                   }`}
                   style={{ height: `${heightPct}%` }}
                 />
@@ -276,18 +276,18 @@ export default function ProductPreview() {
       </div>
 
       {/* Right: Reels-Style Vertical Music Clip & Stem Reply Mockup */}
-      <div className="tt-card-float group lg:col-span-5 bg-[#111115] border border-zinc-800/90 rounded-3xl p-6 sm:p-8 flex flex-col justify-between">
-        <div className="flex items-center justify-between gap-4 pb-5 border-b border-zinc-800/80">
-          <span className="text-sm font-medium text-zinc-400">
+      <div className="tt-card-float group lg:col-span-5 bg-[#00224D] border border-[#1E447A]/90 rounded-3xl p-6 sm:p-8 flex flex-col justify-between">
+        <div className="flex items-center justify-between gap-4 pb-5 border-b border-[#193C70]/85">
+          <span className="font-sans text-xs uppercase tracking-[0.09em] text-[#B8CCE6]">
             Reels stem challenge
           </span>
-          <span className="text-sm text-zinc-400 tabular-nums">
+          <span className="text-sm text-[#9FB4D1] tabular-nums">
             {SITE_CONTENT.preview.reels.replyCount}
           </span>
         </div>
 
         {/* Vertical Clip Viewport */}
-        <div className="mt-5 relative rounded-2xl overflow-hidden border border-zinc-800 bg-[#09090B] aspect-[4/5] sm:aspect-[16/15] lg:aspect-[5/6] flex flex-col justify-between">
+        <div className="mt-5 relative rounded-2xl overflow-hidden border border-[#5D0E41]/90 bg-[#001633] aspect-[4/5] sm:aspect-[16/15] lg:aspect-[5/6] flex flex-col justify-between">
           {!brokenImages.reel ? (
             <img
               src={STUDIO_ASSETS.singerReelsFrame}
@@ -296,24 +296,24 @@ export default function ProductPreview() {
               onError={() =>
                 setBrokenImages((prev) => ({ ...prev, reel: true }))
               }
-              className="absolute inset-0 w-full h-full object-cover object-center opacity-85 transition-transform duration-500 group-hover:scale-[1.03]"
+              className="absolute inset-0 w-full h-full object-cover object-center opacity-80 transition-transform duration-500 group-hover:scale-[1.03]"
             />
           ) : (
-            <div className="absolute inset-0 bg-gradient-to-br from-zinc-900 via-zinc-950 to-black flex items-center justify-center">
-              <Volume2 className="w-10 h-10 text-zinc-700" aria-hidden="true" />
+            <div className="absolute inset-0 bg-gradient-to-br from-[#5D0E41] via-[#00224D] to-[#00142E] flex items-center justify-center">
+              <Volume2 className="w-10 h-10 text-[#9FB4D1]" aria-hidden="true" />
             </div>
           )}
 
           {/* Measured contrast scrim */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/45 to-black/35" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#00122A]/95 via-[#001633]/55 to-[#5D0E41]/40" />
 
           {/* Top Bar Inside Reel */}
           <div className="relative z-10 p-4 flex items-center justify-between gap-2">
             <div className="min-w-0">
-              <p className="text-base font-semibold text-white truncate">
+              <p className="text-base text-white truncate">
                 {SITE_CONTENT.preview.reels.creatorName}
               </p>
-              <p className="text-sm text-zinc-300 truncate">
+              <p className="text-sm text-[#D6E2F5] truncate">
                 {SITE_CONTENT.preview.reels.creatorMeta}
               </p>
             </div>
@@ -321,7 +321,7 @@ export default function ProductPreview() {
               type="button"
               onClick={() => toggleAudio('reel-full')}
               aria-label={isReelPlaying ? 'Pause stem reel' : 'Play stem reel'}
-              className="tt-btn px-4 py-2 rounded-full bg-zinc-950/90 border border-zinc-600 text-sm font-medium text-zinc-100 hover:border-[#C8FF00] hover:text-[#C8FF00] inline-flex items-center gap-1.5 shrink-0 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8FF00]"
+              className="tt-btn px-4 py-2 rounded-full bg-[#001633]/90 border border-[#A0153E] text-sm text-white hover:bg-[#FF204E] hover:border-[#FF204E] inline-flex items-center gap-1.5 shrink-0 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FF204E]"
             >
               {isReelPlaying ? (
                 <>
@@ -339,14 +339,14 @@ export default function ProductPreview() {
 
           {/* Bottom Interactive Stem Mixer + Reply CTA */}
           <div className="relative z-10 p-4 space-y-3">
-            <p className="text-base font-medium text-zinc-100 leading-snug">
+            <p className="text-base text-white leading-snug">
               {SITE_CONTENT.preview.reels.clipTitle}
             </p>
 
             {/* Stem layer toggles */}
             <div className="space-y-2">
-              <div className="flex items-center gap-1.5 text-sm text-zinc-300">
-                <Layers className="w-4 h-4 text-[#C8FF00]" aria-hidden="true" />
+              <div className="flex items-center gap-1.5 text-sm text-[#D6E2F5]">
+                <Layers className="w-4 h-4 text-[#FF204E]" aria-hidden="true" />
                 <span>Active stem layers</span>
               </div>
               <div className="grid grid-cols-3 gap-2">
@@ -359,16 +359,16 @@ export default function ProductPreview() {
                       type="button"
                       aria-pressed={active}
                       onClick={() => toggleStem(key)}
-                      className={`tt-btn px-3 py-2 rounded-2xl border text-left cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8FF00] ${
+                      className={`tt-btn px-3 py-2 rounded-2xl border text-left cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FF204E] ${
                         active
-                          ? 'bg-zinc-900/95 border-[#C8FF00]/80 text-zinc-100'
-                          : 'bg-zinc-950/85 border-zinc-700/80 text-zinc-400 hover:text-zinc-200'
+                          ? 'bg-[#5D0E41]/90 border-[#FF204E] text-white'
+                          : 'bg-[#001633]/90 border-[#1E447A] text-[#B8CCE6] hover:text-white'
                       }`}
                     >
-                      <span className="block text-xs font-medium truncate">
+                      <span className="block text-xs truncate">
                         {stem.label}
                       </span>
-                      <span className="block text-[11px] text-zinc-400 truncate mt-0.5">
+                      <span className="block text-[11px] text-[#B8CCE6] truncate mt-0.5">
                         {stem.author}
                       </span>
                     </button>
@@ -380,7 +380,7 @@ export default function ProductPreview() {
             <button
               type="button"
               onClick={scrollToWaitlist}
-              className="tt-btn w-full py-3 px-5 rounded-full bg-[#C8FF00] text-zinc-950 text-sm font-semibold hover:bg-[#D8FF42] flex items-center justify-center gap-2 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8FF00]"
+              className="tt-btn w-full py-3 px-5 rounded-full bg-[#FF204E] text-white text-sm hover:bg-[#A0153E] flex items-center justify-center gap-2 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FF204E]"
             >
               <Sliders className="w-4 h-4" aria-hidden="true" />
               <span>{SITE_CONTENT.preview.reels.challengeLabel}</span>

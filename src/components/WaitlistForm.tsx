@@ -91,12 +91,12 @@ export default function WaitlistForm() {
   };
 
   return (
-    <div className="tt-card-float h-full bg-[#111115] border border-zinc-800/90 rounded-3xl p-7 sm:p-10 flex flex-col justify-between">
+    <div className="tt-card-float h-full bg-[#00224D] border border-[#1E447A]/90 rounded-3xl p-7 sm:p-10 flex flex-col justify-between">
       <div>
-        <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-zinc-50">
+        <h2 className="text-3xl sm:text-4xl text-[#F4F7FC] leading-tight">
           {SITE_CONTENT.waitlist.heading}
         </h2>
-        <p className="mt-3 text-lg text-zinc-300 leading-relaxed">
+        <p className="mt-3 text-lg text-[#D6E2F5] leading-relaxed">
           {SITE_CONTENT.waitlist.body}
         </p>
       </div>
@@ -120,7 +120,7 @@ export default function WaitlistForm() {
         <div>
           <label
             htmlFor="waitlist-email"
-            className="block text-base font-medium text-zinc-200 mb-2.5"
+            className="block text-base text-[#E2ECFA] mb-2.5"
           >
             {SITE_CONTENT.waitlist.emailLabel}
           </label>
@@ -142,15 +142,15 @@ export default function WaitlistForm() {
             }}
             aria-invalid={Boolean(emailError)}
             aria-describedby={emailError ? 'waitlist-email-error' : undefined}
-            className={`w-full h-14 px-5 rounded-2xl bg-[#09090B] border text-base text-zinc-100 placeholder:text-zinc-500 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#C8FF00] ${
-              emailError ? 'border-red-500/80' : 'border-zinc-800 focus:border-[#C8FF00]'
+            className={`w-full h-14 px-5 rounded-2xl bg-[#001633] border text-base text-[#F4F7FC] placeholder:text-[#7E99BE] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#FF204E] ${
+              emailError ? 'border-[#FF204E]' : 'border-[#1E447A] focus:border-[#FF204E]'
             }`}
           />
           {emailError && (
             <p
               id="waitlist-email-error"
               role="alert"
-              className="mt-2.5 text-sm text-red-400 flex items-center gap-2"
+              className="mt-2.5 text-sm text-[#FF7A96] flex items-center gap-2"
             >
               <AlertCircle className="w-4 h-4 shrink-0" aria-hidden="true" />
               <span>{emailError}</span>
@@ -160,7 +160,7 @@ export default function WaitlistForm() {
 
         {/* Role Selector */}
         <fieldset>
-          <legend className="text-base font-medium text-zinc-200 mb-3">
+          <legend className="text-base text-[#E2ECFA] mb-3">
             {SITE_CONTENT.waitlist.roleLabel}
           </legend>
           <div className="flex flex-wrap gap-2.5 sm:gap-3">
@@ -172,10 +172,10 @@ export default function WaitlistForm() {
                   type="button"
                   aria-pressed={selected}
                   onClick={() => setRole(option)}
-                  className={`tt-btn h-12 px-5 rounded-full border text-base font-medium whitespace-nowrap shrink-0 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8FF00] ${
+                  className={`tt-btn h-12 px-5 rounded-full border text-base whitespace-nowrap shrink-0 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FF204E] ${
                     selected
-                      ? 'bg-[#C8FF00] text-zinc-950 border-[#C8FF00]'
-                      : 'bg-[#09090B] text-zinc-300 border-zinc-700/80 hover:border-zinc-500 hover:text-zinc-100'
+                      ? 'bg-[#FF204E] text-white border-[#FF204E] shadow-[0_6px_22px_-6px_rgba(255,32,78,0.65)]'
+                      : 'bg-[#001633] text-[#D6E2F5] border-[#5D0E41]/90 hover:border-[#A0153E] hover:text-white'
                   }`}
                 >
                   {option}
@@ -187,7 +187,7 @@ export default function WaitlistForm() {
 
         {/* Looking For Selector */}
         <fieldset>
-          <legend className="text-base font-medium text-zinc-200 mb-3">
+          <legend className="text-base text-[#E2ECFA] mb-3">
             {SITE_CONTENT.waitlist.lookingForLabel}
           </legend>
           <div className="flex flex-wrap gap-2.5 sm:gap-3">
@@ -199,10 +199,10 @@ export default function WaitlistForm() {
                   type="button"
                   aria-pressed={selected}
                   onClick={() => setLookingFor(option)}
-                  className={`tt-btn h-12 px-5 rounded-full border text-base font-medium whitespace-nowrap shrink-0 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8FF00] ${
+                  className={`tt-btn h-12 px-5 rounded-full border text-base whitespace-nowrap shrink-0 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FF204E] ${
                     selected
-                      ? 'bg-[#C8FF00] text-zinc-950 border-[#C8FF00]'
-                      : 'bg-[#09090B] text-zinc-300 border-zinc-700/80 hover:border-zinc-500 hover:text-zinc-100'
+                      ? 'bg-[#FF204E] text-white border-[#FF204E] shadow-[0_6px_22px_-6px_rgba(255,32,78,0.65)]'
+                      : 'bg-[#001633] text-[#D6E2F5] border-[#5D0E41]/90 hover:border-[#A0153E] hover:text-white'
                   }`}
                 >
                   {option}
@@ -217,7 +217,7 @@ export default function WaitlistForm() {
           <button
             type="submit"
             disabled={status === 'submitting'}
-            className="tt-btn w-full sm:w-auto min-w-[230px] h-14 px-8 rounded-full bg-[#C8FF00] text-zinc-950 font-semibold text-base hover:bg-[#D8FF42] disabled:opacity-60 disabled:cursor-not-allowed inline-flex items-center justify-center gap-2.5 whitespace-nowrap shrink-0 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8FF00] focus-visible:ring-offset-2 focus-visible:ring-offset-[#111115]"
+            className="tt-btn w-full sm:w-auto min-w-[230px] h-14 px-8 rounded-full bg-[#FF204E] text-white text-base hover:bg-[#A0153E] disabled:opacity-60 disabled:cursor-not-allowed inline-flex items-center justify-center gap-2.5 whitespace-nowrap shrink-0 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FF204E] focus-visible:ring-offset-2 focus-visible:ring-offset-[#00224D]"
           >
             {status === 'submitting' && (
               <Loader2 className="w-4 h-4 animate-spin" aria-hidden="true" />
@@ -232,9 +232,9 @@ export default function WaitlistForm() {
           {status === 'success' && (
             <div
               role="status"
-              className="p-4 rounded-2xl bg-emerald-950/60 border border-emerald-700/60 text-emerald-200 text-base flex items-center gap-3"
+              className="p-4 rounded-2xl bg-[#5D0E41]/60 border border-[#FF204E]/65 text-white text-base flex items-center gap-3"
             >
-              <CheckCircle2 className="w-5 h-5 text-[#C8FF00] shrink-0" aria-hidden="true" />
+              <CheckCircle2 className="w-5 h-5 text-[#FF5C7D] shrink-0" aria-hidden="true" />
               <span>{feedbackMessage}</span>
             </div>
           )}
@@ -242,9 +242,9 @@ export default function WaitlistForm() {
           {status === 'duplicate' && (
             <div
               role="status"
-              className="p-4 rounded-2xl bg-zinc-900 border border-zinc-700 text-zinc-200 text-base flex items-center gap-3"
+              className="p-4 rounded-2xl bg-[#001633] border border-[#A0153E]/80 text-[#F4F7FC] text-base flex items-center gap-3"
             >
-              <Info className="w-5 h-5 text-[#C8FF00] shrink-0" aria-hidden="true" />
+              <Info className="w-5 h-5 text-[#FF5C7D] shrink-0" aria-hidden="true" />
               <span>{feedbackMessage}</span>
             </div>
           )}
@@ -252,9 +252,9 @@ export default function WaitlistForm() {
           {status === 'error' && (
             <div
               role="alert"
-              className="p-4 rounded-2xl bg-red-950/60 border border-red-700/60 text-red-200 text-base flex items-center gap-3"
+              className="p-4 rounded-2xl bg-[#5D0E41]/80 border border-[#FF204E] text-white text-base flex items-center gap-3"
             >
-              <AlertCircle className="w-5 h-5 text-red-400 shrink-0" aria-hidden="true" />
+              <AlertCircle className="w-5 h-5 text-[#FF5C7D] shrink-0" aria-hidden="true" />
               <span>{feedbackMessage}</span>
             </div>
           )}

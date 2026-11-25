@@ -10,7 +10,7 @@ export default function FaqAccordion() {
   };
 
   return (
-    <div className="divide-y divide-zinc-800/80 border-t border-b border-zinc-800/80">
+    <div className="divide-y divide-[#193C70]/85 border-t border-b border-[#193C70]/85">
       {SITE_CONTENT.faq.items.map((item) => {
         const isOpen = openId === item.id;
         const panelId = `faq-panel-${item.id}`;
@@ -25,12 +25,12 @@ export default function FaqAccordion() {
                 aria-expanded={isOpen}
                 aria-controls={panelId}
                 onClick={() => toggleItem(item.id)}
-                className="w-full py-5 flex items-center justify-between gap-4 text-left text-lg sm:text-xl font-medium text-zinc-100 hover:text-[#C8FF00] transition-colors duration-200 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8FF00] rounded-2xl"
+                className="w-full py-5 flex items-center justify-between gap-4 text-left text-lg sm:text-xl text-[#F4F7FC] hover:text-[#FF5C7D] transition-colors duration-200 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FF204E] rounded-2xl"
               >
                 <span>{item.question}</span>
                 <ChevronDown
-                  className={`w-5 h-5 text-zinc-400 shrink-0 transition-transform duration-200 ${
-                    isOpen ? 'rotate-180 text-[#C8FF00]' : ''
+                  className={`w-5 h-5 text-[#9FB4D1] shrink-0 transition-transform duration-200 ${
+                    isOpen ? 'rotate-180 text-[#FF204E]' : ''
                   }`}
                   aria-hidden="true"
                 />
@@ -41,7 +41,7 @@ export default function FaqAccordion() {
               role="region"
               aria-labelledby={buttonId}
               hidden={!isOpen}
-              className="pb-6 pr-8 text-base sm:text-lg text-zinc-300 leading-relaxed"
+              className="pb-6 pr-8 text-base sm:text-lg text-[#D6E2F5] leading-relaxed"
             >
               {item.answer}
             </div>

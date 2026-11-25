@@ -47,7 +47,7 @@ export const SITE_CONTENT = {
     keywords:
       'music collaboration, producer portfolio, singer collaboration, beatmakers and vocalists, music reels, remote music stems, songwriter network, TuneTactics',
     ogImagePath: '/og-cover.jpg',
-    ogImageAlt: 'TuneTactics — Glowing lime acoustic waveform on a dark recording studio desk',
+    ogImageAlt: 'TuneTactics — Crimson acoustic waveform on a midnight navy recording studio desk',
     locale: 'en_US',
   },
   nav: {

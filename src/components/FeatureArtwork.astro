@@ -7,7 +7,7 @@ const { featureId } = Astro.props;
 ---
 
 <div
-  class="relative w-full h-[210px] sm:h-[224px] rounded-2xl bg-[#09090B] border border-zinc-800/80 overflow-hidden mb-6 flex items-center justify-center select-none"
+  class="relative w-full h-[210px] sm:h-[224px] rounded-2xl bg-[#00142E] border border-[#193C70]/90 overflow-hidden mb-6 flex items-center justify-center select-none"
   aria-hidden="true"
   data-testid={`feature-art-${featureId}`}
 >
@@ -15,58 +15,59 @@ const { featureId } = Astro.props;
     <svg viewBox="0 0 460 200" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full h-full">
       <defs>
         <linearGradient id="tt-feat-port-glow" x1="0" y1="0" x2="460" y2="200" gradientUnits="userSpaceOnUse">
-          <stop offset="0%" stop-color="#C8FF00" stop-opacity="0.1" />
-          <stop offset="100%" stop-color="#C8FF00" stop-opacity="0" />
+          <stop offset="0%" stop-color="#FF204E" stop-opacity="0.16" />
+          <stop offset="55%" stop-color="#5D0E41" stop-opacity="0.14" />
+          <stop offset="100%" stop-color="#00224D" stop-opacity="0" />
         </linearGradient>
       </defs>
       <rect width="460" height="200" fill="url(#tt-feat-port-glow)" />
 
       <!-- Subtle architectural grid -->
-      <path d="M0 50 H460 M0 100 H460 M0 150 H460 M115 0 V200 M230 0 V200 M345 0 V200" stroke="#18181D" stroke-width="1" />
+      <path d="M0 50 H460 M0 100 H460 M0 150 H460 M115 0 V200 M230 0 V200 M345 0 V200" stroke="#0C2B57" stroke-width="1" />
 
       <!-- Vinyl / Track Disc on Left -->
       <g transform="translate(92, 100)">
         <g class="tt-feat-spin">
-          <circle cx="0" cy="0" r="56" fill="#141419" stroke="#27272A" stroke-width="2" />
-          <circle cx="0" cy="0" r="44" stroke="#27272A" stroke-width="1" stroke-dasharray="10 6" />
-          <circle cx="0" cy="0" r="32" stroke="#C8FF00" stroke-opacity="0.45" stroke-width="1.5" stroke-dasharray="14 8" />
-          <circle cx="0" cy="0" r="18" fill="#1F1F26" stroke="#C8FF00" stroke-width="1.5" />
-          <circle cx="0" cy="0" r="5" fill="#C8FF00" />
+          <circle cx="0" cy="0" r="56" fill="#00224D" stroke="#5D0E41" stroke-width="2" />
+          <circle cx="0" cy="0" r="44" stroke="#A0153E" stroke-opacity="0.6" stroke-width="1" stroke-dasharray="10 6" />
+          <circle cx="0" cy="0" r="32" stroke="#FF204E" stroke-opacity="0.7" stroke-width="1.5" stroke-dasharray="14 8" />
+          <circle cx="0" cy="0" r="18" fill="#5D0E41" stroke="#FF204E" stroke-width="1.5" />
+          <circle cx="0" cy="0" r="5" fill="#FF204E" />
         </g>
       </g>
 
       <!-- Floating Embedded Player Card -->
       <g class="tt-feat-float-slow">
-        <rect x="174" y="34" width="250" height="72" rx="14" fill="#141419" stroke="#3F3F46" stroke-width="1.2" />
-        <rect x="190" y="50" width="24" height="24" rx="12" fill="#C8FF00" />
-        <path d="M199 57 L207 62 L199 67 Z" fill="#09090B" />
-        <rect x="226" y="51" width="96" height="7" rx="3.5" fill="#F4F4F5" />
-        <rect x="226" y="64" width="64" height="5" rx="2.5" fill="#71717A" />
+        <rect x="174" y="34" width="250" height="72" rx="14" fill="#00224D" stroke="#A0153E" stroke-width="1.2" />
+        <rect x="190" y="50" width="24" height="24" rx="12" fill="#FF204E" />
+        <path d="M199 57 L207 62 L199 67 Z" fill="#FFFFFF" />
+        <rect x="226" y="51" width="96" height="7" rx="3.5" fill="#F4F7FC" />
+        <rect x="226" y="64" width="64" height="5" rx="2.5" fill="#9FB4D1" />
 
         <!-- Animated EQ bars inside player -->
         <g transform="translate(190, 86)">
-          <rect x="0" y="0" width="5" height="10" rx="2.5" fill="#C8FF00" class="tt-eq-bar" style="--eq-delay: 0ms;" />
-          <rect x="10" y="-4" width="5" height="14" rx="2.5" fill="#C8FF00" class="tt-eq-bar" style="--eq-delay: 120ms;" />
-          <rect x="20" y="-2" width="5" height="12" rx="2.5" fill="#F4F4F5" class="tt-eq-bar" style="--eq-delay: 240ms;" />
-          <rect x="30" y="-6" width="5" height="16" rx="2.5" fill="#C8FF00" class="tt-eq-bar" style="--eq-delay: 80ms;" />
-          <rect x="40" y="-1" width="5" height="11" rx="2.5" fill="#A1A1AA" class="tt-eq-bar" style="--eq-delay: 200ms;" />
-          <rect x="50" y="-5" width="5" height="15" rx="2.5" fill="#C8FF00" class="tt-eq-bar" style="--eq-delay: 320ms;" />
-          <rect x="60" y="-2" width="5" height="12" rx="2.5" fill="#F4F4F5" class="tt-eq-bar" style="--eq-delay: 160ms;" />
-          <rect x="70" y="0" width="5" height="10" rx="2.5" fill="#71717A" class="tt-eq-bar" style="--eq-delay: 280ms;" />
-          <rect x="88" y="4" width="126" height="3" rx="1.5" fill="#27272A" />
-          <rect x="88" y="4" width="126" height="3" rx="1.5" fill="#C8FF00" class="tt-feat-progress" />
+          <rect x="0" y="0" width="5" height="10" rx="2.5" fill="#FF204E" class="tt-eq-bar" style="--eq-delay: 0ms;" />
+          <rect x="10" y="-4" width="5" height="14" rx="2.5" fill="#FF204E" class="tt-eq-bar" style="--eq-delay: 120ms;" />
+          <rect x="20" y="-2" width="5" height="12" rx="2.5" fill="#F4F7FC" class="tt-eq-bar" style="--eq-delay: 240ms;" />
+          <rect x="30" y="-6" width="5" height="16" rx="2.5" fill="#FF204E" class="tt-eq-bar" style="--eq-delay: 80ms;" />
+          <rect x="40" y="-1" width="5" height="11" rx="2.5" fill="#A0153E" class="tt-eq-bar" style="--eq-delay: 200ms;" />
+          <rect x="50" y="-5" width="5" height="15" rx="2.5" fill="#FF204E" class="tt-eq-bar" style="--eq-delay: 320ms;" />
+          <rect x="60" y="-2" width="5" height="12" rx="2.5" fill="#F4F7FC" class="tt-eq-bar" style="--eq-delay: 160ms;" />
+          <rect x="70" y="0" width="5" height="10" rx="2.5" fill="#9FB4D1" class="tt-eq-bar" style="--eq-delay: 280ms;" />
+          <rect x="88" y="4" width="126" height="3" rx="1.5" fill="#193C70" />
+          <rect x="88" y="4" width="126" height="3" rx="1.5" fill="#FF204E" class="tt-feat-progress" />
         </g>
       </g>
 
       <!-- Floating Gear & Reel Cards Below -->
       <g class="tt-feat-float-offset">
-        <rect x="174" y="120" width="118" height="46" rx="12" fill="#111115" stroke="#27272A" stroke-width="1.2" />
-        <rect x="188" y="133" width="54" height="6" rx="3" fill="#E4E4E7" />
-        <rect x="188" y="145" width="84" height="5" rx="2.5" fill="#C8FF00" fill-opacity="0.7" />
+        <rect x="174" y="120" width="118" height="46" rx="12" fill="#001B3E" stroke="#5D0E41" stroke-width="1.2" />
+        <rect x="188" y="133" width="54" height="6" rx="3" fill="#E2ECFA" />
+        <rect x="188" y="145" width="84" height="5" rx="2.5" fill="#FF204E" fill-opacity="0.85" />
 
-        <rect x="306" y="120" width="118" height="46" rx="12" fill="#111115" stroke="#27272A" stroke-width="1.2" />
-        <rect x="320" y="133" width="44" height="6" rx="3" fill="#E4E4E7" />
-        <rect x="320" y="145" width="76" height="5" rx="2.5" fill="#71717A" />
+        <rect x="306" y="120" width="118" height="46" rx="12" fill="#001B3E" stroke="#193C70" stroke-width="1.2" />
+        <rect x="320" y="133" width="44" height="6" rx="3" fill="#E2ECFA" />
+        <rect x="320" y="145" width="76" height="5" rx="2.5" fill="#A0153E" />
       </g>
     </svg>
   )}
@@ -75,101 +76,101 @@ const { featureId } = Astro.props;
     <svg viewBox="0 0 460 200" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full h-full">
       <defs>
         <linearGradient id="tt-radar-beam" x1="0" y1="0" x2="72" y2="0" gradientUnits="userSpaceOnUse">
-          <stop offset="0%" stop-color="#C8FF00" stop-opacity="0.55" />
-          <stop offset="100%" stop-color="#C8FF00" stop-opacity="0" />
+          <stop offset="0%" stop-color="#FF204E" stop-opacity="0.65" />
+          <stop offset="100%" stop-color="#5D0E41" stop-opacity="0" />
         </linearGradient>
       </defs>
 
       <!-- Concentric Acoustic Radar Rings -->
       <g transform="translate(150, 100)">
-        <circle cx="0" cy="0" r="76" stroke="#27272A" stroke-width="1.2" />
-        <circle cx="0" cy="0" r="52" stroke="#27272A" stroke-width="1.2" stroke-dasharray="5 5" />
-        <circle cx="0" cy="0" r="28" stroke="#3F3F46" stroke-width="1.2" />
-        <line x1="-82" y1="0" x2="82" y2="0" stroke="#18181D" stroke-width="1" />
-        <line x1="0" y1="-82" x2="0" y2="82" stroke="#18181D" stroke-width="1" />
+        <circle cx="0" cy="0" r="76" stroke="#193C70" stroke-width="1.2" />
+        <circle cx="0" cy="0" r="52" stroke="#5D0E41" stroke-width="1.2" stroke-dasharray="5 5" />
+        <circle cx="0" cy="0" r="28" stroke="#A0153E" stroke-width="1.2" />
+        <line x1="-82" y1="0" x2="82" y2="0" stroke="#0C2B57" stroke-width="1" />
+        <line x1="0" y1="-82" x2="0" y2="82" stroke="#0C2B57" stroke-width="1" />
 
         <!-- Rotating Radar Sweep -->
         <g class="tt-feat-radar">
           <circle cx="0" cy="0" r="76" stroke="transparent" stroke-width="1" fill="none" />
           <path d="M0 0 L74 -20 A76 76 0 0 1 74 20 Z" fill="url(#tt-radar-beam)" />
-          <line x1="0" y1="0" x2="75" y2="0" stroke="#C8FF00" stroke-width="1.8" stroke-linecap="round" />
+          <line x1="0" y1="0" x2="75" y2="0" stroke="#FF204E" stroke-width="1.8" stroke-linecap="round" />
         </g>
 
-        <circle cx="0" cy="0" r="6" fill="#C8FF00" />
+        <circle cx="0" cy="0" r="6" fill="#FF204E" />
         <!-- Matched Creator Blips -->
         <g class="tt-feat-blip-1">
-          <circle cx="44" cy="-34" r="7" fill="#C8FF00" />
-          <circle cx="44" cy="-34" r="13" stroke="#C8FF00" stroke-opacity="0.45" stroke-width="1.5" />
+          <circle cx="44" cy="-34" r="7" fill="#FF204E" />
+          <circle cx="44" cy="-34" r="13" stroke="#FF204E" stroke-opacity="0.55" stroke-width="1.5" />
         </g>
         <g class="tt-feat-blip-2">
-          <circle cx="-48" cy="24" r="6" fill="#F4F4F5" />
-          <circle cx="-48" cy="24" r="11" stroke="#F4F4F5" stroke-opacity="0.35" stroke-width="1.2" />
+          <circle cx="-48" cy="24" r="6" fill="#F4F7FC" />
+          <circle cx="-48" cy="24" r="11" stroke="#A0153E" stroke-opacity="0.7" stroke-width="1.2" />
         </g>
-        <circle cx="30" cy="48" r="4" fill="#52525B" />
+        <circle cx="30" cy="48" r="4" fill="#5D0E41" />
       </g>
 
       <!-- Right Matched Result Stack -->
       <g class="tt-feat-float-slow">
-        <rect x="260" y="34" width="172" height="58" rx="14" fill="#141419" stroke="#C8FF00" stroke-opacity="0.65" stroke-width="1.2" />
-        <circle cx="286" cy="63" r="14" fill="#C8FF00" />
-        <path d="M281 63 L285 67 L292 59" stroke="#09090B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-        <rect x="310" y="52" width="84" height="7" rx="3.5" fill="#F4F4F5" />
-        <rect x="310" y="66" width="102" height="5" rx="2.5" fill="#C8FF00" fill-opacity="0.85" />
+        <rect x="260" y="34" width="172" height="58" rx="14" fill="#00224D" stroke="#FF204E" stroke-opacity="0.75" stroke-width="1.2" />
+        <circle cx="286" cy="63" r="14" fill="#FF204E" />
+        <path d="M281 63 L285 67 L292 59" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+        <rect x="310" y="52" width="84" height="7" rx="3.5" fill="#F4F7FC" />
+        <rect x="310" y="66" width="102" height="5" rx="2.5" fill="#FF5C7D" />
       </g>
 
       <g class="tt-feat-float-offset">
-        <rect x="260" y="108" width="172" height="58" rx="14" fill="#111115" stroke="#3F3F46" stroke-width="1.2" />
-        <circle cx="286" cy="137" r="14" fill="#1F1F26" stroke="#71717A" stroke-width="1.2" />
-        <rect x="310" y="126" width="76" height="7" rx="3.5" fill="#E4E4E7" />
-        <rect x="310" y="140" width="94" height="5" rx="2.5" fill="#71717A" />
+        <rect x="260" y="108" width="172" height="58" rx="14" fill="#001B3E" stroke="#5D0E41" stroke-width="1.2" />
+        <circle cx="286" cy="137" r="14" fill="#5D0E41" stroke="#A0153E" stroke-width="1.2" />
+        <rect x="310" y="126" width="76" height="7" rx="3.5" fill="#E2ECFA" />
+        <rect x="310" y="140" width="94" height="5" rx="2.5" fill="#9FB4D1" />
       </g>
     </svg>
   )}
 
   {featureId === 'reels' && (
     <svg viewBox="0 0 460 200" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full h-full">
-      <path d="M0 100 H460" stroke="#18181D" stroke-width="1" />
+      <path d="M0 100 H460" stroke="#0C2B57" stroke-width="1" />
 
       <!-- Left Incoming Vocal Stem Card -->
       <g class="tt-feat-slide-left">
-        <rect x="34" y="54" width="122" height="92" rx="14" fill="#141419" stroke="#3F3F46" stroke-width="1.2" />
-        <rect x="48" y="70" width="54" height="6" rx="3" fill="#F4F4F5" />
-        <rect x="48" y="83" width="82" height="4.5" rx="2.25" fill="#71717A" />
+        <rect x="34" y="54" width="122" height="92" rx="14" fill="#00224D" stroke="#5D0E41" stroke-width="1.2" />
+        <rect x="48" y="70" width="54" height="6" rx="3" fill="#F4F7FC" />
+        <rect x="48" y="83" width="82" height="4.5" rx="2.25" fill="#9FB4D1" />
         <g transform="translate(48, 114)">
-          <rect x="0" y="0" width="4" height="16" rx="2" fill="#F4F4F5" class="tt-eq-bar" style="--eq-delay: 40ms;" />
-          <rect x="10" y="-5" width="4" height="21" rx="2" fill="#F4F4F5" class="tt-eq-bar" style="--eq-delay: 180ms;" />
-          <rect x="20" y="-2" width="4" height="18" rx="2" fill="#C8FF00" class="tt-eq-bar" style="--eq-delay: 90ms;" />
-          <rect x="30" y="-7" width="4" height="23" rx="2" fill="#F4F4F5" class="tt-eq-bar" style="--eq-delay: 250ms;" />
-          <rect x="40" y="-1" width="4" height="17" rx="2" fill="#A1A1AA" class="tt-eq-bar" style="--eq-delay: 140ms;" />
+          <rect x="0" y="0" width="4" height="16" rx="2" fill="#F4F7FC" class="tt-eq-bar" style="--eq-delay: 40ms;" />
+          <rect x="10" y="-5" width="4" height="21" rx="2" fill="#F4F7FC" class="tt-eq-bar" style="--eq-delay: 180ms;" />
+          <rect x="20" y="-2" width="4" height="18" rx="2" fill="#FF204E" class="tt-eq-bar" style="--eq-delay: 90ms;" />
+          <rect x="30" y="-7" width="4" height="23" rx="2" fill="#F4F7FC" class="tt-eq-bar" style="--eq-delay: 250ms;" />
+          <rect x="40" y="-1" width="4" height="17" rx="2" fill="#A0153E" class="tt-eq-bar" style="--eq-delay: 140ms;" />
         </g>
       </g>
 
       <!-- Center Vertical Music Reel Frame -->
       <g class="tt-feat-float-slow">
-        <rect x="176" y="20" width="108" height="160" rx="18" fill="#17171D" stroke="#C8FF00" stroke-width="1.5" />
-        <rect x="188" y="34" width="84" height="86" rx="10" fill="#09090B" stroke="#27272A" />
+        <rect x="176" y="20" width="108" height="160" rx="18" fill="#00224D" stroke="#FF204E" stroke-width="1.5" />
+        <rect x="188" y="34" width="84" height="86" rx="10" fill="#5D0E41" fill-opacity="0.45" stroke="#A0153E" />
         <!-- Play icon inside vertical reel -->
-        <circle cx="230" cy="77" r="16" fill="#C8FF00" />
-        <path d="M226 71 L237 77 L226 83 Z" fill="#09090B" />
+        <circle cx="230" cy="77" r="16" fill="#FF204E" />
+        <path d="M226 71 L237 77 L226 83 Z" fill="#FFFFFF" />
 
         <!-- Reel Waveform Track Bars -->
-        <rect x="188" y="132" width="62" height="6" rx="3" fill="#F4F4F5" />
-        <rect x="188" y="145" width="84" height="4" rx="2" fill="#27272A" />
-        <rect x="188" y="145" width="84" height="4" rx="2" fill="#C8FF00" class="tt-feat-progress" />
-        <rect x="188" y="157" width="46" height="4" rx="2" fill="#71717A" />
+        <rect x="188" y="132" width="62" height="6" rx="3" fill="#F4F7FC" />
+        <rect x="188" y="145" width="84" height="4" rx="2" fill="#193C70" />
+        <rect x="188" y="145" width="84" height="4" rx="2" fill="#FF204E" class="tt-feat-progress" />
+        <rect x="188" y="157" width="46" height="4" rx="2" fill="#9FB4D1" />
       </g>
 
       <!-- Right Incoming Drum/Bass Stem Card -->
       <g class="tt-feat-slide-right">
-        <rect x="304" y="54" width="122" height="92" rx="14" fill="#141419" stroke="#C8FF00" stroke-opacity="0.55" stroke-width="1.2" />
-        <rect x="318" y="70" width="60" height="6" rx="3" fill="#C8FF00" />
-        <rect x="318" y="83" width="76" height="4.5" rx="2.25" fill="#A1A1AA" />
+        <rect x="304" y="54" width="122" height="92" rx="14" fill="#00224D" stroke="#A0153E" stroke-width="1.2" />
+        <rect x="318" y="70" width="60" height="6" rx="3" fill="#FF5C7D" />
+        <rect x="318" y="83" width="76" height="4.5" rx="2.25" fill="#9FB4D1" />
         <g transform="translate(318, 114)">
-          <rect x="0" y="-4" width="4" height="20" rx="2" fill="#C8FF00" class="tt-eq-bar" style="--eq-delay: 0ms;" />
-          <rect x="10" y="-8" width="4" height="24" rx="2" fill="#C8FF00" class="tt-eq-bar" style="--eq-delay: 160ms;" />
-          <rect x="20" y="-1" width="4" height="17" rx="2" fill="#F4F4F5" class="tt-eq-bar" style="--eq-delay: 280ms;" />
-          <rect x="30" y="-6" width="4" height="22" rx="2" fill="#C8FF00" class="tt-eq-bar" style="--eq-delay: 110ms;" />
-          <rect x="40" y="-3" width="4" height="19" rx="2" fill="#F4F4F5" class="tt-eq-bar" style="--eq-delay: 220ms;" />
+          <rect x="0" y="-4" width="4" height="20" rx="2" fill="#FF204E" class="tt-eq-bar" style="--eq-delay: 0ms;" />
+          <rect x="10" y="-8" width="4" height="24" rx="2" fill="#FF204E" class="tt-eq-bar" style="--eq-delay: 160ms;" />
+          <rect x="20" y="-1" width="4" height="17" rx="2" fill="#F4F7FC" class="tt-eq-bar" style="--eq-delay: 280ms;" />
+          <rect x="30" y="-6" width="4" height="22" rx="2" fill="#FF204E" class="tt-eq-bar" style="--eq-delay: 110ms;" />
+          <rect x="40" y="-3" width="4" height="19" rx="2" fill="#F4F7FC" class="tt-eq-bar" style="--eq-delay: 220ms;" />
         </g>
       </g>
     </svg>
@@ -178,34 +179,34 @@ const { featureId } = Astro.props;
   {featureId === 'connect' && (
     <svg viewBox="0 0 460 200" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full h-full">
       <!-- Top Direct Studio Thread Conduit -->
-      <rect x="30" y="28" width="400" height="86" rx="16" fill="#111115" stroke="#C8FF00" stroke-opacity="0.45" stroke-width="1.2" />
+      <rect x="30" y="28" width="400" height="86" rx="16" fill="#00224D" stroke="#FF204E" stroke-opacity="0.6" stroke-width="1.2" />
 
       <!-- Left Musician -->
-      <circle cx="72" cy="71" r="20" fill="#17171D" stroke="#C8FF00" stroke-width="1.8" />
-      <path d="M64 79 C64 73, 80 73, 80 79" stroke="#C8FF00" stroke-width="1.8" stroke-linecap="round" />
-      <circle cx="72" cy="65" r="4.5" fill="#C8FF00" />
+      <circle cx="72" cy="71" r="20" fill="#5D0E41" stroke="#FF204E" stroke-width="1.8" />
+      <path d="M64 79 C64 73, 80 73, 80 79" stroke="#FFFFFF" stroke-width="1.8" stroke-linecap="round" />
+      <circle cx="72" cy="65" r="4.5" fill="#FFFFFF" />
 
       <!-- Right Collaborator -->
-      <circle cx="388" cy="71" r="20" fill="#17171D" stroke="#F4F4F5" stroke-width="1.8" />
-      <path d="M380 79 C380 73, 396 73, 396 79" stroke="#F4F4F5" stroke-width="1.8" stroke-linecap="round" />
-      <circle cx="388" cy="65" r="4.5" fill="#F4F4F5" />
+      <circle cx="388" cy="71" r="20" fill="#001B3E" stroke="#F4F7FC" stroke-width="1.8" />
+      <path d="M380 79 C380 73, 396 73, 396 79" stroke="#F4F7FC" stroke-width="1.8" stroke-linecap="round" />
+      <circle cx="388" cy="65" r="4.5" fill="#F4F7FC" />
 
       <!-- Direct Signal Track & Gliding Packets -->
-      <line x1="104" y1="71" x2="356" y2="71" stroke="#27272A" stroke-width="2" />
-      <line x1="104" y1="71" x2="356" y2="71" stroke="#C8FF00" stroke-opacity="0.45" stroke-width="2" stroke-dasharray="6 6" />
+      <line x1="104" y1="71" x2="356" y2="71" stroke="#193C70" stroke-width="2" />
+      <line x1="104" y1="71" x2="356" y2="71" stroke="#FF204E" stroke-opacity="0.6" stroke-width="2" stroke-dasharray="6 6" />
 
       <g class="tt-feat-packet-1">
-        <rect x="190" y="55" width="74" height="32" rx="16" fill="#C8FF00" />
-        <rect x="205" y="66" width="44" height="4" rx="2" fill="#09090B" />
-        <rect x="205" y="74" width="28" height="3.5" rx="1.75" fill="#09090B" fill-opacity="0.7" />
+        <rect x="190" y="55" width="74" height="32" rx="16" fill="#FF204E" />
+        <rect x="205" y="66" width="44" height="4" rx="2" fill="#FFFFFF" />
+        <rect x="205" y="74" width="28" height="3.5" rx="1.75" fill="#FFFFFF" fill-opacity="0.75" />
       </g>
 
       <!-- Bottom Buried DM Contrast (Bypassed Noise) -->
-      <g opacity="0.5">
-        <rect x="30" y="130" width="400" height="42" rx="12" fill="#111115" stroke="#27272A" stroke-width="1" />
-        <rect x="48" y="147" width="84" height="6" rx="3" fill="#3F3F46" />
-        <rect x="148" y="147" width="110" height="6" rx="3" fill="#27272A" />
-        <path d="M398 145 L410 157 M410 145 L398 157" stroke="#EF4444" stroke-width="1.8" stroke-linecap="round" />
+      <g opacity="0.58">
+        <rect x="30" y="130" width="400" height="42" rx="12" fill="#001B3E" stroke="#193C70" stroke-width="1" />
+        <rect x="48" y="147" width="84" height="6" rx="3" fill="#2A4F82" />
+        <rect x="148" y="147" width="110" height="6" rx="3" fill="#193C70" />
+        <path d="M398 145 L410 157 M410 145 L398 157" stroke="#FF204E" stroke-width="1.8" stroke-linecap="round" />
       </g>
     </svg>
   )}
