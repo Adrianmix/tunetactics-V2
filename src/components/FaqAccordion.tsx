@@ -29,7 +29,7 @@ export default function FaqAccordion() {
               >
                 <span>{item.question}</span>
                 <ChevronDown
-                  className={`w-5 h-5 text-[#9FB4D1] shrink-0 transition-transform duration-200 ${
+                  className={`w-5 h-5 text-[#9FB4D1] shrink-0 transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none ${
                     isOpen ? 'rotate-180 text-[#FF204E]' : ''
                   }`}
                   aria-hidden="true"
@@ -40,10 +40,16 @@ export default function FaqAccordion() {
               id={panelId}
               role="region"
               aria-labelledby={buttonId}
-              hidden={!isOpen}
-              className="pb-6 pr-8 text-base sm:text-lg text-[#D6E2F5] leading-relaxed"
+              aria-hidden={!isOpen}
+              className={`grid transition-[grid-template-rows,opacity] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none ${
+                isOpen ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0 pointer-events-none'
+              }`}
             >
-              {item.answer}
+              <div className="overflow-hidden">
+                <p className="pb-6 pr-8 text-base sm:text-lg text-[#D6E2F5] leading-relaxed">
+                  {item.answer}
+                </p>
+              </div>
             </div>
           </div>
         );

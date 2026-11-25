@@ -334,6 +334,7 @@ export const SITE_CONTENT = {
     links: [
       { label: 'Privacy', action: 'privacy' as const },
       { label: 'Terms', action: 'terms' as const },
+      { label: 'Credits', action: 'credits' as const },
       { label: 'Contact', href: 'mailto:support@tunetactics.ir' },
     ],
     legal: {
@@ -343,6 +344,34 @@ export const SITE_CONTENT = {
       termsTitle: 'Terms of Access',
       termsBody:
         'Joining the TuneTactics waitlist reserves early access to our private beta and qualifies founding members for complimentary Pro tier features at launch. Waitlist registration does not create any paid obligation. Questions can be sent to support@tunetactics.ir.',
+    },
+    credits: {
+      title: 'Credits',
+      items: [
+        {
+          label: 'Designer',
+          subject: 'adrianmix',
+          links: [{ text: 'me.tunetactics.ir', href: 'https://me.tunetactics.ir' }],
+        },
+        {
+          label: 'Pole',
+          subject: 'by ProdbyMD1',
+          links: [
+            { text: 'YouTube', href: 'https://www.youtube.com/@ssaymd1' },
+            { text: 'Telegram', href: 'https://t.me/ProdBiMD' },
+          ],
+        },
+        {
+          label: 'K9',
+          subject: 'by HMD4ever',
+          links: [{ text: 'Telegram', href: 'https://t.me/prodbyhmd_music' }],
+        },
+        {
+          label: 'Images',
+          subject: 'Open source & AI generated',
+          links: [],
+        },
+      ],
     },
   },
 } as const;
