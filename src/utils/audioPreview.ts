@@ -1,6 +1,7 @@
-// Procedural Web Audio API synthesizer + AnalyserNode FFT stream for interactive previews.
-// Zero external audio file dependencies.
+// Hybrid Web Audio API engine: plays real uploaded audio sample for hero visualizer
+// and procedural synthesizer previews for portfolio/reel modes, feeding AnalyserNode FFT.
 
+import { SITE_CONTENT } from '../data/content';
 import { computeAudioBands, type AudioBands } from './visualizerMath';
 
 export type PreviewMode =
@@ -10,7 +11,8 @@ export type PreviewMode =
   | 'reel-vocal'
   | 'reel-full';
 
-export const HERO_SAMPLE_DURATION_SEC = 16;
+export const HERO_SAMPLE_DURATION_SEC = 61;
+export const PRODUCER_SAMPLE_DURATION_SEC = 60;
 
 type Listener = (mode: PreviewMode | null, step: number) => void;
 
@@ -19,6 +21,12 @@ class StudioAudioEngine {
   private analyser: AnalyserNode | null = null;
   private masterGain: GainNode | null = null;
   private freqBuffer: Uint8Array<ArrayBuffer> | null = null;
+  private heroAudio: HTMLAudioElement | null = null;
+  private heroSource: MediaElementAudioSourceNode | null = null;
+  private heroTimerId: number | null = null;
+  private producerAudio: HTMLAudioElement | null = null;
+  private producerSource: MediaElementAudioSourceNode | null = null;
+  private producerTimerId: number | null = null;
   private timerId: number | null = null;
   private step = 0;
   private activeMode: PreviewMode | null = null;
@@ -42,7 +50,7 @@ class StudioAudioEngine {
       this.analyser.fftSize = 64;
       this.analyser.smoothingTimeConstant = 0.78;
       this.masterGain = this.ctx.createGain();
-      this.masterGain.gain.value = 0.85;
+      this.masterGain.gain.value = 0.88;
       this.masterGain.connect(this.analyser);
       this.analyser.connect(this.ctx.destination);
       this.freqBuffer = new Uint8Array(this.analyser.frequencyBinCount) as Uint8Array<ArrayBuffer>;
@@ -55,6 +63,94 @@ class StudioAudioEngine {
     return {
       ctx: this.ctx,
       destination: this.masterGain ?? this.ctx.destination,
+    };
+  }
+
+  private ensureHeroAudio(): HTMLAudioElement | null {
+    if (typeof window === 'undefined') return null;
+
+    if (!this.heroAudio) {
+      const audio = new Audio(SITE_CONTENT.hero.visualizerCard.audioSrc);
+      audio.preload = 'metadata';
+      audio.loop = true;
+      audio.addEventListener('timeupdate', () => {
+        if (this.activeMode === 'hero-visualizer') {
+          this.notify();
+        }
+      });
+      audio.addEventListener('loadedmetadata', () => {
+        this.notify();
+      });
+      this.heroAudio = audio;
+    }
+
+    const graph = this.ensureGraph();
+    if (graph && this.heroAudio && !this.heroSource) {
+      this.heroSource = graph.ctx.createMediaElementSource(this.heroAudio);
+      this.heroSource.connect(graph.destination);
+    }
+
+    return this.heroAudio;
+  }
+
+  public getHeroProgress(): { currentTime: number; duration: number } {
+    if (!this.heroAudio) {
+      return { currentTime: 0, duration: HERO_SAMPLE_DURATION_SEC };
+    }
+    const rawDuration = this.heroAudio.duration;
+    const duration =
+      Number.isFinite(rawDuration) && rawDuration > 0
+        ? rawDuration
+        : HERO_SAMPLE_DURATION_SEC;
+    return {
+      currentTime: this.heroAudio.currentTime || 0,
+      duration,
+    };
+  }
+
+  private ensureProducerAudio(): HTMLAudioElement | null {
+    if (typeof window === 'undefined') return null;
+
+    if (!this.producerAudio) {
+      const producerProfile = SITE_CONTENT.preview.profiles.find((p) => p.id === 'producer');
+      const src = producerProfile?.audioSrc;
+      if (!src) return null;
+
+      const audio = new Audio(src);
+      audio.preload = 'metadata';
+      audio.loop = true;
+      audio.addEventListener('timeupdate', () => {
+        if (this.activeMode === 'portfolio-producer') {
+          this.notify();
+        }
+      });
+      audio.addEventListener('loadedmetadata', () => {
+        this.notify();
+      });
+      this.producerAudio = audio;
+    }
+
+    const graph = this.ensureGraph();
+    if (graph && this.producerAudio && !this.producerSource) {
+      this.producerSource = graph.ctx.createMediaElementSource(this.producerAudio);
+      this.producerSource.connect(graph.destination);
+    }
+
+    return this.producerAudio;
+  }
+
+  public getProducerProgress(): { currentTime: number; duration: number } {
+    if (!this.producerAudio) {
+      return { currentTime: 0, duration: PRODUCER_SAMPLE_DURATION_SEC };
+    }
+    const rawDuration = this.producerAudio.duration;
+    const duration =
+      Number.isFinite(rawDuration) && rawDuration > 0
+        ? rawDuration
+        : PRODUCER_SAMPLE_DURATION_SEC;
+    return {
+      currentTime: this.producerAudio.currentTime || 0,
+      duration,
     };
   }
 
@@ -115,15 +211,42 @@ class StudioAudioEngine {
     this.activeMode = mode;
     this.step = 0;
 
-    const bpm =
-      mode === 'hero-visualizer'
-        ? 96
-        : mode === 'portfolio-singer'
-          ? 108
-          : mode === 'portfolio-producer'
-            ? 94
-            : 112;
-    const stepMs = (60 / bpm / 4) * 1000; // 16th-note resolution for hero visualizer & tight groove
+    if (mode === 'hero-visualizer') {
+      const audio = this.ensureHeroAudio();
+      if (audio) {
+        void audio.play().catch(() => {
+          // Ignore autoplay restriction errors if triggered outside gesture
+        });
+      }
+      this.notify();
+      this.heroTimerId = window.setInterval(() => {
+        if (this.activeMode !== 'hero-visualizer') return;
+        this.step += 1;
+        onTick?.(this.step);
+        this.notify();
+      }, 150);
+      return;
+    }
+
+    if (mode === 'portfolio-producer') {
+      const audio = this.ensureProducerAudio();
+      if (audio) {
+        void audio.play().catch(() => {
+          // Ignore autoplay restriction errors if triggered outside gesture
+        });
+      }
+      this.notify();
+      this.producerTimerId = window.setInterval(() => {
+        if (this.activeMode !== 'portfolio-producer') return;
+        this.step += 1;
+        onTick?.(this.step);
+        this.notify();
+      }, 150);
+      return;
+    }
+
+    const bpm = mode === 'portfolio-singer' ? 108 : 112;
+    const stepMs = (60 / bpm / 4) * 1000;
 
     const playStep = () => {
       if (this.activeMode !== mode) return;
@@ -132,8 +255,7 @@ class StudioAudioEngine {
       }
       onTick?.(this.step);
       this.notify();
-      const maxSteps = mode === 'hero-visualizer' ? 64 : 32;
-      this.step = (this.step + 1) % maxSteps;
+      this.step = (this.step + 1) % 32;
     };
 
     playStep();
@@ -145,6 +267,20 @@ class StudioAudioEngine {
     if (this.timerId !== null) {
       window.clearInterval(this.timerId);
       this.timerId = null;
+    }
+    if (this.heroTimerId !== null) {
+      window.clearInterval(this.heroTimerId);
+      this.heroTimerId = null;
+    }
+    if (this.producerTimerId !== null) {
+      window.clearInterval(this.producerTimerId);
+      this.producerTimerId = null;
+    }
+    if (this.heroAudio && !this.heroAudio.paused) {
+      this.heroAudio.pause();
+    }
+    if (this.producerAudio && !this.producerAudio.paused) {
+      this.producerAudio.pause();
     }
     if (emit) {
       this.notify();

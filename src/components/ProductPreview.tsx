@@ -1,13 +1,20 @@
 import { useEffect, useState } from 'react';
 import { Disc3, Layers, Mic2, Pause, Play, Sliders, Volume2 } from 'lucide-react';
 import { STUDIO_ASSETS } from '../data/assets';
-import { SITE_CONTENT } from '../data/content';
-import { studioAudio, type PreviewMode } from '../utils/audioPreview';
+import { SITE_CONTENT, type ProfileShowcase } from '../data/content';
+import {
+  PRODUCER_SAMPLE_DURATION_SEC,
+  studioAudio,
+  type PreviewMode,
+} from '../utils/audioPreview';
+import { formatTrackTime } from '../utils/visualizerMath';
 
 export default function ProductPreview() {
   const [activeProfileId, setActiveProfileId] = useState<'producer' | 'singer'>('producer');
   const [playingMode, setPlayingMode] = useState<PreviewMode | null>(null);
   const [playStep, setPlayStep] = useState(0);
+  const [producerElapsed, setProducerElapsed] = useState(0);
+  const [producerDuration, setProducerDuration] = useState(PRODUCER_SAMPLE_DURATION_SEC);
   const [stems, setStems] = useState({
     vocal: true,
     drums: true,
@@ -15,7 +22,7 @@ export default function ProductPreview() {
   });
   const [brokenImages, setBrokenImages] = useState<Record<string, boolean>>({});
 
-  const activeProfile =
+  const activeProfile: ProfileShowcase =
     SITE_CONTENT.preview.profiles.find((p) => p.id === activeProfileId) ??
     SITE_CONTENT.preview.profiles[0];
 
@@ -27,10 +34,15 @@ export default function ProductPreview() {
     const unsub = studioAudio.subscribe((mode, step) => {
       setPlayingMode(mode);
       setPlayStep(step);
+      const progress = studioAudio.getProducerProgress();
+      setProducerElapsed(progress.currentTime);
+      setProducerDuration(progress.duration);
     });
     return () => {
       unsub();
-      studioAudio.stop();
+      if (studioAudio.getActiveMode() !== 'hero-visualizer') {
+        studioAudio.stop(false);
+      }
     };
   }, []);
 
@@ -130,16 +142,17 @@ export default function ProductPreview() {
               {!brokenImages[activeProfile.id] ? (
                 <img
                   src={
-                    activeProfile.id === 'producer'
+                    activeProfile.avatarSrc ??
+                    (activeProfile.id === 'producer'
                       ? STUDIO_ASSETS.producerAvatar
-                      : STUDIO_ASSETS.singerReelsFrame
+                      : STUDIO_ASSETS.singerReelsFrame)
                   }
                   alt={`${activeProfile.name} studio portrait`}
                   referrerPolicy="no-referrer"
                   onError={() =>
                     setBrokenImages((prev) => ({ ...prev, [activeProfile.id]: true }))
                   }
-                  className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                  className="w-full h-full object-cover object-top transition-transform duration-300 group-hover:scale-105"
                 />
               ) : (
                 <Mic2 className="w-7 h-7 text-[#9FB4D1]" aria-hidden="true" />
@@ -225,6 +238,9 @@ export default function ProductPreview() {
                   {activeProfile.trackTitle}
                 </p>
                 <span className="text-sm text-[#9FB4D1] tabular-nums shrink-0">
+                  {activeProfile.id === 'producer' && (isPortfolioPlaying || producerElapsed > 0)
+                    ? `${formatTrackTime(producerElapsed)} / ${formatTrackTime(producerDuration)} · `
+                    : ''}
                   {activeProfile.bpm} BPM
                 </span>
               </div>
@@ -257,9 +273,19 @@ export default function ProductPreview() {
             aria-label="Track audio waveform preview"
           >
             {activeProfile.waveform.map((heightPct, index) => {
-              const normalizedProgress = isPortfolioPlaying
-                ? ((playStep % 32) / 32) * activeProfile.waveform.length
-                : 10;
+              const safeDuration =
+                producerDuration > 0 ? producerDuration : PRODUCER_SAMPLE_DURATION_SEC;
+              const normalizedProgress =
+                activeProfile.id === 'producer'
+                  ? isPortfolioPlaying || producerElapsed > 0
+                    ? Math.max(
+                        1,
+                        (producerElapsed / safeDuration) * activeProfile.waveform.length
+                      )
+                    : 10
+                  : isPortfolioPlaying
+                    ? ((playStep % 32) / 32) * activeProfile.waveform.length
+                    : 10;
               const isPlayed = index <= normalizedProgress;
               return (
                 <div

@@ -4,210 +4,291 @@ interface Props {
 }
 
 const { featureId } = Astro.props;
+
+const eqHeights = [44, 86, 58, 96, 50, 82, 68, 92, 54, 76];
 ---
 
 <div
-  class="relative w-full h-[210px] sm:h-[224px] rounded-2xl bg-[#00142E] border border-[#193C70]/90 overflow-hidden mb-6 flex items-center justify-center select-none"
+  class="relative w-full min-h-[246px] sm:min-h-[258px] rounded-2xl bg-[#00142E] border border-[#193C70]/90 p-3.5 sm:p-4 flex flex-col justify-between overflow-hidden select-none mb-6"
   aria-hidden="true"
   data-testid={`feature-art-${featureId}`}
 >
   {featureId === 'portfolio' && (
-    <svg viewBox="0 0 460 200" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full h-full">
-      <defs>
-        <linearGradient id="tt-feat-port-glow" x1="0" y1="0" x2="460" y2="200" gradientUnits="userSpaceOnUse">
-          <stop offset="0%" stop-color="#FF204E" stop-opacity="0.16" />
-          <stop offset="55%" stop-color="#5D0E41" stop-opacity="0.14" />
-          <stop offset="100%" stop-color="#00224D" stop-opacity="0" />
-        </linearGradient>
-      </defs>
-      <rect width="460" height="200" fill="url(#tt-feat-port-glow)" />
+    <div class="flex flex-col justify-between h-full gap-2.5">
+      {/* Mini App Window Bar */}
+      <div class="flex items-center justify-between gap-2 pb-2 border-b border-[#193C70]/85">
+        <div class="flex items-center gap-2 min-w-0">
+          <div class="w-6 h-6 rounded-full bg-[#5D0E41] border border-[#FF204E]/80 flex items-center justify-center font-accent text-[10px] text-white shrink-0">
+            KM
+          </div>
+          <span class="text-[11px] tracking-[0.03em] text-[#E2ECFA] truncate">
+            tunetactics.ir / @kianmercer
+          </span>
+        </div>
+        <span class="rounded-full bg-[#FF204E]/20 border border-[#FF204E]/70 px-2.5 py-0.5 text-[10px] text-[#FF6B8A] shrink-0">
+          Open to collabs
+        </span>
+      </div>
 
-      <!-- Subtle architectural grid -->
-      <path d="M0 50 H460 M0 100 H460 M0 150 H460 M115 0 V200 M230 0 V200 M345 0 V200" stroke="#0C2B57" stroke-width="1" />
+      {/* Embedded Multi-Platform Track Card (Playing State) */}
+      <div class="tt-feat-float-slow rounded-xl bg-[#00224D] border border-[#A0153E]/80 p-3">
+        <div class="flex items-center justify-between gap-2.5">
+          <div class="flex items-center gap-2.5 min-w-0">
+            <div class="w-8 h-8 rounded-full bg-[#FF204E] flex items-center justify-center shrink-0 shadow-[0_4px_14px_-2px_rgba(255,32,78,0.7)]">
+              <svg width="11" height="11" viewBox="0 0 12 12" fill="none">
+                <rect x="2" y="2" width="2.8" height="8" rx="1" fill="#FFFFFF" />
+                <rect x="7.2" y="2" width="2.8" height="8" rx="1" fill="#FFFFFF" />
+              </svg>
+            </div>
+            <div class="min-w-0">
+              <p class="text-xs text-[#F4F7FC] truncate">Midnight Tape (WIP)</p>
+              <p class="text-[10px] text-[#9FB4D1] truncate">SoundCloud Embed · 94 BPM · F Minor</p>
+            </div>
+          </div>
 
-      <!-- Vinyl / Track Disc on Left -->
-      <g transform="translate(92, 100)">
-        <g class="tt-feat-spin">
-          <circle cx="0" cy="0" r="56" fill="#00224D" stroke="#5D0E41" stroke-width="2" />
-          <circle cx="0" cy="0" r="44" stroke="#A0153E" stroke-opacity="0.6" stroke-width="1" stroke-dasharray="10 6" />
-          <circle cx="0" cy="0" r="32" stroke="#FF204E" stroke-opacity="0.7" stroke-width="1.5" stroke-dasharray="14 8" />
-          <circle cx="0" cy="0" r="18" fill="#5D0E41" stroke="#FF204E" stroke-width="1.5" />
-          <circle cx="0" cy="0" r="5" fill="#FF204E" />
-        </g>
-      </g>
+          <div class="flex items-end gap-[2.5px] h-4 shrink-0">
+            {eqHeights.slice(0, 6).map((height, idx) => (
+              <span
+                class="tt-eq-bar w-[2.5px] rounded-full bg-[#FF204E]"
+                style={`height: ${Math.round((height / 100) * 15)}px; --eq-delay: ${idx * 105}ms;`}
+              />
+            ))}
+          </div>
+        </div>
 
-      <!-- Floating Embedded Player Card -->
-      <g class="tt-feat-float-slow">
-        <rect x="174" y="34" width="250" height="72" rx="14" fill="#00224D" stroke="#A0153E" stroke-width="1.2" />
-        <rect x="190" y="50" width="24" height="24" rx="12" fill="#FF204E" />
-        <path d="M199 57 L207 62 L199 67 Z" fill="#FFFFFF" />
-        <rect x="226" y="51" width="96" height="7" rx="3.5" fill="#F4F7FC" />
-        <rect x="226" y="64" width="64" height="5" rx="2.5" fill="#9FB4D1" />
+        {/* Live Animated Scrub Bar */}
+        <div class="mt-2.5 flex items-center gap-2">
+          <span class="text-[10px] text-[#FF6B8A] tabular-nums shrink-0">0:24</span>
+          <div class="h-1.5 flex-1 rounded-full bg-[#00142E] overflow-hidden">
+            <div class="tt-feat-progress h-full w-full rounded-full bg-[#FF204E]" />
+          </div>
+          <span class="text-[10px] text-[#8DA7CB] tabular-nums shrink-0">1:48</span>
+        </div>
+      </div>
 
-        <!-- Animated EQ bars inside player -->
-        <g transform="translate(190, 86)">
-          <rect x="0" y="0" width="5" height="10" rx="2.5" fill="#FF204E" class="tt-eq-bar" style="--eq-delay: 0ms;" />
-          <rect x="10" y="-4" width="5" height="14" rx="2.5" fill="#FF204E" class="tt-eq-bar" style="--eq-delay: 120ms;" />
-          <rect x="20" y="-2" width="5" height="12" rx="2.5" fill="#F4F7FC" class="tt-eq-bar" style="--eq-delay: 240ms;" />
-          <rect x="30" y="-6" width="5" height="16" rx="2.5" fill="#FF204E" class="tt-eq-bar" style="--eq-delay: 80ms;" />
-          <rect x="40" y="-1" width="5" height="11" rx="2.5" fill="#A0153E" class="tt-eq-bar" style="--eq-delay: 200ms;" />
-          <rect x="50" y="-5" width="5" height="15" rx="2.5" fill="#FF204E" class="tt-eq-bar" style="--eq-delay: 320ms;" />
-          <rect x="60" y="-2" width="5" height="12" rx="2.5" fill="#F4F7FC" class="tt-eq-bar" style="--eq-delay: 160ms;" />
-          <rect x="70" y="0" width="5" height="10" rx="2.5" fill="#9FB4D1" class="tt-eq-bar" style="--eq-delay: 280ms;" />
-          <rect x="88" y="4" width="126" height="3" rx="1.5" fill="#193C70" />
-          <rect x="88" y="4" width="126" height="3" rx="1.5" fill="#FF204E" class="tt-feat-progress" />
-        </g>
-      </g>
-
-      <!-- Floating Gear & Reel Cards Below -->
-      <g class="tt-feat-float-offset">
-        <rect x="174" y="120" width="118" height="46" rx="12" fill="#001B3E" stroke="#5D0E41" stroke-width="1.2" />
-        <rect x="188" y="133" width="54" height="6" rx="3" fill="#E2ECFA" />
-        <rect x="188" y="145" width="84" height="5" rx="2.5" fill="#FF204E" fill-opacity="0.85" />
-
-        <rect x="306" y="120" width="118" height="46" rx="12" fill="#001B3E" stroke="#193C70" stroke-width="1.2" />
-        <rect x="320" y="133" width="44" height="6" rx="3" fill="#E2ECFA" />
-        <rect x="320" y="145" width="76" height="5" rx="2.5" fill="#A0153E" />
-      </g>
-    </svg>
+      {/* Interactive Profile Chips: Gear, Skills & External Links */}
+      <div class="grid grid-cols-2 gap-2 text-[10px]">
+        <div class="rounded-xl bg-[#001B3E] border border-[#193C70]/85 px-2.5 py-2 flex items-center justify-between gap-1.5">
+          <div class="min-w-0">
+            <p class="text-[#8DA7CB] truncate">Studio Gear</p>
+            <p class="text-[#E2ECFA] truncate mt-0.5">Prophet-6 · Ableton</p>
+          </div>
+          <span class="w-1.5 h-1.5 rounded-full bg-[#FF204E] shrink-0" />
+        </div>
+        <div class="rounded-xl bg-[#001B3E] border border-[#5D0E41]/85 px-2.5 py-2 flex items-center justify-between gap-1.5">
+          <div class="min-w-0">
+            <p class="text-[#8DA7CB] truncate">Linked Catalog</p>
+            <p class="text-[#FF6B8A] truncate mt-0.5">Spotify · Bandcamp</p>
+          </div>
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" class="text-[#FF5C7D] shrink-0">
+            <path d="M3.5 8.5L8.5 3.5M8.5 3.5H4.5M8.5 3.5V7.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </div>
+      </div>
+    </div>
   )}
 
   {featureId === 'discovery' && (
-    <svg viewBox="0 0 460 200" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full h-full">
-      <defs>
-        <linearGradient id="tt-radar-beam" x1="0" y1="0" x2="72" y2="0" gradientUnits="userSpaceOnUse">
-          <stop offset="0%" stop-color="#FF204E" stop-opacity="0.65" />
-          <stop offset="100%" stop-color="#5D0E41" stop-opacity="0" />
-        </linearGradient>
-      </defs>
+    <div class="flex flex-col justify-between h-full gap-2.5">
+      {/* Top Search & Active Filter Toolbar */}
+      <div class="space-y-2">
+        <div class="flex items-center justify-between gap-2 rounded-xl bg-[#001B3E] border border-[#193C70]/90 px-3 py-1.5">
+          <div class="flex items-center gap-2 min-w-0">
+            <svg width="13" height="13" viewBox="0 0 16 16" fill="none" class="text-[#FF5C7D] shrink-0">
+              <circle cx="7" cy="7" r="4.8" stroke="currentColor" stroke-width="1.5" />
+              <path d="M10.8 10.8L14 14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+            </svg>
+            <span class="text-[11px] text-[#E2ECFA] truncate">
+              Singer · Alt-R&amp;B · Remote
+            </span>
+          </div>
+          <span class="text-[10px] text-[#FF6B8A] tabular-nums shrink-0">12 ready</span>
+        </div>
 
-      <!-- Concentric Acoustic Radar Rings -->
-      <g transform="translate(150, 100)">
-        <circle cx="0" cy="0" r="76" stroke="#193C70" stroke-width="1.2" />
-        <circle cx="0" cy="0" r="52" stroke="#5D0E41" stroke-width="1.2" stroke-dasharray="5 5" />
-        <circle cx="0" cy="0" r="28" stroke="#A0153E" stroke-width="1.2" />
-        <line x1="-82" y1="0" x2="82" y2="0" stroke="#0C2B57" stroke-width="1" />
-        <line x1="0" y1="-82" x2="0" y2="82" stroke="#0C2B57" stroke-width="1" />
+        {/* Filter Chips Row with Animated Active Highlight */}
+        <div class="flex items-center gap-1.5 overflow-hidden text-[10px]">
+          <span class="rounded-full bg-[#FF204E] text-white px-2.5 py-0.5 whitespace-nowrap">
+            Role: Singer
+          </span>
+          <span class="tt-ui-chip-pulse rounded-full bg-[#5D0E41]/75 border border-[#FF204E]/65 text-[#F4F7FC] px-2.5 py-0.5 whitespace-nowrap">
+            Intent: Collabs
+          </span>
+          <span class="rounded-full bg-[#00224D] border border-[#193C70] text-[#9FB4D1] px-2.5 py-0.5 whitespace-nowrap">
+            London / Remote
+          </span>
+        </div>
+      </div>
 
-        <!-- Rotating Radar Sweep -->
-        <g class="tt-feat-radar">
-          <circle cx="0" cy="0" r="76" stroke="transparent" stroke-width="1" fill="none" />
-          <path d="M0 0 L74 -20 A76 76 0 0 1 74 20 Z" fill="url(#tt-radar-beam)" />
-          <line x1="0" y1="0" x2="75" y2="0" stroke="#FF204E" stroke-width="1.8" stroke-linecap="round" />
-        </g>
+      {/* Live Filtered Result Rows */}
+      <div class="space-y-2 flex-1 flex flex-col justify-end">
+        <div class="tt-hub-row-1 rounded-xl bg-[#00224D] border border-[#FF204E]/75 px-3 py-2 flex items-center justify-between gap-2">
+          <div class="flex items-center gap-2.5 min-w-0">
+            <div class="w-8 h-8 rounded-full bg-[#FF204E] flex items-center justify-center font-accent text-[11px] text-white shrink-0">
+              NV
+            </div>
+            <div class="min-w-0">
+              <p class="text-xs text-[#F4F7FC] truncate">Nora Vance · Singer</p>
+              <p class="text-[10px] text-[#FF6B8A] truncate">Wants dark synth beats · Stems ready</p>
+            </div>
+          </div>
+          <span class="rounded-full bg-[#FF204E] text-white px-2.5 py-1 text-[10px] shrink-0">
+            Connect
+          </span>
+        </div>
 
-        <circle cx="0" cy="0" r="6" fill="#FF204E" />
-        <!-- Matched Creator Blips -->
-        <g class="tt-feat-blip-1">
-          <circle cx="44" cy="-34" r="7" fill="#FF204E" />
-          <circle cx="44" cy="-34" r="13" stroke="#FF204E" stroke-opacity="0.55" stroke-width="1.5" />
-        </g>
-        <g class="tt-feat-blip-2">
-          <circle cx="-48" cy="24" r="6" fill="#F4F7FC" />
-          <circle cx="-48" cy="24" r="11" stroke="#A0153E" stroke-opacity="0.7" stroke-width="1.2" />
-        </g>
-        <circle cx="30" cy="48" r="4" fill="#5D0E41" />
-      </g>
-
-      <!-- Right Matched Result Stack -->
-      <g class="tt-feat-float-slow">
-        <rect x="260" y="34" width="172" height="58" rx="14" fill="#00224D" stroke="#FF204E" stroke-opacity="0.75" stroke-width="1.2" />
-        <circle cx="286" cy="63" r="14" fill="#FF204E" />
-        <path d="M281 63 L285 67 L292 59" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-        <rect x="310" y="52" width="84" height="7" rx="3.5" fill="#F4F7FC" />
-        <rect x="310" y="66" width="102" height="5" rx="2.5" fill="#FF5C7D" />
-      </g>
-
-      <g class="tt-feat-float-offset">
-        <rect x="260" y="108" width="172" height="58" rx="14" fill="#001B3E" stroke="#5D0E41" stroke-width="1.2" />
-        <circle cx="286" cy="137" r="14" fill="#5D0E41" stroke="#A0153E" stroke-width="1.2" />
-        <rect x="310" y="126" width="76" height="7" rx="3.5" fill="#E2ECFA" />
-        <rect x="310" y="140" width="94" height="5" rx="2.5" fill="#9FB4D1" />
-      </g>
-    </svg>
+        <div class="tt-hub-row-2 rounded-xl bg-[#001B3E] border border-[#5D0E41]/90 px-3 py-2 flex items-center justify-between gap-2">
+          <div class="flex items-center gap-2.5 min-w-0">
+            <div class="w-8 h-8 rounded-full bg-[#5D0E41] border border-[#A0153E] flex items-center justify-center font-accent text-[11px] text-white shrink-0">
+              ML
+            </div>
+            <div class="min-w-0">
+              <p class="text-xs text-[#E2ECFA] truncate">Maya Lin · Alt-R&amp;B</p>
+              <p class="text-[10px] text-[#9FB4D1] truncate">Looking for heavy drums &amp; sub</p>
+            </div>
+          </div>
+          <span class="rounded-full bg-[#00224D] border border-[#A0153E] text-[#E2ECFA] px-2.5 py-1 text-[10px] shrink-0">
+            Audition
+          </span>
+        </div>
+      </div>
+    </div>
   )}
 
   {featureId === 'reels' && (
-    <svg viewBox="0 0 460 200" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full h-full">
-      <path d="M0 100 H460" stroke="#0C2B57" stroke-width="1" />
+    <div class="grid grid-cols-12 gap-2.5 h-full items-stretch">
+      {/* Left: Vertical Video/Audio Reel Player Frame */}
+      <div class="col-span-5 rounded-xl bg-gradient-to-b from-[#5D0E41]/60 via-[#00224D] to-[#00142E] border border-[#FF204E]/70 p-2.5 flex flex-col justify-between">
+        <div class="flex items-center justify-between gap-1">
+          <span class="text-[10px] text-[#F4F7FC] truncate">@mayalin</span>
+          <span class="w-1.5 h-1.5 rounded-full bg-[#FF204E]" />
+        </div>
 
-      <!-- Left Incoming Vocal Stem Card -->
-      <g class="tt-feat-slide-left">
-        <rect x="34" y="54" width="122" height="92" rx="14" fill="#00224D" stroke="#5D0E41" stroke-width="1.2" />
-        <rect x="48" y="70" width="54" height="6" rx="3" fill="#F4F7FC" />
-        <rect x="48" y="83" width="82" height="4.5" rx="2.25" fill="#9FB4D1" />
-        <g transform="translate(48, 114)">
-          <rect x="0" y="0" width="4" height="16" rx="2" fill="#F4F7FC" class="tt-eq-bar" style="--eq-delay: 40ms;" />
-          <rect x="10" y="-5" width="4" height="21" rx="2" fill="#F4F7FC" class="tt-eq-bar" style="--eq-delay: 180ms;" />
-          <rect x="20" y="-2" width="4" height="18" rx="2" fill="#FF204E" class="tt-eq-bar" style="--eq-delay: 90ms;" />
-          <rect x="30" y="-7" width="4" height="23" rx="2" fill="#F4F7FC" class="tt-eq-bar" style="--eq-delay: 250ms;" />
-          <rect x="40" y="-1" width="4" height="17" rx="2" fill="#A0153E" class="tt-eq-bar" style="--eq-delay: 140ms;" />
-        </g>
-      </g>
+        <div class="my-auto flex flex-col items-center gap-2 py-2">
+          <div class="tt-feat-blip-1 w-9 h-9 rounded-full bg-[#FF204E] flex items-center justify-center shadow-[0_4px_16px_-2px_rgba(255,32,78,0.75)]">
+            <svg width="11" height="12" viewBox="0 0 11 12" fill="none" class="ml-0.5">
+              <path d="M1.5 1.5L9.5 6L1.5 10.5V1.5Z" fill="#FFFFFF" />
+            </svg>
+          </div>
+          <p class="text-[10px] text-center text-[#E2ECFA] leading-tight">
+            Chorus hook · 112 BPM
+          </p>
+        </div>
 
-      <!-- Center Vertical Music Reel Frame -->
-      <g class="tt-feat-float-slow">
-        <rect x="176" y="20" width="108" height="160" rx="18" fill="#00224D" stroke="#FF204E" stroke-width="1.5" />
-        <rect x="188" y="34" width="84" height="86" rx="10" fill="#5D0E41" fill-opacity="0.45" stroke="#A0153E" />
-        <!-- Play icon inside vertical reel -->
-        <circle cx="230" cy="77" r="16" fill="#FF204E" />
-        <path d="M226 71 L237 77 L226 83 Z" fill="#FFFFFF" />
+        <div class="space-y-1.5">
+          <div class="h-1 w-full rounded-full bg-[#001633] overflow-hidden">
+            <div class="tt-feat-progress h-full w-full rounded-full bg-[#FF204E]" />
+          </div>
+          <div class="rounded-full bg-[#FF204E] text-white text-center py-1 text-[10px]">
+            + Drop stem
+          </div>
+        </div>
+      </div>
 
-        <!-- Reel Waveform Track Bars -->
-        <rect x="188" y="132" width="62" height="6" rx="3" fill="#F4F7FC" />
-        <rect x="188" y="145" width="84" height="4" rx="2" fill="#193C70" />
-        <rect x="188" y="145" width="84" height="4" rx="2" fill="#FF204E" class="tt-feat-progress" />
-        <rect x="188" y="157" width="46" height="4" rx="2" fill="#9FB4D1" />
-      </g>
+      {/* Right: Layered Stem Replies Stack */}
+      <div class="col-span-7 flex flex-col justify-between gap-1.5">
+        <div class="flex items-center justify-between text-[10px] px-0.5">
+          <span class="text-[#9FB4D1]">Live stem layers</span>
+          <span class="text-[#FF6B8A] tabular-nums">3 synced</span>
+        </div>
 
-      <!-- Right Incoming Drum/Bass Stem Card -->
-      <g class="tt-feat-slide-right">
-        <rect x="304" y="54" width="122" height="92" rx="14" fill="#00224D" stroke="#A0153E" stroke-width="1.2" />
-        <rect x="318" y="70" width="60" height="6" rx="3" fill="#FF5C7D" />
-        <rect x="318" y="83" width="76" height="4.5" rx="2.25" fill="#9FB4D1" />
-        <g transform="translate(318, 114)">
-          <rect x="0" y="-4" width="4" height="20" rx="2" fill="#FF204E" class="tt-eq-bar" style="--eq-delay: 0ms;" />
-          <rect x="10" y="-8" width="4" height="24" rx="2" fill="#FF204E" class="tt-eq-bar" style="--eq-delay: 160ms;" />
-          <rect x="20" y="-1" width="4" height="17" rx="2" fill="#F4F7FC" class="tt-eq-bar" style="--eq-delay: 280ms;" />
-          <rect x="30" y="-6" width="4" height="22" rx="2" fill="#FF204E" class="tt-eq-bar" style="--eq-delay: 110ms;" />
-          <rect x="40" y="-3" width="4" height="19" rx="2" fill="#F4F7FC" class="tt-eq-bar" style="--eq-delay: 220ms;" />
-        </g>
-      </g>
-    </svg>
+        <div class="rounded-xl bg-[#00224D] border border-[#193C70] px-2.5 py-2 flex items-center justify-between gap-2">
+          <div class="min-w-0">
+            <p class="text-[11px] text-[#F4F7FC] truncate">1. Lead Vocal</p>
+            <p class="text-[10px] text-[#9FB4D1] truncate">@mayalin · Original</p>
+          </div>
+          <div class="flex items-end gap-[2px] h-3.5 shrink-0">
+            {eqHeights.slice(0, 5).map((height, idx) => (
+              <span
+                class="tt-eq-bar w-[2px] rounded-full bg-[#E2ECFA]"
+                style={`height: ${Math.round((height / 100) * 13)}px; --eq-delay: ${idx * 100}ms;`}
+              />
+            ))}
+          </div>
+        </div>
+
+        <div class="tt-ui-stem-layer rounded-xl bg-[#5D0E41]/45 border border-[#FF204E]/75 px-2.5 py-2 flex items-center justify-between gap-2">
+          <div class="min-w-0">
+            <p class="text-[11px] text-white truncate">2. + Pocket Drums</p>
+            <p class="text-[10px] text-[#FF859D] truncate">@dante_beats · Stem reply</p>
+          </div>
+          <div class="flex items-end gap-[2px] h-3.5 shrink-0">
+            {eqHeights.slice(4, 9).map((height, idx) => (
+              <span
+                class="tt-eq-bar w-[2px] rounded-full bg-[#FF204E]"
+                style={`height: ${Math.round((height / 100) * 13)}px; --eq-delay: ${idx * 90}ms;`}
+              />
+            ))}
+          </div>
+        </div>
+
+        <div class="rounded-xl bg-[#001B3E] border border-[#A0153E]/65 px-2.5 py-2 flex items-center justify-between gap-2">
+          <div class="min-w-0">
+            <p class="text-[11px] text-[#E2ECFA] truncate">3. + Sub Bass</p>
+            <p class="text-[10px] text-[#9FB4D1] truncate">@kianmercer · Synced</p>
+          </div>
+          <span class="rounded-full bg-[#00224D] border border-[#FF204E]/60 px-2 py-0.5 text-[9px] text-[#FF6B8A] shrink-0">
+            Active
+          </span>
+        </div>
+      </div>
+    </div>
   )}
 
   {featureId === 'connect' && (
-    <svg viewBox="0 0 460 200" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full h-full">
-      <!-- Top Direct Studio Thread Conduit -->
-      <rect x="30" y="28" width="400" height="86" rx="16" fill="#00224D" stroke="#FF204E" stroke-opacity="0.6" stroke-width="1.2" />
+    <div class="flex flex-col justify-between h-full gap-2">
+      {/* Studio Thread Header */}
+      <div class="flex items-center justify-between gap-2 pb-2 border-b border-[#193C70]/85">
+        <div class="flex items-center gap-2 min-w-0">
+          <span class="w-2 h-2 rounded-full bg-[#FF204E] shrink-0" />
+          <p class="text-[11px] text-[#F4F7FC] truncate">
+            Studio Thread · Kian &amp; Nora
+          </p>
+        </div>
+        <span class="text-[10px] text-[#9FB4D1] shrink-0">Direct · No DMs lost</span>
+      </div>
 
-      <!-- Left Musician -->
-      <circle cx="72" cy="71" r="20" fill="#5D0E41" stroke="#FF204E" stroke-width="1.8" />
-      <path d="M64 79 C64 73, 80 73, 80 79" stroke="#FFFFFF" stroke-width="1.8" stroke-linecap="round" />
-      <circle cx="72" cy="65" r="4.5" fill="#FFFFFF" />
+      {/* Chat & Stem File Exchange Messages */}
+      <div class="space-y-2 flex-1 flex flex-col justify-center">
+        {/* Outgoing Message + Beat Attachment */}
+        <div class="self-start max-w-[88%] rounded-xl rounded-tl-sm bg-[#00224D] border border-[#193C70] px-2.5 py-2">
+          <p class="text-[11px] text-[#E2ECFA] leading-snug">
+            Chorus opens at 0:32 — ready for your vocal take.
+          </p>
+          <div class="mt-1.5 flex items-center gap-2 rounded-lg bg-[#00142E] px-2 py-1">
+            <span class="w-4 h-4 rounded-full bg-[#FF204E] flex items-center justify-center shrink-0">
+              <svg width="7" height="7" viewBox="0 0 8 8" fill="none">
+                <path d="M2 1.5L6.5 4L2 6.5V1.5Z" fill="#FFFFFF" />
+              </svg>
+            </span>
+            <span class="text-[10px] text-[#9FB4D1] truncate">Midnight_Hook_94bpm.wav</span>
+          </div>
+        </div>
 
-      <!-- Right Collaborator -->
-      <circle cx="388" cy="71" r="20" fill="#001B3E" stroke="#F4F7FC" stroke-width="1.8" />
-      <path d="M380 79 C380 73, 396 73, 396 79" stroke="#F4F7FC" stroke-width="1.8" stroke-linecap="round" />
-      <circle cx="388" cy="65" r="4.5" fill="#F4F7FC" />
+        {/* Incoming Animated Reply + Vocal Stem Attachment */}
+        <div class="tt-ui-reply-slide self-end max-w-[90%] rounded-xl rounded-tr-sm bg-[#5D0E41]/60 border border-[#FF204E]/70 px-2.5 py-2">
+          <div class="flex items-center justify-between gap-2">
+            <span class="text-[10px] text-[#FF859D]">@noravance</span>
+            <span class="text-[9px] text-[#D6E2F5]">Just now</span>
+          </div>
+          <p class="text-[11px] text-white leading-snug mt-0.5">
+            Recorded 2 takes! Dropping dry + harmony stems.
+          </p>
+          <div class="mt-1.5 flex items-center justify-between gap-2 rounded-lg bg-[#001633]/90 px-2 py-1">
+            <span class="text-[10px] text-[#F4F7FC] truncate">Nora_Chorus_Stems.zip</span>
+            <span class="text-[9px] text-[#FF6B8A] shrink-0">Synced ✓</span>
+          </div>
+        </div>
+      </div>
 
-      <!-- Direct Signal Track & Gliding Packets -->
-      <line x1="104" y1="71" x2="356" y2="71" stroke="#193C70" stroke-width="2" />
-      <line x1="104" y1="71" x2="356" y2="71" stroke="#FF204E" stroke-opacity="0.6" stroke-width="2" stroke-dasharray="6 6" />
-
-      <g class="tt-feat-packet-1">
-        <rect x="190" y="55" width="74" height="32" rx="16" fill="#FF204E" />
-        <rect x="205" y="66" width="44" height="4" rx="2" fill="#FFFFFF" />
-        <rect x="205" y="74" width="28" height="3.5" rx="1.75" fill="#FFFFFF" fill-opacity="0.75" />
-      </g>
-
-      <!-- Bottom Buried DM Contrast (Bypassed Noise) -->
-      <g opacity="0.58">
-        <rect x="30" y="130" width="400" height="42" rx="12" fill="#001B3E" stroke="#193C70" stroke-width="1" />
-        <rect x="48" y="147" width="84" height="6" rx="3" fill="#2A4F82" />
-        <rect x="148" y="147" width="110" height="6" rx="3" fill="#193C70" />
-        <path d="M398 145 L410 157 M410 145 L398 157" stroke="#FF204E" stroke-width="1.8" stroke-linecap="round" />
-      </g>
-    </svg>
+      {/* Bottom Studio Message Composer */}
+      <div class="rounded-full bg-[#001B3E] border border-[#193C70]/90 pl-3 pr-1.5 py-1 flex items-center justify-between gap-2">
+        <span class="text-[10px] text-[#8DA7CB] truncate">
+          Reply or attach WAV stems...
+        </span>
+        <span class="tt-ui-send-pulse rounded-full bg-[#FF204E] text-white px-2.5 py-0.5 text-[10px] shrink-0">
+          Send
+        </span>
+      </div>
+    </div>
   )}
 </div>

@@ -35,14 +35,20 @@ export default function HeroVisualizer() {
   const [isReady, setIsReady] = useState(false);
   const [webglUnavailable, setWebglUnavailable] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [step, setStep] = useState(0);
+  const [elapsedSec, setElapsedSec] = useState(0);
+  const [durationSec, setDurationSec] = useState(HERO_SAMPLE_DURATION_SEC);
+  const [avatarFailed, setAvatarFailed] = useState(false);
 
   useEffect(() => {
-    const unsubscribe = studioAudio.subscribe((mode: PreviewMode | null, currentStep: number) => {
+    const syncProgress = () => {
+      const progress = studioAudio.getHeroProgress();
+      setElapsedSec(progress.currentTime);
+      setDurationSec(progress.duration);
+    };
+
+    const unsubscribe = studioAudio.subscribe((mode: PreviewMode | null) => {
       setIsPlaying(mode === 'hero-visualizer');
-      if (mode === 'hero-visualizer') {
-        setStep(currentStep);
-      }
+      syncProgress();
     });
     return () => {
       unsubscribe();
@@ -412,8 +418,8 @@ export default function HeroVisualizer() {
     }, 450);
   };
 
-  const progressPct = isPlaying ? ((step + 1) / 64) * 100 : 0;
-  const elapsedSec = isPlaying ? ((step + 1) / 64) * HERO_SAMPLE_DURATION_SEC : 0;
+  const safeDuration = durationSec > 0 ? durationSec : HERO_SAMPLE_DURATION_SEC;
+  const progressPct = Math.min(100, Math.max(0, (elapsedSec / safeDuration) * 100));
   const cardCopy = SITE_CONTENT.hero.visualizerCard;
 
   return (
@@ -471,7 +477,7 @@ export default function HeroVisualizer() {
               {cardCopy.trackTitle}
             </p>
             <span className="text-xs sm:text-sm text-[#9FB4D1] tabular-nums shrink-0">
-              {formatTrackTime(elapsedSec)} / {formatTrackTime(HERO_SAMPLE_DURATION_SEC)}
+              {formatTrackTime(elapsedSec)} / {formatTrackTime(safeDuration)}
             </span>
           </div>
 
@@ -514,12 +520,23 @@ export default function HeroVisualizer() {
 
         <div className="pt-3 border-t border-[#193C70]/80 flex items-center justify-between gap-3">
           <div className="flex items-center gap-2.5 min-w-0">
-            <div className="w-9 h-9 rounded-full bg-[#5D0E41]/80 border border-[#A0153E] flex items-center justify-center font-sans text-xs tracking-wider text-white shrink-0">
-              KM
+            <div className="w-10 h-10 rounded-full bg-[#5D0E41]/80 border border-[#FF204E]/65 overflow-hidden flex items-center justify-center font-sans text-xs tracking-wider text-white shrink-0">
+              {!avatarFailed && cardCopy.creatorAvatar ? (
+                <img
+                  src={cardCopy.creatorAvatar}
+                  alt={`${cardCopy.creatorName} profile picture`}
+                  width={40}
+                  height={40}
+                  onError={() => setAvatarFailed(true)}
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                cardCopy.creatorInitials
+              )}
             </div>
             <div className="min-w-0">
-              <p className="text-sm text-[#F4F7FC] truncate">Kian Mercer</p>
-              <p className="text-xs text-[#9FB4D1] truncate">@kianmercer · Producer</p>
+              <p className="text-sm text-[#F4F7FC] truncate">{cardCopy.creatorName}</p>
+              <p className="text-xs text-[#9FB4D1] truncate">{cardCopy.creatorMeta}</p>
             </div>
           </div>
 

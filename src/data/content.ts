@@ -34,6 +34,8 @@ export interface ProfileShowcase {
   trackMeta: string;
   waveform: number[];
   bpm: number;
+  avatarSrc?: string;
+  audioSrc?: string;
 }
 
 export const SITE_CONTENT = {
@@ -68,12 +70,17 @@ export const SITE_CONTENT = {
     primaryCta: 'Join the waitlist',
     trustMicroCopy: 'Founding members get Pro free for life.',
     visualizerCard: {
-      trackTitle: 'Midnight Frequency',
-      trackSubtitle: '96 BPM · Sample studio loop',
+      audioSrc: '/assets/aistudio/pole-prodbymd1_3bf6da84.ogg',
+      trackTitle: 'Pole',
+      trackSubtitle: '148 BPM · G Minor · by ProdByMD1',
+      creatorInitials: 'MD',
+      creatorName: 'ProdByMD1',
+      creatorMeta: '@prodbymd1 · Producer',
+      creatorAvatar: '/assets/aistudio/b874aeb1-8b4f-43d6-91a6-14afaffb8095_bc786ffa.jpg',
       collabHeading: 'Looking for collaboration',
       collabCopy:
         'Vocalist for a melodic trap EP. Needs Persian/English bilingual delivery.',
-      collabMeta: 'Melodic Trap · Bilingual · Remote stems ready',
+      collabMeta: '148 BPM · G Minor · Remote stems ready',
       collabCta: 'Connect & collab',
     },
   },
@@ -159,21 +166,23 @@ export const SITE_CONTENT = {
     profiles: [
       {
         id: 'producer',
-        name: 'Kian Mercer',
-        handle: '@kianmercer',
-        roleLine: 'Producer · Neo-Soul & Electronic',
-        location: 'Berlin · Remote ready',
-        lookingFor: 'Looking for: Vocalist for 4-track EP',
-        gearOrCredits: 'Prophet-6 · Ableton Live · Apollo Twin',
+        name: 'Hamed',
+        handle: '@HMD4ever',
+        roleLine: 'Producer · Hip-Hop & Trap',
+        location: 'Iran · Remote ready',
+        lookingFor: 'Looking for: Vocalist for hip-hop & trap cuts',
+        gearOrCredits: 'FL Studio · Akai MPK Mini · AudioBox 2',
         creditsLine: '14 released beats · 6 vocal collabs completed',
         availabilityLine: 'Open for remote stem swaps · 48h turnaround',
-        trackTitle: 'Midnight Tape (Open Hook)',
-        trackMeta: '94 BPM · F Minor · Unreleased WIP',
+        trackTitle: 'K9',
+        trackMeta: '146 BPM · F Minor · Unreleased WIP',
+        avatarSrc: '/assets/aistudio/image_09b00329.png',
+        audioSrc: '/assets/aistudio/k9-hmd4ever_999279fd.ogg',
         waveform: [
           28, 42, 65, 50, 84, 92, 62, 48, 76, 88, 95, 70, 52, 68, 90, 82, 56, 44, 74, 86,
           64, 50, 72, 60, 42, 34, 58, 78, 66, 48, 38, 26,
         ],
-        bpm: 94,
+        bpm: 146,
       },
       {
         id: 'singer',
