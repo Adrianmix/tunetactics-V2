@@ -8,6 +8,7 @@ import {
   type PreviewMode,
 } from '../utils/audioPreview';
 import { formatTrackTime } from '../utils/visualizerMath';
+import ContinuousEqProgress from './ContinuousEqProgress';
 
 export default function ProductPreview() {
   const [activeProfileId, setActiveProfileId] = useState<'producer' | 'singer'>('producer');
@@ -267,37 +268,21 @@ export default function ProductPreview() {
             </button>
           </div>
 
-          {/* Interactive Waveform Bars */}
-          <div
-            className="mt-4 h-12 flex items-end gap-[3px]"
-            aria-label="Track audio waveform preview"
-          >
-            {activeProfile.waveform.map((heightPct, index) => {
-              const safeDuration =
-                producerDuration > 0 ? producerDuration : PRODUCER_SAMPLE_DURATION_SEC;
-              const normalizedProgress =
-                activeProfile.id === 'producer'
-                  ? isPortfolioPlaying || producerElapsed > 0
-                    ? Math.max(
-                        1,
-                        (producerElapsed / safeDuration) * activeProfile.waveform.length
-                      )
-                    : 10
-                  : isPortfolioPlaying
-                    ? ((playStep % 32) / 32) * activeProfile.waveform.length
-                    : 10;
-              const isPlayed = index <= normalizedProgress;
-              return (
-                <div
-                  key={index}
-                  className={`flex-1 rounded-full transition-all duration-150 ${
-                    isPlayed ? 'bg-[#FF204E]' : 'bg-[#193C70]'
-                  }`}
-                  style={{ height: `${heightPct}%` }}
-                />
-              );
-            })}
-          </div>
+          {/* Continuous Progress Rail with Curvy Dots & Smooth Line EQ Visualizer */}
+          <ContinuousEqProgress
+            profileId={activeProfile.id}
+            trackTitle={activeProfile.trackTitle}
+            waveform={activeProfile.waveform}
+            isPlaying={isPortfolioPlaying}
+            playStep={playStep}
+            elapsedSec={producerElapsed}
+            durationSec={producerDuration}
+            onSeek={
+              activeProfile.id === 'producer'
+                ? (ratio) => studioAudio.seekProducer(ratio)
+                : undefined
+            }
+          />
         </div>
       </div>
 

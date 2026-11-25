@@ -2,7 +2,7 @@
 // and procedural synthesizer previews for portfolio/reel modes, feeding AnalyserNode FFT.
 
 import { SITE_CONTENT } from '../data/content';
-import { computeAudioBands, type AudioBands } from './visualizerMath';
+import { clampProgressRatio, computeAudioBands, type AudioBands } from './visualizerMath';
 
 export type PreviewMode =
   | 'hero-visualizer'
@@ -152,6 +152,18 @@ class StudioAudioEngine {
       currentTime: this.producerAudio.currentTime || 0,
       duration,
     };
+  }
+
+  public seekProducer(ratio: number) {
+    const audio = this.ensureProducerAudio();
+    if (!audio) return;
+    const rawDuration = audio.duration;
+    const duration =
+      Number.isFinite(rawDuration) && rawDuration > 0
+        ? rawDuration
+        : PRODUCER_SAMPLE_DURATION_SEC;
+    audio.currentTime = clampProgressRatio(ratio) * duration;
+    this.notify();
   }
 
   public subscribe(listener: Listener): () => void {
