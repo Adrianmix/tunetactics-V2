@@ -91,17 +91,17 @@ export default function WaitlistForm() {
   };
 
   return (
-    <div className="tt-card-float h-full bg-[#00224D] border border-[#1E447A]/90 rounded-3xl p-7 sm:p-10 flex flex-col justify-between">
+    <div className="tt-card-float h-full bg-[#00224D] border border-[#1E447A]/90 rounded-3xl p-5 sm:p-10 flex flex-col justify-start sm:justify-between">
       <div>
         <h2 className="text-3xl sm:text-4xl text-[#F4F7FC] leading-tight">
           {SITE_CONTENT.waitlist.heading}
         </h2>
-        <p className="mt-3 text-lg text-[#D6E2F5] leading-relaxed">
+        <p className="mt-2.5 sm:mt-3 text-base sm:text-lg text-[#D6E2F5] leading-relaxed">
           {SITE_CONTENT.waitlist.body}
         </p>
       </div>
 
-      <form onSubmit={handleSubmit} noValidate className="mt-8 space-y-7">
+      <form onSubmit={handleSubmit} noValidate className="mt-6 sm:mt-8 space-y-5 sm:space-y-7">
         {/* Honeypot anti-spam trap */}
         <div className="sr-only" aria-hidden="true">
           <label htmlFor="waitlist-company">Company</label>
@@ -120,7 +120,7 @@ export default function WaitlistForm() {
         <div>
           <label
             htmlFor="waitlist-email"
-            className="block text-base text-[#E2ECFA] mb-2.5"
+            className="block text-base text-[#E2ECFA] mb-2"
           >
             {SITE_CONTENT.waitlist.emailLabel}
           </label>
@@ -142,7 +142,7 @@ export default function WaitlistForm() {
             }}
             aria-invalid={Boolean(emailError)}
             aria-describedby={emailError ? 'waitlist-email-error' : undefined}
-            className={`w-full h-14 px-5 rounded-2xl bg-[#001633] border text-base text-[#F4F7FC] placeholder:text-[#7E99BE] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#FF204E] ${
+            className={`w-full h-12 sm:h-14 px-4 sm:px-5 rounded-2xl bg-[#001633] border text-base text-[#F4F7FC] placeholder:text-[#7E99BE] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#FF204E] ${
               emailError ? 'border-[#FF204E]' : 'border-[#1E447A] focus:border-[#FF204E]'
             }`}
           />
@@ -160,10 +160,10 @@ export default function WaitlistForm() {
 
         {/* Role Selector */}
         <fieldset>
-          <legend className="text-base text-[#E2ECFA] mb-3">
+          <legend className="text-base text-[#E2ECFA] mb-2.5 sm:mb-3">
             {SITE_CONTENT.waitlist.roleLabel}
           </legend>
-          <div className="flex flex-wrap gap-2.5 sm:gap-3">
+          <div className="grid grid-cols-2 sm:flex sm:flex-wrap gap-2 sm:gap-3">
             {SITE_CONTENT.waitlist.roles.map((option) => {
               const selected = role === option;
               return (
@@ -172,7 +172,7 @@ export default function WaitlistForm() {
                   type="button"
                   aria-pressed={selected}
                   onClick={() => setRole(option)}
-                  className={`tt-btn h-12 px-5 rounded-full border text-base whitespace-nowrap shrink-0 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FF204E] ${
+                  className={`tt-btn w-full sm:w-auto h-11 sm:h-12 px-3 sm:px-5 rounded-full border text-sm sm:text-base flex items-center justify-center whitespace-nowrap cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FF204E] ${
                     selected
                       ? 'bg-[#FF204E] text-white border-[#FF204E] shadow-[0_6px_22px_-6px_rgba(255,32,78,0.65)]'
                       : 'bg-[#001633] text-[#D6E2F5] border-[#5D0E41]/90 hover:border-[#A0153E] hover:text-white'
@@ -187,10 +187,10 @@ export default function WaitlistForm() {
 
         {/* Looking For Selector */}
         <fieldset>
-          <legend className="text-base text-[#E2ECFA] mb-3">
+          <legend className="text-base text-[#E2ECFA] mb-2.5 sm:mb-3">
             {SITE_CONTENT.waitlist.lookingForLabel}
           </legend>
-          <div className="flex flex-wrap gap-2.5 sm:gap-3">
+          <div className="grid grid-cols-2 sm:flex sm:flex-wrap gap-2 sm:gap-3">
             {SITE_CONTENT.waitlist.lookingForOptions.map((option) => {
               const selected = lookingFor === option;
               return (
@@ -199,7 +199,7 @@ export default function WaitlistForm() {
                   type="button"
                   aria-pressed={selected}
                   onClick={() => setLookingFor(option)}
-                  className={`tt-btn h-12 px-5 rounded-full border text-base whitespace-nowrap shrink-0 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FF204E] ${
+                  className={`tt-btn w-full sm:w-auto h-11 sm:h-12 px-3 sm:px-5 rounded-full border text-sm sm:text-base flex items-center justify-center whitespace-nowrap cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FF204E] ${
                     selected
                       ? 'bg-[#FF204E] text-white border-[#FF204E] shadow-[0_6px_22px_-6px_rgba(255,32,78,0.65)]'
                       : 'bg-[#001633] text-[#D6E2F5] border-[#5D0E41]/90 hover:border-[#A0153E] hover:text-white'
@@ -213,11 +213,11 @@ export default function WaitlistForm() {
         </fieldset>
 
         {/* Submit & Feedback */}
-        <div className="pt-2 space-y-4">
+        <div className="pt-1 sm:pt-2 space-y-4">
           <button
             type="submit"
             disabled={status === 'submitting'}
-            className="tt-btn w-full sm:w-auto min-w-[230px] h-14 px-8 rounded-full bg-[#FF204E] text-white text-base hover:bg-[#A0153E] disabled:opacity-60 disabled:cursor-not-allowed inline-flex items-center justify-center gap-2.5 whitespace-nowrap shrink-0 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FF204E] focus-visible:ring-offset-2 focus-visible:ring-offset-[#00224D]"
+            className="tt-btn w-full sm:w-auto min-w-[230px] h-12 sm:h-14 px-8 rounded-full bg-[#FF204E] text-white text-base hover:bg-[#A0153E] disabled:opacity-60 disabled:cursor-not-allowed inline-flex items-center justify-center gap-2.5 whitespace-nowrap shrink-0 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FF204E] focus-visible:ring-offset-2 focus-visible:ring-offset-[#00224D]"
           >
             {status === 'submitting' && (
               <Loader2 className="w-4 h-4 animate-spin" aria-hidden="true" />

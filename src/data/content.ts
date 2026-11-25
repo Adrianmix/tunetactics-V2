@@ -351,20 +351,40 @@ export const SITE_CONTENT = {
         {
           label: 'Designer',
           subject: 'adrianmix',
-          links: [{ text: 'me.tunetactics.ir', href: 'https://me.tunetactics.ir' }],
+          links: [
+            {
+              text: 'me.tunetactics.ir',
+              href: 'https://me.tunetactics.ir',
+              icon: 'globe' as const,
+            },
+          ],
         },
         {
           label: 'Pole',
           subject: 'by ProdbyMD1',
           links: [
-            { text: 'YouTube', href: 'https://www.youtube.com/@ssaymd1' },
-            { text: 'Telegram', href: 'https://t.me/ProdBiMD' },
+            {
+              text: 'YouTube',
+              href: 'https://www.youtube.com/@ssaymd1',
+              icon: 'youtube' as const,
+            },
+            {
+              text: 'Telegram',
+              href: 'https://t.me/ProdBiMD',
+              icon: 'telegram' as const,
+            },
           ],
         },
         {
           label: 'K9',
           subject: 'by HMD4ever',
-          links: [{ text: 'Telegram', href: 'https://t.me/prodbyhmd_music' }],
+          links: [
+            {
+              text: 'Telegram',
+              href: 'https://t.me/prodbyhmd_music',
+              icon: 'telegram' as const,
+            },
+          ],
         },
         {
           label: 'Images',

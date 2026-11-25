@@ -298,7 +298,7 @@ export default function ProductPreview() {
         </div>
 
         {/* Vertical Clip Viewport */}
-        <div className="mt-5 relative rounded-2xl overflow-hidden border border-[#5D0E41]/90 bg-[#001633] aspect-[4/5] sm:aspect-[16/15] lg:aspect-[5/6] flex flex-col justify-between">
+        <div className="mt-5 relative rounded-2xl overflow-hidden border border-[#5D0E41]/90 bg-[#001633] min-h-[450px] sm:min-h-0 sm:aspect-[16/15] lg:aspect-[5/6] flex flex-col justify-between">
           {!brokenImages.reel ? (
             <img
               src={STUDIO_ASSETS.singerReelsFrame}
@@ -360,7 +360,7 @@ export default function ProductPreview() {
                 <Layers className="w-4 h-4 text-[#FF204E]" aria-hidden="true" />
                 <span>Active stem layers</span>
               </div>
-              <div className="grid grid-cols-3 gap-2">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
                 {SITE_CONTENT.preview.reels.stems.map((stem) => {
                   const key = stem.id as 'vocal' | 'drums' | 'bass';
                   const active = stems[key];
@@ -370,7 +370,7 @@ export default function ProductPreview() {
                       type="button"
                       aria-pressed={active}
                       onClick={() => toggleStem(key)}
-                      className={`tt-btn px-3 py-2 rounded-2xl border text-left cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FF204E] ${
+                      className={`tt-btn px-3.5 py-2.5 sm:px-3 sm:py-2 rounded-2xl border text-left flex items-center justify-between gap-2 sm:block cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FF204E] ${
                         active
                           ? 'bg-[#5D0E41]/90 border-[#FF204E] text-white'
                           : 'bg-[#001633]/90 border-[#1E447A] text-[#B8CCE6] hover:text-white'
@@ -379,7 +379,7 @@ export default function ProductPreview() {
                       <span className="block text-xs truncate">
                         {stem.label}
                       </span>
-                      <span className="block text-[11px] text-[#B8CCE6] truncate mt-0.5">
+                      <span className="block text-[11px] text-[#B8CCE6] truncate sm:mt-0.5 shrink-0">
                         {stem.author}
                       </span>
                     </button>
