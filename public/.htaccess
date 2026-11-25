@@ -1,0 +1,83 @@
+# TuneTactics — Apache / cPanel Production Configuration
+# Caching, Compression, Security Headers & Sensitive File Protection
+
+Options -Indexes -MultiViews
+
+# 1. Block direct HTTP access to sensitive data, configs, logs, and dotfiles
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteRule (^|/)waitlist_data(/|$) - [F,L]
+  RewriteRule (^|/)\.(?!well-known/) - [F,L]
+</IfModule>
+
+<FilesMatch "(?i)(^smtp_config\.php$|\.env|composer\.(json|lock)|package(-lock)?\.json|bun\.lock|\.log$)">
+  <IfModule mod_authz_core.c>
+    Require all denied
+  </IfModule>
+  <IfModule !mod_authz_core.c>
+    Order allow,deny
+    Deny from all
+  </IfModule>
+</FilesMatch>
+
+# 2. Baseline HTTP Security Headers
+<IfModule mod_headers.c>
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set X-Frame-Options "SAMEORIGIN"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set Permissions-Policy "camera=(), microphone=(), geolocation=()"
+  Header always set Cross-Origin-Opener-Policy "same-origin"
+</IfModule>
+
+# 3. Gzip / Deflate Compression for Text Assets
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css
+  AddOutputFilterByType DEFLATE text/javascript application/javascript application/x-javascript
+  AddOutputFilterByType DEFLATE application/json application/ld+json application/xml image/svg+xml
+</IfModule>
+
+# 4. Tiered Browser & Proxy Caching
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresDefault "access plus 1 hour"
+  ExpiresByType text/html "access plus 0 seconds"
+  ExpiresByType application/xml "access plus 0 seconds"
+  ExpiresByType text/xml "access plus 0 seconds"
+  ExpiresByType text/plain "access plus 0 seconds"
+  ExpiresByType application/json "access plus 0 seconds"
+  ExpiresByType text/css "access plus 1 year"
+  ExpiresByType application/javascript "access plus 1 year"
+  ExpiresByType text/javascript "access plus 1 year"
+  ExpiresByType image/webp "access plus 1 month"
+  ExpiresByType image/avif "access plus 1 month"
+  ExpiresByType image/jpeg "access plus 1 month"
+  ExpiresByType image/png "access plus 1 month"
+  ExpiresByType image/svg+xml "access plus 1 month"
+  ExpiresByType image/x-icon "access plus 1 month"
+  ExpiresByType audio/ogg "access plus 1 month"
+  ExpiresByType audio/mpeg "access plus 1 month"
+  ExpiresByType font/woff2 "access plus 1 year"
+</IfModule>
+
+<IfModule mod_headers.c>
+  # Revalidate HTML, sitemap, and robots on deploy
+  <FilesMatch "\.(html?|xml|txt)$">
+    Header set Cache-Control "public, max-age=0, must-revalidate"
+  </FilesMatch>
+
+  # Hashed Astro JS/CSS bundles are safe for 1-year immutable caching
+  <FilesMatch "\.(js|css|woff2)$">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+
+  # Static media & audio samples
+  <FilesMatch "\.(webp|avif|jpg|jpeg|png|gif|svg|ico|ogg|mp3|wav)$">
+    Header set Cache-Control "public, max-age=2592000"
+  </FilesMatch>
+
+  # Never cache dynamic PHP API responses
+  <FilesMatch "\.php$">
+    Header set Cache-Control "no-store, no-cache, must-revalidate, max-age=0"
+    Header set Pragma "no-cache"
+  </FilesMatch>
+</IfModule>

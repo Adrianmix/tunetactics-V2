@@ -1,4 +1,5 @@
 ---
+import { getImage } from 'astro:assets';
 import Layout from '../layouts/Layout.astro';
 import HeroVisualizer from '../components/HeroVisualizer';
 import ProductPreview from '../components/ProductPreview';
@@ -7,15 +8,36 @@ import FaqAccordion from '../components/FaqAccordion';
 import FooterLinks from '../components/FooterLinks';
 import HowItWorksScenes from '../components/HowItWorksScenes.astro';
 import FeatureArtwork from '../components/FeatureArtwork.astro';
-import { STUDIO_ASSETS } from '../data/assets';
+import { STUDIO_IMAGE_SOURCES } from '../data/assets';
 import { SITE_CONTENT } from '../data/content';
+
+const optimizedFoundingPass = await getImage({
+  src: STUDIO_IMAGE_SOURCES.foundingStudioPass,
+  width: 720,
+  format: 'webp',
+  quality: 82,
+});
+
+const optimizedSingerReel = await getImage({
+  src: STUDIO_IMAGE_SOURCES.singerReelsFrame,
+  width: 600,
+  format: 'webp',
+  quality: 82,
+});
+
+const optimizedTrackCover = await getImage({
+  src: STUDIO_IMAGE_SOURCES.trackCoverArt,
+  width: 160,
+  format: 'webp',
+  quality: 82,
+});
 ---
 
 <Layout>
   <!-- Subtle Desktop Trailing Cursor Glow -->
   <div id="cursor-glow" class="tt-cursor-glow" aria-hidden="true"></div>
 
-  <div class="relative z-10 min-h-screen flex flex-col">
+  <div id="top" class="relative z-10 min-h-screen flex flex-col">
     <!-- Top Bar Contract: 3 zones (Wordmark — Nav links — 1 Primary CTA) -->
     <header class="sticky top-0 z-40 bg-[#001633]/92 backdrop-blur-md border-b border-[#193C70]/80">
       <!-- Scroll Progress Indicator -->
@@ -29,7 +51,7 @@ import { SITE_CONTENT } from '../data/content';
       <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-8">
         <!-- Zone 1: Brand Wordmark -->
         <a
-          href="#"
+          href="#top"
           class="font-accent inline-flex items-center gap-2.5 text-xl sm:text-2xl tracking-tight text-[#F4F7FC] whitespace-nowrap shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FF204E] rounded-full"
         >
           <svg
@@ -287,7 +309,11 @@ import { SITE_CONTENT } from '../data/content';
             </p>
           </div>
 
-          <ProductPreview client:load />
+          <ProductPreview
+            client:idle
+            reelImageSrc={optimizedSingerReel.src}
+            trackCoverSrc={optimizedTrackCover.src}
+          />
         </div>
       </section>
 
@@ -349,9 +375,12 @@ import { SITE_CONTENT } from '../data/content';
                   </div>
 
                   <img
-                    src={STUDIO_ASSETS.foundingStudioPass}
+                    src={optimizedFoundingPass.src}
+                    width={optimizedFoundingPass.attributes.width}
+                    height={optimizedFoundingPass.attributes.height}
                     alt="TuneTactics metallic studio access pass with acoustic waveform engraving"
                     loading="lazy"
+                    decoding="async"
                     referrerpolicy="no-referrer"
                     class="relative z-10 w-full h-full object-cover mix-blend-luminosity opacity-80"
                   />
@@ -424,7 +453,7 @@ import { SITE_CONTENT } from '../data/content';
 
           <!-- Right Waitlist Conversion Form -->
           <div class="lg:col-span-7">
-            <WaitlistForm client:load />
+            <WaitlistForm client:idle />
           </div>
         </div>
       </section>
@@ -435,7 +464,7 @@ import { SITE_CONTENT } from '../data/content';
           <h2 class="text-3xl sm:text-4xl text-[#F4F7FC] mb-8">
             {SITE_CONTENT.faq.heading}
           </h2>
-          <FaqAccordion client:load />
+          <FaqAccordion client:idle />
         </div>
       </section>
 
@@ -477,7 +506,7 @@ import { SITE_CONTENT } from '../data/content';
           </p>
         </div>
 
-        <FooterLinks client:load />
+        <FooterLinks client:idle />
       </div>
     </footer>
   </div>

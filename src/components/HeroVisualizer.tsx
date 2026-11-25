@@ -527,6 +527,7 @@ export default function HeroVisualizer() {
                   alt={`${cardCopy.creatorName} profile picture`}
                   width={40}
                   height={40}
+                  decoding="async"
                   onError={() => setAvatarFailed(true)}
                   className="w-full h-full object-cover"
                 />

@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { Disc3, Layers, Mic2, Pause, Play, Sliders, Volume2 } from 'lucide-react';
-import { STUDIO_ASSETS } from '../data/assets';
 import { SITE_CONTENT, type ProfileShowcase } from '../data/content';
 import {
   PRODUCER_SAMPLE_DURATION_SEC,
@@ -10,7 +9,15 @@ import {
 import { formatTrackTime } from '../utils/visualizerMath';
 import ContinuousEqProgress from './ContinuousEqProgress';
 
-export default function ProductPreview() {
+interface ProductPreviewProps {
+  reelImageSrc?: string;
+  trackCoverSrc?: string;
+}
+
+export default function ProductPreview({
+  reelImageSrc = '',
+  trackCoverSrc = '',
+}: ProductPreviewProps) {
   const [activeProfileId, setActiveProfileId] = useState<'producer' | 'singer'>('producer');
   const [playingMode, setPlayingMode] = useState<PreviewMode | null>(null);
   const [playStep, setPlayStep] = useState(0);
@@ -140,15 +147,14 @@ export default function ProductPreview() {
           {/* Profile Identity */}
           <div className="mt-6 flex items-start gap-4">
             <div className="w-20 h-20 rounded-2xl overflow-hidden bg-[#001633] border border-[#5D0E41]/80 shrink-0 flex items-center justify-center">
-              {!brokenImages[activeProfile.id] ? (
+              {!brokenImages[activeProfile.id] && (activeProfile.avatarSrc || reelImageSrc) ? (
                 <img
-                  src={
-                    activeProfile.avatarSrc ??
-                    (activeProfile.id === 'producer'
-                      ? STUDIO_ASSETS.producerAvatar
-                      : STUDIO_ASSETS.singerReelsFrame)
-                  }
+                  src={activeProfile.avatarSrc ?? reelImageSrc}
                   alt={`${activeProfile.name} studio portrait`}
+                  width={80}
+                  height={80}
+                  loading="lazy"
+                  decoding="async"
                   referrerPolicy="no-referrer"
                   onError={() =>
                     setBrokenImages((prev) => ({ ...prev, [activeProfile.id]: true }))
@@ -218,10 +224,14 @@ export default function ProductPreview() {
         <div className="mt-6 bg-[#001633] border border-[#5D0E41]/80 rounded-2xl p-4 sm:p-5">
           <div className="flex items-center gap-4">
             <div className="w-14 h-14 rounded-xl overflow-hidden bg-[#00224D] border border-[#193C70] shrink-0 flex items-center justify-center">
-              {!brokenImages.cover ? (
+              {!brokenImages.cover && trackCoverSrc ? (
                 <img
-                  src={STUDIO_ASSETS.trackCoverArt}
+                  src={trackCoverSrc}
                   alt={`${activeProfile.trackTitle} artwork`}
+                  width={56}
+                  height={56}
+                  loading="lazy"
+                  decoding="async"
                   referrerPolicy="no-referrer"
                   onError={() =>
                     setBrokenImages((prev) => ({ ...prev, cover: true }))
@@ -299,10 +309,14 @@ export default function ProductPreview() {
 
         {/* Vertical Clip Viewport */}
         <div className="mt-5 relative rounded-2xl overflow-hidden border border-[#5D0E41]/90 bg-[#001633] min-h-[450px] sm:min-h-0 sm:aspect-[16/15] lg:aspect-[5/6] flex flex-col justify-between">
-          {!brokenImages.reel ? (
+          {!brokenImages.reel && reelImageSrc ? (
             <img
-              src={STUDIO_ASSETS.singerReelsFrame}
+              src={reelImageSrc}
               alt="Vocalist recording clip inside acoustic booth"
+              width={600}
+              height={1075}
+              loading="lazy"
+              decoding="async"
               referrerPolicy="no-referrer"
               onError={() =>
                 setBrokenImages((prev) => ({ ...prev, reel: true }))

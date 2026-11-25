@@ -12,6 +12,8 @@ declare(strict_types=1);
 
 header('Content-Type: application/json; charset=UTF-8');
 header('X-Content-Type-Options: nosniff');
+header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
+header('Pragma: no-cache');
 
 // ============================================================================
 // 1. CONFIGURATION — Update SMTP password after uploading to cPanel
@@ -27,8 +29,9 @@ const SMTP_ENCRYPTION   = 'ssl'; // 'ssl' or 'tls'
 const SMTP_USERNAME     = 'support@tunetactics.ir';
 const SMTP_PASSWORD     = 'CHANGE_ME_CPANEL_EMAIL_PASSWORD';
 
-// Rate limiting & storage
-const RATE_LIMIT_WINDOW_SECONDS = 300; // 5 minutes
+// Rate limiting, input bounds & storage
+const MAX_REQUEST_BYTES         = 16384; // 16 KB max JSON payload
+const RATE_LIMIT_WINDOW_SECONDS = 300;   // 5 minutes
 const RATE_LIMIT_MAX_ATTEMPTS   = 8;
 
 function resolveDataDir(): string {
@@ -91,6 +94,19 @@ function truncateText(string $value, int $maxLength): string {
     return substr($value, 0, $maxLength);
 }
 
+function sanitizeEmailHeaderValue(string $value): string {
+    return str_replace(["\r", "\n", "\0"], '', trim($value));
+}
+
+function sanitizeCsvCell(string $value): string {
+    $clean = str_replace(["\r", "\n", "\0"], ' ', $value);
+    $trimmed = ltrim($clean);
+    if ($trimmed !== '' && in_array($trimmed[0], ['=', '+', '-', '@', "\t"], true)) {
+        return "'" . $clean;
+    }
+    return $clean;
+}
+
 function logMailDebug(string $message): void {
     $line = '[' . gmdate('Y-m-d H:i:s') . ' UTC] ' . $message . "\n";
     @file_put_contents(MAIL_DEBUG_LOG, $line, FILE_APPEND | LOCK_EX);
@@ -109,56 +125,85 @@ function ensureDataDirectory(): void {
     }
 }
 
-function readJsonFile(string $path): array {
-    if (!file_exists($path)) {
-        return [];
-    }
-    $raw = @file_get_contents($path);
-    if ($raw === false || trim($raw) === '') {
-        return [];
-    }
-    $decoded = json_decode($raw, true);
-    return is_array($decoded) ? $decoded : [];
-}
-
-function writeJsonFileLocked(string $path, array $data): bool {
-    $encoded = json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
-    if ($encoded === false) {
+function updateJsonFileAtomically(string $path, callable $mutator): bool {
+    $handle = @fopen($path, 'c+b');
+    if ($handle === false) {
         return false;
     }
-    return @file_put_contents($path, $encoded, LOCK_EX) !== false;
+    if (!@flock($handle, LOCK_EX)) {
+        @fclose($handle);
+        return false;
+    }
+
+    $raw = stream_get_contents($handle);
+    $current = [];
+    if (is_string($raw) && trim($raw) !== '') {
+        $decoded = json_decode($raw, true);
+        if (is_array($decoded)) {
+            $current = $decoded;
+        }
+    }
+
+    $shouldWrite = true;
+    $next = $mutator($current, $shouldWrite);
+
+    $ok = true;
+    if ($shouldWrite) {
+        $encoded = json_encode($next, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+        if ($encoded === false) {
+            $ok = false;
+        } else {
+            rewind($handle);
+            ftruncate($handle, 0);
+            $written = fwrite($handle, $encoded);
+            fflush($handle);
+            $ok = $written !== false;
+        }
+    }
+
+    @flock($handle, LOCK_UN);
+    @fclose($handle);
+    return $ok;
 }
 
 function checkRateLimit(string $clientIp): bool {
-    $limits = readJsonFile(RATE_LIMIT_JSON);
     $now = time();
     $ipKey = hash('sha256', $clientIp);
+    $allowed = true;
 
-    // Prune expired buckets
-    foreach ($limits as $key => $entries) {
-        if (!is_array($entries)) {
-            unset($limits[$key]);
-            continue;
+    $ok = updateJsonFileAtomically(
+        RATE_LIMIT_JSON,
+        static function (array $limits, bool &$shouldWrite) use ($now, $ipKey, &$allowed): array {
+            foreach ($limits as $key => $entries) {
+                if (!is_array($entries)) {
+                    unset($limits[$key]);
+                    continue;
+                }
+                $limits[$key] = array_values(array_filter(
+                    $entries,
+                    static fn($ts): bool => is_int($ts) && ($now - $ts) < RATE_LIMIT_WINDOW_SECONDS
+                ));
+                if (count($limits[$key]) === 0) {
+                    unset($limits[$key]);
+                }
+            }
+
+            $recent = $limits[$ipKey] ?? [];
+            if (count($recent) >= RATE_LIMIT_MAX_ATTEMPTS) {
+                $allowed = false;
+                $shouldWrite = true;
+                return $limits;
+            }
+
+            $recent[] = $now;
+            $limits[$ipKey] = $recent;
+            $allowed = true;
+            $shouldWrite = true;
+            return $limits;
         }
-        $limits[$key] = array_values(array_filter(
-            $entries,
-            static fn($ts): bool => is_int($ts) && ($now - $ts) < RATE_LIMIT_WINDOW_SECONDS
-        ));
-        if (count($limits[$key]) === 0) {
-            unset($limits[$key]);
-        }
-    }
+    );
 
-    $recent = $limits[$ipKey] ?? [];
-    if (count($recent) >= RATE_LIMIT_MAX_ATTEMPTS) {
-        writeJsonFileLocked(RATE_LIMIT_JSON, $limits);
-        return false;
-    }
-
-    $recent[] = $now;
-    $limits[$ipKey] = $recent;
-    writeJsonFileLocked(RATE_LIMIT_JSON, $limits);
-    return true;
+    return $ok ? $allowed : true;
 }
 
 // ============================================================================
@@ -173,8 +218,17 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     jsonResponse(405, 'error', 'Something went wrong. Try again?');
 }
 
-$rawInput = file_get_contents('php://input');
-$payload = json_decode($rawInput ?: '', true);
+$contentLength = isset($_SERVER['CONTENT_LENGTH']) ? (int)$_SERVER['CONTENT_LENGTH'] : 0;
+if ($contentLength > MAX_REQUEST_BYTES) {
+    jsonResponse(413, 'error', 'Something went wrong. Try again?');
+}
+
+$rawInput = file_get_contents('php://input', false, null, 0, MAX_REQUEST_BYTES + 1);
+if (!is_string($rawInput) || strlen($rawInput) > MAX_REQUEST_BYTES) {
+    jsonResponse(413, 'error', 'Something went wrong. Try again?');
+}
+
+$payload = json_decode($rawInput, true);
 if (!is_array($payload)) {
     jsonResponse(400, 'error', 'Something went wrong. Try again?');
 }
@@ -218,15 +272,8 @@ $utmCampaign = truncateText(trim((string)($payload['utm_campaign'] ?? '')), 120)
 $timestampUtc = gmdate('Y-m-d H:i:s') . ' UTC';
 
 // ============================================================================
-// 4. DUPLICATE CHECK & STORAGE
+// 4. ATOMIC DUPLICATE CHECK & STORAGE
 // ============================================================================
-$subscribers = readJsonFile(SUBSCRIBERS_JSON);
-foreach ($subscribers as $entry) {
-    if (isset($entry['email']) && strtolower((string)$entry['email']) === $email) {
-        jsonResponse(409, 'duplicate', "You're already on the list.");
-    }
-}
-
 $newRecord = [
     'email'        => $email,
     'role'         => $role,
@@ -239,12 +286,31 @@ $newRecord = [
     'ip_hash'      => hash('sha256', $clientIp),
 ];
 
-$subscribers[] = $newRecord;
-if (!writeJsonFileLocked(SUBSCRIBERS_JSON, $subscribers)) {
+$isDuplicate = false;
+$storedOk = updateJsonFileAtomically(
+    SUBSCRIBERS_JSON,
+    static function (array $subscribers, bool &$shouldWrite) use ($email, $newRecord, &$isDuplicate): array {
+        foreach ($subscribers as $entry) {
+            if (isset($entry['email']) && strtolower((string)$entry['email']) === $email) {
+                $isDuplicate = true;
+                $shouldWrite = false;
+                return $subscribers;
+            }
+        }
+        $subscribers[] = $newRecord;
+        $shouldWrite = true;
+        return $subscribers;
+    }
+);
+
+if ($isDuplicate) {
+    jsonResponse(409, 'duplicate', "You're already on the list.");
+}
+if (!$storedOk) {
     jsonResponse(500, 'error', 'Something went wrong. Try again?');
 }
 
-// Append CSV export row
+// Append CSV export row with spreadsheet formula-injection protection
 $csvNeedsHeader = !file_exists(SUBSCRIBERS_CSV);
 if ($csvHandle = @fopen(SUBSCRIBERS_CSV, 'ab')) {
     if (@flock($csvHandle, LOCK_EX)) {
@@ -252,14 +318,14 @@ if ($csvHandle = @fopen(SUBSCRIBERS_CSV, 'ab')) {
             fputcsv($csvHandle, ['email', 'role', 'looking_for', 'referrer', 'utm_source', 'utm_medium', 'utm_campaign', 'created_at']);
         }
         fputcsv($csvHandle, [
-            $email,
-            $role,
-            $lookingFor,
-            $referrer,
-            $utmSource,
-            $utmMedium,
-            $utmCampaign,
-            $timestampUtc,
+            sanitizeCsvCell($email),
+            sanitizeCsvCell($role),
+            sanitizeCsvCell($lookingFor),
+            sanitizeCsvCell($referrer),
+            sanitizeCsvCell($utmSource),
+            sanitizeCsvCell($utmMedium),
+            sanitizeCsvCell($utmCampaign),
+            sanitizeCsvCell($timestampUtc),
         ]);
         @flock($csvHandle, LOCK_UN);
     }
@@ -484,6 +550,13 @@ function sendViaSmtpAttempt(
     string $replyTo,
     ?string &$errorOut = null
 ): bool {
+    $safeTo = sanitizeEmailHeaderValue($to);
+    $safeReplyTo = sanitizeEmailHeaderValue($replyTo);
+    $safeSubject = sanitizeEmailHeaderValue($subject);
+    if (!filter_var($safeTo, FILTER_VALIDATE_EMAIL) || !filter_var($safeReplyTo, FILTER_VALIDATE_EMAIL)) {
+        $errorOut = 'Invalid recipient or reply-to address';
+        return false;
+    }
     $transportHost = $encryption === 'ssl' ? 'ssl://' . $host : $host;
     $context = stream_context_create([
         'ssl' => [
@@ -573,8 +646,8 @@ function sendViaSmtpAttempt(
         fclose($socket);
         return false;
     }
-    if (!smtpCommand($socket, 'RCPT TO:<' . $to . '>', [250, 251], $lastResp)) {
-        $errorOut = "RCPT TO ({$to}) rejected on {$host}:{$port}: {$lastResp}";
+    if (!smtpCommand($socket, 'RCPT TO:<' . $safeTo . '>', [250, 251], $lastResp)) {
+        $errorOut = "RCPT TO ({$safeTo}) rejected on {$host}:{$port}: {$lastResp}";
         fclose($socket);
         return false;
     }
@@ -584,7 +657,7 @@ function sendViaSmtpAttempt(
         return false;
     }
 
-    $encodedSubject = '=?UTF-8?B?' . base64_encode($subject) . '?=';
+    $encodedSubject = '=?UTF-8?B?' . base64_encode($safeSubject) . '?=';
     $domainPart = strstr(MAIL_FROM_ADDRESS, '@');
     $messageIdDomain = $domainPart !== false ? substr($domainPart, 1) : 'tunetactics.ir';
     try {
@@ -597,8 +670,8 @@ function sendViaSmtpAttempt(
         'Date: ' . date('r'),
         'Message-ID: <' . $randomId . '@' . $messageIdDomain . '>',
         'From: ' . MAIL_FROM_NAME . ' <' . MAIL_FROM_ADDRESS . '>',
-        'To: <' . $to . '>',
-        'Reply-To: ' . $replyTo,
+        'To: <' . $safeTo . '>',
+        'Reply-To: ' . $safeReplyTo,
         'Subject: ' . $encodedSubject,
         'MIME-Version: 1.0',
         'Content-Type: text/html; charset=UTF-8',
@@ -669,16 +742,24 @@ function sendViaSmtp(string $to, string $subject, string $htmlBody, string $repl
 }
 
 function sendEmail(string $to, string $subject, string $htmlBody, string $replyTo = MAIL_FROM_ADDRESS): bool {
+    $safeTo = sanitizeEmailHeaderValue($to);
+    $safeReplyTo = sanitizeEmailHeaderValue($replyTo);
+    $safeSubject = sanitizeEmailHeaderValue($subject);
+    if (!filter_var($safeTo, FILTER_VALIDATE_EMAIL) || !filter_var($safeReplyTo, FILTER_VALIDATE_EMAIL)) {
+        logMailDebug('Skipped email dispatch due to invalid email address.');
+        return false;
+    }
+
     if (getSmtpPassword() !== '') {
-        if (sendViaSmtp($to, $subject, $htmlBody, $replyTo)) {
+        if (sendViaSmtp($safeTo, $safeSubject, $htmlBody, $safeReplyTo)) {
             return true;
         }
     } else {
-        logMailDebug("SMTP skipped for {$to}: no SMTP password configured; trying PHP mail().");
+        logMailDebug("SMTP skipped for {$safeTo}: no SMTP password configured; trying PHP mail().");
     }
 
     // Fallback to cPanel local sendmail / PHP mail() with proper envelope sender (-f)
-    $encodedSubject = '=?UTF-8?B?' . base64_encode($subject) . '?=';
+    $encodedSubject = '=?UTF-8?B?' . base64_encode($safeSubject) . '?=';
     $domainPart = strstr(MAIL_FROM_ADDRESS, '@');
     $messageIdDomain = $domainPart !== false ? substr($domainPart, 1) : 'tunetactics.ir';
     try {
@@ -693,17 +774,17 @@ function sendEmail(string $to, string $subject, string $htmlBody, string $replyT
         'Content-Transfer-Encoding: 7bit',
         'Message-ID: <' . $randomId . '@' . $messageIdDomain . '>',
         'From: ' . MAIL_FROM_NAME . ' <' . MAIL_FROM_ADDRESS . '>',
-        'Reply-To: ' . $replyTo,
+        'Reply-To: ' . $safeReplyTo,
         'X-Mailer: TuneTactics/1.0',
     ]);
     $safeBody = prepareSafeHtmlBody($htmlBody, "\n");
 
-    $sent = @mail($to, $encodedSubject, $safeBody, $headers, '-f' . MAIL_FROM_ADDRESS);
+    $sent = @mail($safeTo, $encodedSubject, $safeBody, $headers, '-f' . MAIL_FROM_ADDRESS);
     if (!$sent) {
-        $sent = @mail($to, $encodedSubject, $safeBody, $headers);
+        $sent = @mail($safeTo, $encodedSubject, $safeBody, $headers);
     }
     if (!$sent) {
-        logMailDebug("PHP mail() fallback failed for {$to}.");
+        logMailDebug("PHP mail() fallback failed for {$safeTo}.");
     }
 
     return $sent;

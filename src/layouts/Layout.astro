@@ -14,7 +14,6 @@ const {
 
 const rawSiteOrigin =
   process.env.SITE_URL ||
-  process.env.APP_URL ||
   (Astro.site ? Astro.site.toString() : SITE_CONTENT.meta.defaultSiteUrl);
 
 const siteOrigin = rawSiteOrigin.replace(/\/+$/, '');
@@ -109,7 +108,7 @@ const structuredData = {
     <!-- Canonical & Icons -->
     <link rel="canonical" href={canonicalUrl} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="apple-touch-icon" href="/og-cover.jpg" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
 
     <!-- OpenGraph -->
     <meta property="og:type" content="website" />
@@ -141,7 +140,7 @@ const structuredData = {
     />
 
     <!-- Schema.org Structured Data (JSON-LD) -->
-    <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
+    <script type="application/ld+json" set:html={JSON.stringify(structuredData).replace(/</g, '\\u003c')} />
   </head>
   <body class="bg-[#001633] text-[#F4F7FC] antialiased selection:bg-[#FF204E] selection:text-white">
     <slot />
